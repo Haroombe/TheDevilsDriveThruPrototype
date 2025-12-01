@@ -20,6 +20,7 @@ public class PlayerInteractor : MonoBehaviour
     {
         DetectInteractable();
         HandleInput();
+
     }
 
     private void DetectInteractable()
@@ -52,6 +53,7 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && current != null)
             current.Interact();
+
     }
 
     private void SwitchFocus(Interactable newTarget)
