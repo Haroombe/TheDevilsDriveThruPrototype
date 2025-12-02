@@ -11,6 +11,6 @@ public class DriveThruWindow : Interactable
     }
     public override void Interact()
     {
-        CustomerManager.Instance.ServeCustomer();
+        CustomerManager.Instance.ServeCustomer();   
     }
 }

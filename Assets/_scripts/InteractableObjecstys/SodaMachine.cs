@@ -9,6 +9,7 @@ public class SodaMachine : Interactable
     }
     public override void Interact()
     {
+        GameManager.Instance.BuySoda();
     }
 }
 

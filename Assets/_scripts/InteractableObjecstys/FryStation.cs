@@ -9,5 +9,6 @@ public class FryStation : Interactable
     }
     public override void Interact()
     {
+        GameManager.Instance.BuyFries();
     }
 }

@@ -9,5 +9,6 @@ public class GrillTop : Interactable
     }
     public override void Interact()
     {
+        GameManager.Instance.BuyBurger();
     }
 }
