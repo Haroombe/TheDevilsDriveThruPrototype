@@ -11,4 +11,10 @@ public class FryStation : Interactable
     {
         GameManager.Instance.BuyFries();
     }
+
+    public override string getDialogue()
+    {
+        return "buy fries";
+    }
 }
+

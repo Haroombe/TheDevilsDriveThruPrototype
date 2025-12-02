@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private Canvas gameCanvas;
     [SerializeField] private Canvas pauseCanvas;
+    [SerializeField] private OrderHistoryDisplay curOrderDisplayDebug;
 
     [Header("Inventory UI Elements")]
     [SerializeField] private TextMeshProUGUI MoneyAmountText;
@@ -50,7 +52,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshPro FriesOrderText;
     [SerializeField] private TextMeshPro SodaOrderText;
     [SerializeField] private TextMeshPro OrderPayout;
+    [SerializeField] private TextMeshPro OrderNumText;
 
+
+    public List<Order> orderHistory = new List<Order>();
 
     public void UpdateShiftUI(int shift)
     {
@@ -60,7 +65,7 @@ public class GameManager : MonoBehaviour
     public void UpdateOrderUI(int order)
     {
         if (OrderUITextField != null)
-            OrderUITextField.text = $"Shift: {order.ToString()}";
+            OrderUITextField.text = $"Order: {order.ToString()}";
     }
 
     public void UpdateOrderValuesUI(Order order)
@@ -73,6 +78,8 @@ public class GameManager : MonoBehaviour
             SodaOrderText.text = $"{order.sodaOrderAmount.ToString()}";
         if (OrderPayout != null)
             OrderPayout.text = $"${order.getPayout():F2}";
+        if (OrderNumText != null)
+            OrderNumText.text = $"Order #{OrderNum.ToString()}";
 
     }
 
@@ -235,7 +242,20 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            GameManager.Instance.ResetGame();
+            ResetGame();
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            FadingMessage.Instance.ShowMessage("This is a fading message ex!");
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            FadingMessage.Instance.ShowMessage("This is a fading message ex!", true);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            curOrderDisplayDebug.TogglePanel();
         }
 
     }
@@ -266,7 +286,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.OrderStart:
                                 // start order
-                Debug.Log("order start");
+                Debug.Log("order number "+ OrderNum.ToString() +" start");
                 CustomerManager.Instance.SpawnToMid();
                 currentOrder = CreateOrder();
                 UpdateOrderValuesUI(currentOrder);
@@ -275,13 +295,33 @@ public class GameManager : MonoBehaviour
                 // create order and display
                 break;
             case GameState.OrderFilled:
+                Debug.Log("order number " + OrderNum.ToString() + " filled during shift " + shiftNum.ToString());
+
                 OrderNum++;
                 totalOrdersCompleted++;
-                if (totalOrdersCompleted >= OrdersPerShift)
+                if (OrderNum >= OrdersPerShift+1)
                 {
-                    Debug.Log("shift over");
+                    Debug.Log("shift number " + shiftNum.ToString() + " over");
+                    shiftNum++;
+                    OrderNum = 1;
+                    addAmountF(ref playerMoney, flatProfitPerShift);
+
+                    UpdateOrderUI(OrderNum);
+                    UpdateShiftUI(shiftNum);
+                    FadingMessage.Instance.ShowCallout($"Starting Shift {shiftNum}", .9f, 1.9f);
+
                 }
-                Debug.Log("order filled");
+                else
+                {
+                    addAmountF(ref playerMoney, flatProfitPerOrder);
+
+                    Debug.Log("starting next order number " + OrderNum.ToString());
+                    UpdateOrderUI(OrderNum);
+                }
+                
+
+                GameLoop(GameState.OrderStart);
+
                 break; 
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
@@ -295,6 +335,8 @@ public class GameManager : MonoBehaviour
         totalShiftsCompleted = 0;
         shiftNum = 1;
         OrderNum = 1;
+        FadingMessage.Instance.ShowCallout($"Starting Shift {shiftNum}",.9f, 2f);
+
         UpdateShiftUI(shiftNum);
         UpdateOrderUI(OrderNum);
 
@@ -304,26 +346,7 @@ public class GameManager : MonoBehaviour
     { // add modifiers, shift, order randomizers, volume increases
         return new Order(burgers: 1, sodas: 1, fries: 1);
     }
-    // Example game state
-
-    // -- start shift
-    // initialize customer array, apply all relevant modifiers, iterate relevant varaibles
-
-    // -- per order
-    // spawn customer
-    // create order
-    // wait for fulfillment
-    //
-    // -- post order
-    // order level profits
-    // apply order level modifiers
-    // trigger next order or end shift
-    // 
-    // -- post shift
-    // reset customers
-    // apply shift modifiers
-    // shift level payout
-    // trigger next shift or end game
+    
 
     // --- UI Update Methods ---
     // ------------------------------
@@ -369,7 +392,7 @@ public class GameManager : MonoBehaviour
 
     private void initializePlayerItems()
     {
-
+        Debug.Log("Initializing player items");
 
         setAmountF(ref playerMoney, startingMoney);
         setAmount(ref playerSoda, startingSoda);
@@ -442,25 +465,28 @@ public class GameManager : MonoBehaviour
 
     // checks
     // has enough money to purchase x
-    public void FulfillOrder(Order curOrder)
+    public void FulfillOrder()
     {
-        if (!canFulfillOrder(curOrder))
+        if (!canFulfillOrder(currentOrder))
         {
-            Debug.Log("Cannot fulfill order - not enough inventory!"); // ui
+            FadingMessage.Instance.ShowMessage("Can't fill order!"); // ui
             return;
         }
 
         // Deduct inventory
-        minusAmount(ref playerBurgers, curOrder.burgerOrderAmount);
-        minusAmount(ref playerFries, curOrder.friesOrderAmount);
-        minusAmount(ref playerSoda, curOrder.sodaOrderAmount);
+        minusAmount(ref playerBurgers, currentOrder.burgerOrderAmount);
+        minusAmount(ref playerFries, currentOrder.friesOrderAmount);
+        minusAmount(ref playerSoda, currentOrder.sodaOrderAmount);
 
         // Add money
-        addAmountF(ref playerMoney, curOrder.getPayout());
+        addAmountF(ref playerMoney, currentOrder.getPayout());
 
-        // Update counters
-        totalOrdersCompleted++;
-        OrderNum++;
+        //fulfilled timestamp
+        currentOrder.FulfilledTime = elapsedTime;
+        currentOrder.CalculateFulfilledTimeString();
+        // Add to history
+
+        orderHistory.Add(currentOrder);
 
         // Update UI
         UpdateUI(BurgerAmountText, playerBurgers);
@@ -468,7 +494,10 @@ public class GameManager : MonoBehaviour
         UpdateUI(SodaAmountText, playerSoda);
         UpdateUIF(MoneyAmountText, playerMoney, "F2");
 
-        Debug.Log($"Order fulfilled! Earned ${curOrder.getPayout():F2}");
+        FadingMessage.Instance.ShowMessage($"Order #{OrderNum} filled! Earned +${currentOrder.getPayout():F2}", true,.6f ,2f); // ui
+
+        CustomerManager.Instance.ServeCustomer();
+        GameLoop(GameState.OrderFilled);
 
 
     }
@@ -493,11 +522,12 @@ public class GameManager : MonoBehaviour
             addAmount(ref playerInventory, 1);
             UpdateUIF(MoneyAmountText, playerMoney, "F2");
             UpdateUI(inventoryText, playerInventory);
-            Debug.Log($"Bought 1 {foodName}.");
+            FadingMessage.Instance.ShowMessage($"Bought 1 {foodName} for ${cost:F2}!", true);
+
         }
         else
         {
-            Debug.Log($"Not enough money to buy {foodName}.");
+            FadingMessage.Instance.ShowMessage($"Not enough money to buy {foodName}!");
         }
     }
 

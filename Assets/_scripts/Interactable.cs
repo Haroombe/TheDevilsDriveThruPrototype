@@ -4,4 +4,6 @@ public abstract class Interactable : MonoBehaviour
 {
     public abstract string InteractableName { get; }
     public abstract void Interact();
+
+    public abstract string getDialogue();
 }

@@ -11,4 +11,9 @@ public class GrillTop : Interactable
     {
         GameManager.Instance.BuyBurger();
     }
+
+    public override string getDialogue()
+    {
+        return "buy burgers";
+    }
 }

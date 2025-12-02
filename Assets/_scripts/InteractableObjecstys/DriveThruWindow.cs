@@ -11,6 +11,11 @@ public class DriveThruWindow : Interactable
     }
     public override void Interact()
     {
-        CustomerManager.Instance.ServeCustomer();   
+        GameManager.Instance.FulfillOrder();
+       
+    }
+    public override string getDialogue()
+    {
+        return "serve customer";
     }
 }

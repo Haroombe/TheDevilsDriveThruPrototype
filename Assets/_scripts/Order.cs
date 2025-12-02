@@ -8,6 +8,22 @@ public class Order
     public int friesOrderAmount;
     public int sodaOrderAmount;
     private float payout;
+    private float fulfilledTime = 0f;
+    private string fulfilledTimeString;
+
+    public float FulfilledTime
+    {
+        get
+        {
+            return fulfilledTime;
+        }
+        set
+        {
+            fulfilledTime = value;
+        }
+    }
+
+
 
     public Order(int burgers, int fries, int sodas)
     {
@@ -30,5 +46,21 @@ public class Order
     public float getPayout()
     {
         return payout;
+    }
+
+    public void CalculateFulfilledTimeString()
+    {
+        if (fulfilledTime == 0f)
+        {
+            return;
+        }
+        int minutes = Mathf.FloorToInt(fulfilledTime / 60f);
+        int seconds = Mathf.FloorToInt(fulfilledTime % 60f);
+        fulfilledTimeString = $"{minutes:00}:{seconds:00}";
+    }
+
+    public string getFulfilledTimeString()
+    {
+        return fulfilledTimeString;
     }
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+ using UnityEngine;
 
 public class PlayerInteractor : MonoBehaviour
 {
@@ -59,8 +59,8 @@ public class PlayerInteractor : MonoBehaviour
     private void SwitchFocus(Interactable newTarget)
     {
         ClearFocus();
-
-        ui.UpdatePromptUi($"Press 'E' to interact with {newTarget.name}");
+        string dialog_prompt = newTarget.getDialogue();
+        ui.UpdatePromptUi($"press 'e' to {dialog_prompt}");
 
         current = newTarget;
     }

@@ -11,5 +11,9 @@ public class SodaMachine : Interactable
     {
         GameManager.Instance.BuySoda();
     }
+    public override string getDialogue()
+    {
+        return "buy soda";
+    }
 }
 
