@@ -21,11 +21,14 @@ public class GameManager : MonoBehaviour
         OrderStart, // create order, display, wait for fulfillment
         OrderFilled, // payout, apply modifiers, next order or end shift, display feedback
         Reset, // trigger game reset
-        GameOver, // give up case (button pressed to giveup)
+        GameOverRestart, // give up case (button pressed to giveup)
     }
     [Header("UI Elements")]
     [SerializeField] private Canvas gameCanvas;
     [SerializeField] private Canvas pauseCanvas;
+    [SerializeField] private Canvas gameOverCanvas;
+
+
     [SerializeField] private OrderHistoryDisplay curOrderDisplayDebug;
 
     [Header("Inventory UI Elements")]
@@ -53,6 +56,30 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshPro SodaOrderText;
     [SerializeField] private TextMeshPro OrderPayout;
     [SerializeField] private TextMeshPro OrderNumText;
+
+    [Header("PromptPanels")]
+    [SerializeField] public GameObject GiveUpPanel;
+    [SerializeField] public GameObject GameOverPanel;
+    private bool isGiveUpPanelActive = false;
+    private bool isGameOverPanelActive = false;
+    public void SetPanelVisibility(GameObject panel, bool setActive)
+    {
+        gameOverCanvas.enabled = true;
+        if (setActive)
+        {
+            panel.SetActive(true);
+        }
+        else
+        {
+            panel.SetActive(false);
+        }
+    }
+    public void TogglePanel(GameObject panel)
+    {
+        SetPanelVisibility(panel, !panel.activeSelf);
+    }
+
+
 
 
     public List<Order> orderHistory = new List<Order>();
@@ -127,9 +154,7 @@ public class GameManager : MonoBehaviour
     private int totalShiftsCompleted= 0;
     // multipliers
     [Header("Multipliers")]
-    private int burgervolumeaddition = 1;
-    private int friesvolumeaddition = 1;
-    private int sodavolumeaddition = 1;
+
     [SerializeField] public int NumOrdersToPlayerEvent = 6; // modulo total orders to check
     [Header("player multiplier affectors")]
 
@@ -208,6 +233,12 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         ResumeGame();
+    }
+
+    private void Start()
+    {
+        AudioManager.Instance.PlayBGM(0); // Play main menu BGM
+
         GameLoop(GameState.Initializing);
     }
 
@@ -258,12 +289,23 @@ public class GameManager : MonoBehaviour
             curOrderDisplayDebug.TogglePanel();
         }
 
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            SetPanelVisibility(GiveUpPanel,true);
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SetPanelVisibility(GiveUpPanel, false);
+
+        }
+
+
     }
 
 
     // game loop
 
-    private void GameLoop(GameState state)
+    public void GameLoop(GameState state)
     {
         if (curGameState == state) return;
         curGameState = state;
@@ -279,6 +321,7 @@ public class GameManager : MonoBehaviour
                 initializePlayerItems();
                 UpdateAllInventoryUI();
                 InitializeFirstShiftOrder();
+                ResumeGame();
                 GameLoop(GameState.OrderStart);
 
 
@@ -322,7 +365,11 @@ public class GameManager : MonoBehaviour
 
                 GameLoop(GameState.OrderStart);
 
-                break; 
+                break;
+            case GameState.GameOverRestart:
+                ResetGame();
+
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
@@ -429,6 +476,7 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
+        Cursor.visible = true;
         isPaused = true;
         Time.timeScale = 0f;
         gameCanvas.enabled = false;
@@ -437,10 +485,17 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        Cursor.visible = false;
         isPaused = false;
         Time.timeScale = 1f;
         gameCanvas.enabled = true;
         pauseCanvas.enabled = false;
+        gameOverCanvas.enabled = false;
+        SetPanelVisibility(GiveUpPanel, false);
+        SetPanelVisibility(GameOverPanel, false);
+
+
+
     }
 
     public bool IsPaused()
@@ -470,6 +525,8 @@ public class GameManager : MonoBehaviour
         if (!canFulfillOrder(currentOrder))
         {
             FadingMessage.Instance.ShowMessage("Can't fill order!"); // ui
+            AudioManager.Instance.PlaySFX("No", playInstantly: true);
+
             return;
         }
 
@@ -535,7 +592,7 @@ public class GameManager : MonoBehaviour
     public void BuyBurger()
     {
         BuyFood(ref playerBurgers, burgerCost, BurgerAmountText, "burger");
-    }
+    } 
 
     public void BuyFries()
     {

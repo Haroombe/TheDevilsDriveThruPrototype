@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 using System;
-public class DriveThruWindow : Interactable
+public class ServeButton : Interactable
 {
     private string _name = "Drive Thru Window";
 
@@ -12,7 +12,7 @@ public class DriveThruWindow : Interactable
     public override void Interact()
     {
         GameManager.Instance.FulfillOrder();
-       
+
     }
     public override string getDialogue()
     {

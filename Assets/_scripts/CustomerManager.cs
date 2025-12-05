@@ -28,6 +28,24 @@ public class CustomerManager : MonoBehaviour
     {
         GameManager.Instance.ResetGameAction -= ResetCustomers;
     }
+    // Add these fields to your CustomerManager class
+
+    private float spazzCooldown = 0f;
+    private float spazzIntervalMin = 4f;
+    private float spazzIntervalMax = 8f;
+    private float spazzDuration = 0f;
+    private float maxSpazzDuration = 0.6f;
+    private bool isSpazzing = false;
+
+    // For jerky snaps during spazz
+    private float spazzSnapTimer = 0f;
+    private float spazzSnapIntervalMin = 0.05f; // Min hold time
+    private float spazzSnapIntervalMax = 0.1f; // Max hold time
+    private float currentSpazzRotationX = 0f;
+    private float currentSpazzRotationY = 0f;
+    private float currentSpazzRotationZ = 0f;
+    private float originalRotationX = 0f;
+    private float originalRotationZ = 0f;
 
     private void FixedUpdate()
     {
@@ -37,16 +55,68 @@ public class CustomerManager : MonoBehaviour
             {
                 return;
             }
-            // stare at player
-            Vector3 directionToPlayer = (Player.transform.position - currentCustomer.transform.position).normalized;
-            float targetYRotation = Mathf.Atan2(directionToPlayer.x, directionToPlayer.z) * Mathf.Rad2Deg;
-            float currentYRotation = currentCustomer.transform.eulerAngles.y;
-            float smoothedYRotation = Mathf.LerpAngle(currentYRotation, targetYRotation + rotationOffset, Time.fixedDeltaTime * smoothSpeed);
-            currentCustomer.transform.eulerAngles = new Vector3(
-                currentCustomer.transform.eulerAngles.x,
-                smoothedYRotation,
-                currentCustomer.transform.eulerAngles.z
-            );
+
+            //// Handle spazz timer
+            //spazzCooldown -= Time.fixedDeltaTime;
+            //if (spazzCooldown <= 0f)
+            //{
+            //    // Start spazzing and set next random interval
+            //    isSpazzing = true;
+            //    spazzDuration = maxSpazzDuration;
+            //    spazzCooldown = Random.Range(spazzIntervalMin, spazzIntervalMax);
+            //    spazzSnapTimer = 0f; // Reset snap timer
+            //                         // Store original rotations
+            //    originalRotationX = currentCustomer.transform.eulerAngles.x;
+            //    originalRotationZ = currentCustomer.transform.eulerAngles.z;
+            //}
+
+            //// Handle spazz rotation
+            //if (isSpazzing && spazzDuration > 0f)
+            //{
+            //    spazzDuration -= Time.fixedDeltaTime;
+            //    spazzSnapTimer -= Time.fixedDeltaTime;
+
+            //    // Snap to new random direction at intervals
+            //    if (spazzSnapTimer <= 0f)
+            //    {
+            //        currentSpazzRotationX = Random.Range(-15f, 15f);
+            //        currentSpazzRotationY = Random.Range(0f, 360f);
+            //        currentSpazzRotationZ = Random.Range(-15f, 15f);
+            //        spazzSnapTimer = Random.Range(spazzSnapIntervalMin, spazzSnapIntervalMax);
+            //    }
+
+            //    // Hold current direction
+            //    currentCustomer.transform.eulerAngles = new Vector3(
+            //        originalRotationX + currentSpazzRotationX,
+            //        currentSpazzRotationY,
+            //        originalRotationZ + currentSpazzRotationZ
+            //    );
+            //}
+            //else if (isSpazzing && spazzDuration <= 0f)
+            //{
+            //    // Spazz ended, return to normal
+            //    isSpazzing = false;
+            //    // Return to original X and Z
+            //    currentCustomer.transform.eulerAngles = new Vector3(
+            //        originalRotationX,
+            //        currentCustomer.transform.eulerAngles.y,
+            //        originalRotationZ
+            //    );
+            //}
+
+            // Normal behavior: stare at player
+            if (!isSpazzing)
+            {
+                Vector3 directionToPlayer = (Player.transform.position - currentCustomer.transform.position).normalized;
+                float targetYRotation = Mathf.Atan2(directionToPlayer.x, directionToPlayer.z) * Mathf.Rad2Deg;
+                float currentYRotation = currentCustomer.transform.eulerAngles.y;
+                float smoothedYRotation = Mathf.LerpAngle(currentYRotation, targetYRotation + rotationOffset, Time.fixedDeltaTime * smoothSpeed);
+                currentCustomer.transform.eulerAngles = new Vector3(
+                    currentCustomer.transform.eulerAngles.x,
+                    smoothedYRotation,
+                    currentCustomer.transform.eulerAngles.z
+                );
+            }
         }
     }
 

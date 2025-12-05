@@ -13,9 +13,6 @@ public class OrderHistoryDisplay : MonoBehaviour
     [Tooltip("The TMP Prefab for a single order entry (from Project folder).")]
     [SerializeField] private GameObject orderItemPrefab;
 
-    [Header("Controls")]
-    [Tooltip("Key to toggle the history panel.")]
-    [SerializeField] private KeyCode toggleKey = KeyCode.H; // Use H for History
 
     // NEW: Define the scale factor as a serialized field for easy adjustment
     [Header("Styling")]
