@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ComplexityTestApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33565fc0ab57566fbf9e00fde0e4ea3dfbea2dd7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f2e8b63f9cd2279467f22384f40dd616d6b3fc1a")]
 [assembly: System.Reflection.AssemblyProductAttribute("ComplexityTestApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ComplexityTestApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
