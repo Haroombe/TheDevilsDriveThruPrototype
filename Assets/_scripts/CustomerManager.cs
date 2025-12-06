@@ -30,22 +30,22 @@ public class CustomerManager : MonoBehaviour
     }
     // Add these fields to your CustomerManager class
 
-    private float spazzCooldown = 0f;
-    private float spazzIntervalMin = 4f;
-    private float spazzIntervalMax = 8f;
-    private float spazzDuration = 0f;
-    private float maxSpazzDuration = 0.6f;
+    //private float spazzCooldown = 0f;
+    //private float spazzIntervalMin = 4f;
+    //private float spazzIntervalMax = 8f;
+    //private float spazzDuration = 0f;
+    //private float maxSpazzDuration = 0.6f;
     private bool isSpazzing = false;
 
     // For jerky snaps during spazz
-    private float spazzSnapTimer = 0f;
-    private float spazzSnapIntervalMin = 0.05f; // Min hold time
-    private float spazzSnapIntervalMax = 0.1f; // Max hold time
-    private float currentSpazzRotationX = 0f;
-    private float currentSpazzRotationY = 0f;
-    private float currentSpazzRotationZ = 0f;
-    private float originalRotationX = 0f;
-    private float originalRotationZ = 0f;
+    //private float spazzSnapTimer = 0f;
+    //private float spazzSnapIntervalMin = 0.05f; // Min hold time
+    //private float spazzSnapIntervalMax = 0.1f; // Max hold time
+    //private float currentSpazzRotationX = 0f;
+    //private float currentSpazzRotationY = 0f;
+    //private float currentSpazzRotationZ = 0f;
+    //private float originalRotationX = 0f;
+    //private float originalRotationZ = 0f;
 
     private void FixedUpdate()
     {

@@ -1,3 +1,4 @@
+using Assets._scripts.OrderAlgorithm;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -13,6 +14,56 @@ public class GameManager : MonoBehaviour
 
     // init
     private int lastDisplayedSecond = -1;
+    [SerializeField] private bool useRandomSeedInit = false;
+    [SerializeField] private bool newSeedOnReset = false;
+    [SerializeField] private int fixedSeed = 1337;
+    private int gameSeed;
+    private bool isFirstRun = true;
+    public void SetGameSeed()
+    {
+        // 1. Determine if a new seed should be generated
+        bool shouldGenerateNewSeed;
+
+        if (isFirstRun)
+        {
+            // On initial game start (like loading a saved game), we only generate a new seed if the setting is ON.
+            shouldGenerateNewSeed = useRandomSeedInit;
+            isFirstRun = false;
+        } else if (!isFirstRun && newSeedOnReset) // assume gameseed has been set
+        {
+
+            shouldGenerateNewSeed = true;
+        }else if (!isFirstRun && !newSeedOnReset)
+        {
+            return;
+        }
+        else
+        {
+            Debug.LogWarning("Game seed edge case hit");
+            Debug.LogWarning($"isFirstRun: {isFirstRun}, newSeedOnReset: {newSeedOnReset}, useRandomSeedInit : {useRandomSeedInit}");
+            shouldGenerateNewSeed = false; // default fallback
+        }
+
+        // 2. Assign the Seed Value
+        if (shouldGenerateNewSeed)
+        {
+            // Generate a unique seed from system time
+            // TODO: replace with cryptographic random number generator for better randomness?
+            int newSeed = (int)DateTime.Now.Ticks;
+            if (newSeed < 0) newSeed = -newSeed;
+            gameSeed = newSeed;
+            Debug.Log($"GameManager: Generated new random seed: {gameSeed}");
+        }
+        else
+        {
+            // Use the fixed seed for repeatable testing
+            gameSeed = fixedSeed;
+            Debug.Log($"GameManager: Using fixed seed for run: {gameSeed}");
+        }
+        UpdateSeedNum(gameSeed);
+
+    }
+
     public enum GameState
     {
         Null,
@@ -49,6 +100,10 @@ public class GameManager : MonoBehaviour
     [Header("Round Tracking")]
     [SerializeField] private TextMeshProUGUI ShiftUITextField;
     [SerializeField] private TextMeshProUGUI OrderUITextField;
+    
+    [Header("Metadata")]
+    [SerializeField] private TextMeshProUGUI SeedNumTextField;
+
 
     [Header("Order UI")]
     [SerializeField] private TextMeshPro BurgerOrderText;
@@ -60,8 +115,6 @@ public class GameManager : MonoBehaviour
     [Header("PromptPanels")]
     [SerializeField] public GameObject GiveUpPanel;
     [SerializeField] public GameObject GameOverPanel;
-    private bool isGiveUpPanelActive = false;
-    private bool isGameOverPanelActive = false;
     public void SetPanelVisibility(GameObject panel, bool setActive)
     {
         gameOverCanvas.enabled = true;
@@ -94,6 +147,11 @@ public class GameManager : MonoBehaviour
         if (OrderUITextField != null)
             OrderUITextField.text = $"Order: {order.ToString()}";
     }
+    public void UpdateSeedNum(int seed)
+    {
+        if (SeedNumTextField != null)
+            SeedNumTextField.text = $"Seed: {seed.ToString()}";
+    }
 
     public void UpdateOrderValuesUI(Order order)
     {
@@ -119,6 +177,8 @@ public class GameManager : MonoBehaviour
     private int shiftNum = 1;
     public int OrdersPerShift = 7;
     private int OrderNum = 1;
+    private int TotalOrderNum = 1;
+
     private GameState curGameState;
 
     // game variables
@@ -150,12 +210,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] public float startingflatProfitPerShift = 0f;
 
     // round trackers
-    private int totalOrdersCompleted = 0;
-    private int totalShiftsCompleted= 0;
     // multipliers
     [Header("Multipliers")]
 
-    [SerializeField] public int NumOrdersToPlayerEvent = 6; // modulo total orders to check
+    //[SerializeField] public int NumOrdersToPlayerEvent = 6; // modulo total orders to check
     [Header("player multiplier affectors")]
 
     public float burgerCost;
@@ -238,6 +296,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         AudioManager.Instance.PlayBGM(0); // Play main menu BGM
+        SetGameSeed(); // add ui update seed number
+        OrderManager.Instance.SetSeed(gameSeed);
 
         GameLoop(GameState.Initializing);
     }
@@ -317,6 +377,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("initializing");
                 currentOrder=null;
 
+
                 initRates();
                 initializePlayerItems();
                 UpdateAllInventoryUI();
@@ -341,7 +402,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("order number " + OrderNum.ToString() + " filled during shift " + shiftNum.ToString());
 
                 OrderNum++;
-                totalOrdersCompleted++;
+                TotalOrderNum++;
                 if (OrderNum >= OrdersPerShift+1)
                 {
                     Debug.Log("shift number " + shiftNum.ToString() + " over");
@@ -378,8 +439,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeFirstShiftOrder()
     {
-        totalOrdersCompleted = 0;
-        totalShiftsCompleted = 0;
+        TotalOrderNum = 1;
         shiftNum = 1;
         OrderNum = 1;
         FadingMessage.Instance.ShowCallout($"Starting Shift {shiftNum}",.9f, 2f);
@@ -391,7 +451,8 @@ public class GameManager : MonoBehaviour
 
     private Order CreateOrder()
     { // add modifiers, shift, order randomizers, volume increases
-        return new Order(burgers: 1, sodas: 1, fries: 1);
+        //return new Order(burgers: 1, sodas: 1, fries: 1);
+        return OrderManager.Instance.generateOrder(TotalOrderNum, OrdersPerShift);
     }
     
 
@@ -506,6 +567,9 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         //Debug.Log("GameManager ResetGame called");
+        SetGameSeed();
+        OrderManager.Instance.ResetGenerator(gameSeed);
+
         curGameState = GameState.Null;
         ResetGameAction?.Invoke();
         isPaused = false;
