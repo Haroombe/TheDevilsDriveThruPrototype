@@ -1,0 +1,1837 @@
+{
+  "Metadata": {
+    "Description": "Stochastic Order Volume Simulation Output (Level 1 \u002B Level 2)",
+    "GeneratedOn": "2025-12-05 21:43:11",
+    "OrdersPerShift_X": "10",
+    "GameSeed": "1338",
+    "V_base": "3.20",
+    "Alpha": "4.80",
+    "Gamma_Divisor": "2.60",
+    "Beta_IntraShift": "0.60",
+    "Standard_deviation_mean_percent": "0.05"
+  },
+  "ComplexitiesByShift": {
+    "1": [
+      3,
+      3,
+      4,
+      4,
+      4,
+      5,
+      5,
+      6,
+      7,
+      7
+    ],
+    "2": [
+      13,
+      14,
+      13,
+      15,
+      15,
+      16,
+      17,
+      19,
+      18,
+      21
+    ],
+    "3": [
+      33,
+      36,
+      34,
+      34,
+      35,
+      41,
+      38,
+      40,
+      42,
+      41
+    ],
+    "4": [
+      74,
+      74,
+      68,
+      76,
+      79,
+      74,
+      75,
+      74,
+      79,
+      86
+    ],
+    "5": [
+      141,
+      131,
+      129,
+      124,
+      132,
+      149,
+      129,
+      147,
+      165,
+      150
+    ],
+    "6": [
+      254,
+      238,
+      268,
+      267,
+      255,
+      261,
+      265,
+      278,
+      271,
+      270
+    ],
+    "7": [
+      425,
+      431,
+      429,
+      448,
+      448,
+      459,
+      459,
+      468,
+      477,
+      470
+    ],
+    "8": [
+      709,
+      726,
+      745,
+      713,
+      744,
+      735,
+      745,
+      821,
+      761,
+      735
+    ],
+    "9": [
+      1281,
+      1310,
+      1236,
+      1264,
+      1291,
+      1249,
+      1256,
+      1222,
+      1303,
+      1391
+    ],
+    "10": [
+      2072,
+      2059,
+      2086,
+      1813,
+      2000,
+      2067,
+      2102,
+      2208,
+      2037,
+      2227
+    ]
+  },
+  "DetailedOrderBreakdown": [
+    {
+      "OrderNumberN": 1,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 3.2423086,
+      "StochasticResults": {
+        "SigmaCalculated": 0.16211544,
+        "VolumeRaw": 3.1034858,
+        "VolumeFinal": 3
+      }
+    },
+    {
+      "OrderNumberN": 2,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 3.3692346,
+      "StochasticResults": {
+        "SigmaCalculated": 0.16846173,
+        "VolumeRaw": 3.3469408,
+        "VolumeFinal": 3
+      }
+    },
+    {
+      "OrderNumberN": 3,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 3.5807776,
+      "StochasticResults": {
+        "SigmaCalculated": 0.17903888,
+        "VolumeRaw": 3.7097611,
+        "VolumeFinal": 4
+      }
+    },
+    {
+      "OrderNumberN": 4,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 3.8769379,
+      "StochasticResults": {
+        "SigmaCalculated": 0.1938469,
+        "VolumeRaw": 4.0634394,
+        "VolumeFinal": 4
+      }
+    },
+    {
+      "OrderNumberN": 5,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 4.2577157,
+      "StochasticResults": {
+        "SigmaCalculated": 0.21288578,
+        "VolumeRaw": 4.4748235,
+        "VolumeFinal": 4
+      }
+    },
+    {
+      "OrderNumberN": 6,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 4.72311,
+      "StochasticResults": {
+        "SigmaCalculated": 0.23615551,
+        "VolumeRaw": 4.697893,
+        "VolumeFinal": 5
+      }
+    },
+    {
+      "OrderNumberN": 7,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 5.2731223,
+      "StochasticResults": {
+        "SigmaCalculated": 0.2636561,
+        "VolumeRaw": 5.396133,
+        "VolumeFinal": 5
+      }
+    },
+    {
+      "OrderNumberN": 8,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 5.907752,
+      "StochasticResults": {
+        "SigmaCalculated": 0.2953876,
+        "VolumeRaw": 6.1921816,
+        "VolumeFinal": 6
+      }
+    },
+    {
+      "OrderNumberN": 9,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 6.626998,
+      "StochasticResults": {
+        "SigmaCalculated": 0.3313499,
+        "VolumeRaw": 6.721408,
+        "VolumeFinal": 7
+      }
+    },
+    {
+      "OrderNumberN": 10,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 1,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 0,
+      "ExponentialMultiplier": 1.4690492,
+      "MeanVolumeMu": 7.4308624,
+      "StochasticResults": {
+        "SigmaCalculated": 0.37154314,
+        "VolumeRaw": 6.943871,
+        "VolumeFinal": 7
+      }
+    },
+    {
+      "OrderNumberN": 11,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 13.62106,
+      "StochasticResults": {
+        "SigmaCalculated": 0.68105304,
+        "VolumeRaw": 13.041694,
+        "VolumeFinal": 13
+      }
+    },
+    {
+      "OrderNumberN": 12,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 13.807521,
+      "StochasticResults": {
+        "SigmaCalculated": 0.69037604,
+        "VolumeRaw": 13.714973,
+        "VolumeFinal": 14
+      }
+    },
+    {
+      "OrderNumberN": 13,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 14.118288,
+      "StochasticResults": {
+        "SigmaCalculated": 0.70591444,
+        "VolumeRaw": 13.300635,
+        "VolumeFinal": 13
+      }
+    },
+    {
+      "OrderNumberN": 14,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 14.553363,
+      "StochasticResults": {
+        "SigmaCalculated": 0.72766817,
+        "VolumeRaw": 15.158617,
+        "VolumeFinal": 15
+      }
+    },
+    {
+      "OrderNumberN": 15,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 15.112743,
+      "StochasticResults": {
+        "SigmaCalculated": 0.75563717,
+        "VolumeRaw": 15.424711,
+        "VolumeFinal": 15
+      }
+    },
+    {
+      "OrderNumberN": 16,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 15.796431,
+      "StochasticResults": {
+        "SigmaCalculated": 0.78982157,
+        "VolumeRaw": 16.076687,
+        "VolumeFinal": 16
+      }
+    },
+    {
+      "OrderNumberN": 17,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 16.604425,
+      "StochasticResults": {
+        "SigmaCalculated": 0.8302213,
+        "VolumeRaw": 16.760134,
+        "VolumeFinal": 17
+      }
+    },
+    {
+      "OrderNumberN": 18,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 17.536728,
+      "StochasticResults": {
+        "SigmaCalculated": 0.8768364,
+        "VolumeRaw": 19.226048,
+        "VolumeFinal": 19
+      }
+    },
+    {
+      "OrderNumberN": 19,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 18.593336,
+      "StochasticResults": {
+        "SigmaCalculated": 0.9296668,
+        "VolumeRaw": 17.721958,
+        "VolumeFinal": 18
+      }
+    },
+    {
+      "OrderNumberN": 20,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 2,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 4.8,
+      "ExponentialMultiplier": 2.1581056,
+      "MeanVolumeMu": 19.774252,
+      "StochasticResults": {
+        "SigmaCalculated": 0.9887126,
+        "VolumeRaw": 20.788439,
+        "VolumeFinal": 21
+      }
+    },
+    {
+      "OrderNumberN": 21,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 33.726795,
+      "StochasticResults": {
+        "SigmaCalculated": 1.6863397,
+        "VolumeRaw": 32.850693,
+        "VolumeFinal": 33
+      }
+    },
+    {
+      "OrderNumberN": 22,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 34.000717,
+      "StochasticResults": {
+        "SigmaCalculated": 1.7000359,
+        "VolumeRaw": 36.276756,
+        "VolumeFinal": 36
+      }
+    },
+    {
+      "OrderNumberN": 23,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 34.45725,
+      "StochasticResults": {
+        "SigmaCalculated": 1.7228625,
+        "VolumeRaw": 33.5937,
+        "VolumeFinal": 34
+      }
+    },
+    {
+      "OrderNumberN": 24,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 35.096394,
+      "StochasticResults": {
+        "SigmaCalculated": 1.7548198,
+        "VolumeRaw": 34.000824,
+        "VolumeFinal": 34
+      }
+    },
+    {
+      "OrderNumberN": 25,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 35.91815,
+      "StochasticResults": {
+        "SigmaCalculated": 1.7959076,
+        "VolumeRaw": 34.52319,
+        "VolumeFinal": 35
+      }
+    },
+    {
+      "OrderNumberN": 26,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 36.922523,
+      "StochasticResults": {
+        "SigmaCalculated": 1.8461262,
+        "VolumeRaw": 40.56803,
+        "VolumeFinal": 41
+      }
+    },
+    {
+      "OrderNumberN": 27,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 38.109505,
+      "StochasticResults": {
+        "SigmaCalculated": 1.9054753,
+        "VolumeRaw": 37.930496,
+        "VolumeFinal": 38
+      }
+    },
+    {
+      "OrderNumberN": 28,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 39.479107,
+      "StochasticResults": {
+        "SigmaCalculated": 1.9739554,
+        "VolumeRaw": 40.11806,
+        "VolumeFinal": 40
+      }
+    },
+    {
+      "OrderNumberN": 29,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 41.031315,
+      "StochasticResults": {
+        "SigmaCalculated": 2.051566,
+        "VolumeRaw": 41.622936,
+        "VolumeFinal": 42
+      }
+    },
+    {
+      "OrderNumberN": 30,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 3,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 9.6,
+      "ExponentialMultiplier": 3.1703634,
+      "MeanVolumeMu": 42.766136,
+      "StochasticResults": {
+        "SigmaCalculated": 2.1383069,
+        "VolumeRaw": 41.047855,
+        "VolumeFinal": 41
+      }
+    },
+    {
+      "OrderNumberN": 31,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 70.40098,
+      "StochasticResults": {
+        "SigmaCalculated": 3.5200489,
+        "VolumeRaw": 74.37254,
+        "VolumeFinal": 74
+      }
+    },
+    {
+      "OrderNumberN": 32,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 70.803375,
+      "StochasticResults": {
+        "SigmaCalculated": 3.5401688,
+        "VolumeRaw": 74.409424,
+        "VolumeFinal": 74
+      }
+    },
+    {
+      "OrderNumberN": 33,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 71.474045,
+      "StochasticResults": {
+        "SigmaCalculated": 3.5737023,
+        "VolumeRaw": 68.06197,
+        "VolumeFinal": 68
+      }
+    },
+    {
+      "OrderNumberN": 34,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 72.41298,
+      "StochasticResults": {
+        "SigmaCalculated": 3.620649,
+        "VolumeRaw": 75.553375,
+        "VolumeFinal": 76
+      }
+    },
+    {
+      "OrderNumberN": 35,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 73.620186,
+      "StochasticResults": {
+        "SigmaCalculated": 3.6810093,
+        "VolumeRaw": 79.316246,
+        "VolumeFinal": 79
+      }
+    },
+    {
+      "OrderNumberN": 36,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 75.09566,
+      "StochasticResults": {
+        "SigmaCalculated": 3.754783,
+        "VolumeRaw": 73.697685,
+        "VolumeFinal": 74
+      }
+    },
+    {
+      "OrderNumberN": 37,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 76.83939,
+      "StochasticResults": {
+        "SigmaCalculated": 3.8419697,
+        "VolumeRaw": 75.33743,
+        "VolumeFinal": 75
+      }
+    },
+    {
+      "OrderNumberN": 38,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 78.851395,
+      "StochasticResults": {
+        "SigmaCalculated": 3.9425697,
+        "VolumeRaw": 73.73828,
+        "VolumeFinal": 74
+      }
+    },
+    {
+      "OrderNumberN": 39,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 81.13167,
+      "StochasticResults": {
+        "SigmaCalculated": 4.0565834,
+        "VolumeRaw": 79.317406,
+        "VolumeFinal": 79
+      }
+    },
+    {
+      "OrderNumberN": 40,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 4,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 14.400001,
+      "ExponentialMultiplier": 4.6574197,
+      "MeanVolumeMu": 83.680214,
+      "StochasticResults": {
+        "SigmaCalculated": 4.184011,
+        "VolumeRaw": 85.68272,
+        "VolumeFinal": 86
+      }
+    },
+    {
+      "OrderNumberN": 41,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 134.76305,
+      "StochasticResults": {
+        "SigmaCalculated": 6.7381525,
+        "VolumeRaw": 140.55354,
+        "VolumeFinal": 141
+      }
+    },
+    {
+      "OrderNumberN": 42,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 135.3542,
+      "StochasticResults": {
+        "SigmaCalculated": 6.76771,
+        "VolumeRaw": 130.72185,
+        "VolumeFinal": 131
+      }
+    },
+    {
+      "OrderNumberN": 43,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 136.33943,
+      "StochasticResults": {
+        "SigmaCalculated": 6.816972,
+        "VolumeRaw": 128.67258,
+        "VolumeFinal": 129
+      }
+    },
+    {
+      "OrderNumberN": 44,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 137.71878,
+      "StochasticResults": {
+        "SigmaCalculated": 6.885939,
+        "VolumeRaw": 123.859924,
+        "VolumeFinal": 124
+      }
+    },
+    {
+      "OrderNumberN": 45,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 139.49222,
+      "StochasticResults": {
+        "SigmaCalculated": 6.974611,
+        "VolumeRaw": 132.21053,
+        "VolumeFinal": 132
+      }
+    },
+    {
+      "OrderNumberN": 46,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 141.65976,
+      "StochasticResults": {
+        "SigmaCalculated": 7.0829883,
+        "VolumeRaw": 149.03636,
+        "VolumeFinal": 149
+      }
+    },
+    {
+      "OrderNumberN": 47,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 144.22139,
+      "StochasticResults": {
+        "SigmaCalculated": 7.2110696,
+        "VolumeRaw": 128.76375,
+        "VolumeFinal": 129
+      }
+    },
+    {
+      "OrderNumberN": 48,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 147.17714,
+      "StochasticResults": {
+        "SigmaCalculated": 7.358857,
+        "VolumeRaw": 147.19035,
+        "VolumeFinal": 147
+      }
+    },
+    {
+      "OrderNumberN": 49,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 150.52696,
+      "StochasticResults": {
+        "SigmaCalculated": 7.526348,
+        "VolumeRaw": 165.12857,
+        "VolumeFinal": 165
+      }
+    },
+    {
+      "OrderNumberN": 50,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 5,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 19.2,
+      "ExponentialMultiplier": 6.841979,
+      "MeanVolumeMu": 154.2709,
+      "StochasticResults": {
+        "SigmaCalculated": 7.7135453,
+        "VolumeRaw": 149.74796,
+        "VolumeFinal": 150
+      }
+    },
+    {
+      "OrderNumberN": 51,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 244.71835,
+      "StochasticResults": {
+        "SigmaCalculated": 12.235918,
+        "VolumeRaw": 253.92357,
+        "VolumeFinal": 254
+      }
+    },
+    {
+      "OrderNumberN": 52,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 245.58679,
+      "StochasticResults": {
+        "SigmaCalculated": 12.27934,
+        "VolumeRaw": 238.03561,
+        "VolumeFinal": 238
+      }
+    },
+    {
+      "OrderNumberN": 53,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 247.03415,
+      "StochasticResults": {
+        "SigmaCalculated": 12.351707,
+        "VolumeRaw": 268.3075,
+        "VolumeFinal": 268
+      }
+    },
+    {
+      "OrderNumberN": 54,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 249.06049,
+      "StochasticResults": {
+        "SigmaCalculated": 12.453025,
+        "VolumeRaw": 266.8565,
+        "VolumeFinal": 267
+      }
+    },
+    {
+      "OrderNumberN": 55,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 251.66574,
+      "StochasticResults": {
+        "SigmaCalculated": 12.583287,
+        "VolumeRaw": 255.44002,
+        "VolumeFinal": 255
+      }
+    },
+    {
+      "OrderNumberN": 56,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 254.84998,
+      "StochasticResults": {
+        "SigmaCalculated": 12.742499,
+        "VolumeRaw": 260.84277,
+        "VolumeFinal": 261
+      }
+    },
+    {
+      "OrderNumberN": 57,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 258.61316,
+      "StochasticResults": {
+        "SigmaCalculated": 12.930658,
+        "VolumeRaw": 264.82465,
+        "VolumeFinal": 265
+      }
+    },
+    {
+      "OrderNumberN": 58,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 262.9553,
+      "StochasticResults": {
+        "SigmaCalculated": 13.147765,
+        "VolumeRaw": 278.3183,
+        "VolumeFinal": 278
+      }
+    },
+    {
+      "OrderNumberN": 59,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 267.87634,
+      "StochasticResults": {
+        "SigmaCalculated": 13.393817,
+        "VolumeRaw": 271.02515,
+        "VolumeFinal": 271
+      }
+    },
+    {
+      "OrderNumberN": 60,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 6,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 24,
+      "ExponentialMultiplier": 10.051204,
+      "MeanVolumeMu": 273.37637,
+      "StochasticResults": {
+        "SigmaCalculated": 13.668818,
+        "VolumeRaw": 269.86505,
+        "VolumeFinal": 270
+      }
+    },
+    {
+      "OrderNumberN": 61,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 428.8778,
+      "StochasticResults": {
+        "SigmaCalculated": 21.443892,
+        "VolumeRaw": 424.56973,
+        "VolumeFinal": 425
+      }
+    },
+    {
+      "OrderNumberN": 62,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 430.15356,
+      "StochasticResults": {
+        "SigmaCalculated": 21.507679,
+        "VolumeRaw": 431.1447,
+        "VolumeFinal": 431
+      }
+    },
+    {
+      "OrderNumberN": 63,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 432.27982,
+      "StochasticResults": {
+        "SigmaCalculated": 21.61399,
+        "VolumeRaw": 428.8917,
+        "VolumeFinal": 429
+      }
+    },
+    {
+      "OrderNumberN": 64,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 435.2566,
+      "StochasticResults": {
+        "SigmaCalculated": 21.76283,
+        "VolumeRaw": 447.89996,
+        "VolumeFinal": 448
+      }
+    },
+    {
+      "OrderNumberN": 65,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 439.08386,
+      "StochasticResults": {
+        "SigmaCalculated": 21.954193,
+        "VolumeRaw": 447.57834,
+        "VolumeFinal": 448
+      }
+    },
+    {
+      "OrderNumberN": 66,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 443.76166,
+      "StochasticResults": {
+        "SigmaCalculated": 22.188084,
+        "VolumeRaw": 459.37427,
+        "VolumeFinal": 459
+      }
+    },
+    {
+      "OrderNumberN": 67,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 449.28992,
+      "StochasticResults": {
+        "SigmaCalculated": 22.464497,
+        "VolumeRaw": 459.1052,
+        "VolumeFinal": 459
+      }
+    },
+    {
+      "OrderNumberN": 68,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 455.66873,
+      "StochasticResults": {
+        "SigmaCalculated": 22.783438,
+        "VolumeRaw": 467.7507,
+        "VolumeFinal": 468
+      }
+    },
+    {
+      "OrderNumberN": 69,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 462.898,
+      "StochasticResults": {
+        "SigmaCalculated": 23.144901,
+        "VolumeRaw": 477.3145,
+        "VolumeFinal": 477
+      }
+    },
+    {
+      "OrderNumberN": 70,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 7,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 28.800001,
+      "ExponentialMultiplier": 14.765713,
+      "MeanVolumeMu": 470.97778,
+      "StochasticResults": {
+        "SigmaCalculated": 23.54889,
+        "VolumeRaw": 469.51428,
+        "VolumeFinal": 470
+      }
+    },
+    {
+      "OrderNumberN": 71,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 732.6612,
+      "StochasticResults": {
+        "SigmaCalculated": 36.63306,
+        "VolumeRaw": 708.65576,
+        "VolumeFinal": 709
+      }
+    },
+    {
+      "OrderNumberN": 72,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 734.5353,
+      "StochasticResults": {
+        "SigmaCalculated": 36.726765,
+        "VolumeRaw": 725.6222,
+        "VolumeFinal": 726
+      }
+    },
+    {
+      "OrderNumberN": 73,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 737.65894,
+      "StochasticResults": {
+        "SigmaCalculated": 36.882946,
+        "VolumeRaw": 745.06586,
+        "VolumeFinal": 745
+      }
+    },
+    {
+      "OrderNumberN": 74,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 742.0319,
+      "StochasticResults": {
+        "SigmaCalculated": 37.101597,
+        "VolumeRaw": 712.6466,
+        "VolumeFinal": 713
+      }
+    },
+    {
+      "OrderNumberN": 75,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 747.65436,
+      "StochasticResults": {
+        "SigmaCalculated": 37.382717,
+        "VolumeRaw": 744.2822,
+        "VolumeFinal": 744
+      }
+    },
+    {
+      "OrderNumberN": 76,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 754.52625,
+      "StochasticResults": {
+        "SigmaCalculated": 37.726315,
+        "VolumeRaw": 735.1934,
+        "VolumeFinal": 735
+      }
+    },
+    {
+      "OrderNumberN": 77,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 762.6476,
+      "StochasticResults": {
+        "SigmaCalculated": 38.13238,
+        "VolumeRaw": 744.9266,
+        "VolumeFinal": 745
+      }
+    },
+    {
+      "OrderNumberN": 78,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 772.0183,
+      "StochasticResults": {
+        "SigmaCalculated": 38.600918,
+        "VolumeRaw": 820.80005,
+        "VolumeFinal": 821
+      }
+    },
+    {
+      "OrderNumberN": 79,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 782.6385,
+      "StochasticResults": {
+        "SigmaCalculated": 39.131924,
+        "VolumeRaw": 761.0458,
+        "VolumeFinal": 761
+      }
+    },
+    {
+      "OrderNumberN": 80,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 8,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 33.600002,
+      "ExponentialMultiplier": 21.691559,
+      "MeanVolumeMu": 794.5082,
+      "StochasticResults": {
+        "SigmaCalculated": 39.72541,
+        "VolumeRaw": 735.4528,
+        "VolumeFinal": 735
+      }
+    },
+    {
+      "OrderNumberN": 81,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1227.7709,
+      "StochasticResults": {
+        "SigmaCalculated": 61.388546,
+        "VolumeRaw": 1280.9196,
+        "VolumeFinal": 1281
+      }
+    },
+    {
+      "OrderNumberN": 82,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1230.524,
+      "StochasticResults": {
+        "SigmaCalculated": 61.526203,
+        "VolumeRaw": 1310.3339,
+        "VolumeFinal": 1310
+      }
+    },
+    {
+      "OrderNumberN": 83,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1235.1128,
+      "StochasticResults": {
+        "SigmaCalculated": 61.755642,
+        "VolumeRaw": 1235.7561,
+        "VolumeFinal": 1236
+      }
+    },
+    {
+      "OrderNumberN": 84,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1241.537,
+      "StochasticResults": {
+        "SigmaCalculated": 62.07685,
+        "VolumeRaw": 1263.5618,
+        "VolumeFinal": 1264
+      }
+    },
+    {
+      "OrderNumberN": 85,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1249.7966,
+      "StochasticResults": {
+        "SigmaCalculated": 62.489834,
+        "VolumeRaw": 1291.0548,
+        "VolumeFinal": 1291
+      }
+    },
+    {
+      "OrderNumberN": 86,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1259.8917,
+      "StochasticResults": {
+        "SigmaCalculated": 62.994587,
+        "VolumeRaw": 1249.1589,
+        "VolumeFinal": 1249
+      }
+    },
+    {
+      "OrderNumberN": 87,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1271.8224,
+      "StochasticResults": {
+        "SigmaCalculated": 63.59112,
+        "VolumeRaw": 1256.4352,
+        "VolumeFinal": 1256
+      }
+    },
+    {
+      "OrderNumberN": 88,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1285.5885,
+      "StochasticResults": {
+        "SigmaCalculated": 64.27943,
+        "VolumeRaw": 1221.581,
+        "VolumeFinal": 1222
+      }
+    },
+    {
+      "OrderNumberN": 89,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1301.1901,
+      "StochasticResults": {
+        "SigmaCalculated": 65.0595,
+        "VolumeRaw": 1303.148,
+        "VolumeFinal": 1303
+      }
+    },
+    {
+      "OrderNumberN": 90,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 9,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 38.4,
+      "ExponentialMultiplier": 31.865967,
+      "MeanVolumeMu": 1318.6272,
+      "StochasticResults": {
+        "SigmaCalculated": 65.93136,
+        "VolumeRaw": 1390.5287,
+        "VolumeFinal": 1391
+      }
+    },
+    {
+      "OrderNumberN": 91,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 1,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.028800003,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2026.8558,
+      "StochasticResults": {
+        "SigmaCalculated": 101.3428,
+        "VolumeRaw": 2071.8445,
+        "VolumeFinal": 2072
+      }
+    },
+    {
+      "OrderNumberN": 92,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 2,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.11520001,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2030.9004,
+      "StochasticResults": {
+        "SigmaCalculated": 101.54502,
+        "VolumeRaw": 2058.9395,
+        "VolumeFinal": 2059
+      }
+    },
+    {
+      "OrderNumberN": 93,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 3,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.2592,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2037.6415,
+      "StochasticResults": {
+        "SigmaCalculated": 101.88207,
+        "VolumeRaw": 2085.9607,
+        "VolumeFinal": 2086
+      }
+    },
+    {
+      "OrderNumberN": 94,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 4,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.46080005,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2047.0789,
+      "StochasticResults": {
+        "SigmaCalculated": 102.35394,
+        "VolumeRaw": 1812.8892,
+        "VolumeFinal": 1813
+      }
+    },
+    {
+      "OrderNumberN": 95,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 5,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 0.72,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2059.2126,
+      "StochasticResults": {
+        "SigmaCalculated": 102.96063,
+        "VolumeRaw": 2000.2744,
+        "VolumeFinal": 2000
+      }
+    },
+    {
+      "OrderNumberN": 96,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 6,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.0368,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2074.043,
+      "StochasticResults": {
+        "SigmaCalculated": 103.70215,
+        "VolumeRaw": 2067.4226,
+        "VolumeFinal": 2067
+      }
+    },
+    {
+      "OrderNumberN": 97,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 7,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.4112,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2091.5696,
+      "StochasticResults": {
+        "SigmaCalculated": 104.57848,
+        "VolumeRaw": 2102.367,
+        "VolumeFinal": 2102
+      }
+    },
+    {
+      "OrderNumberN": 98,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 8,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 1.8432002,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2111.7927,
+      "StochasticResults": {
+        "SigmaCalculated": 105.58964,
+        "VolumeRaw": 2207.8354,
+        "VolumeFinal": 2208
+      }
+    },
+    {
+      "OrderNumberN": 99,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 9,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.3328,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2134.7122,
+      "StochasticResults": {
+        "SigmaCalculated": 106.73561,
+        "VolumeRaw": 2037.0337,
+        "VolumeFinal": 2037
+      }
+    },
+    {
+      "OrderNumberN": 100,
+      "OrdersPerShift": 10,
+      "ShiftNumberS": 10,
+      "LocalOrderO": 10,
+      "BetaIntraShiftCoefficient": 0.6,
+      "AlphaLinearCoefficient": 4.8,
+      "QuadraticTerm": 2.88,
+      "LinearTerm": 43.2,
+      "ExponentialMultiplier": 46.812675,
+      "MeanVolumeMu": 2160.3281,
+      "StochasticResults": {
+        "SigmaCalculated": 108.01641,
+        "VolumeRaw": 2227.1768,
+        "VolumeFinal": 2227
+      }
+    }
+  ]
+}
