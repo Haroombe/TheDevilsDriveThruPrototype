@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using static Assets._scripts.OrderAlgorithm.OrderManager;
 
 // The System.Text.Json using statement is now only relevant if you choose to serialize later, 
 // but it is harmless to leave it, so I've kept it.
@@ -15,6 +16,17 @@ public enum RandomnessType
     Uniform
 }
 
+public class RunLogData
+{
+    // Holds the static parameters captured at the start of the run (e.g., K, BaseComplexity)
+    public Dictionary<string, object> Metadata { get; set; } = new Dictionary<string, object>();
+
+    // Holds the ComplexityResult for every single order generated in this run
+    public List<ComplexityResult> DetailedOrderBreakdown { get; set; } = new List<ComplexityResult>();
+
+    // You can add your ComplexitiesByShift summary here later if needed:
+    // public Dictionary<int, List<Dictionary<string, object>>> ComplexitiesByShift { get; set; } 
+}
 public class AllocationRule
 {
     public string ItemName { get; set; }
@@ -45,6 +57,45 @@ public class VolumeCalculationResult
     public float VolumeRaw { get; set; }
     public int VolumeFinal { get; set; }
 }
+// ------------------------------------------------------------------
+// REQUIRED COMPANION STRUCTURES FOR LOGGING
+// (Place these outside the OrderManager class)
+// ------------------------------------------------------------------
+
+/// <summary>
+/// Structure to hold the data for a single complete run (Game Session).
+/// </summary>
+
+
+/// <summary>
+/// Economic data snapshot captured for a specific order.
+/// </summary>
+
+public struct EconomicSnapshot
+{
+    // Static unit values
+    public float BurgerCost;
+    public float BurgerPrice;
+    public float FriesCost;
+    public float FriesPrice;
+    public float SodaCost;
+    public float SodaPrice;
+    public int ClampedShiftNumber { get; set; }
+    public float RunDifficultyMultiplier { get; set; }
+    public float DifficultyCurveValue { get; set; }
+    public float PriceMultiplier { get; set; }
+    public float EffectiveCostRatio { get; set; }
+    // **NEW DYNAMIC DERIVED VALUES**
+    public float BurgerMargin; // Price - Cost
+    public float FriesMargin;
+    public float SodaMargin;
+
+}
+
+
+// NOTE: You must update ComplexityResult.cs to include the EconomicSnapshot:
+// public class ComplexityResult { ... public EconomicSnapshot EconomicData { get; set; } ... }
+
 
 public class ComplexityResult
 {
@@ -59,6 +110,8 @@ public class ComplexityResult
     public float LinearTerm { get; set; }
     public float ExponentialMultiplier { get; set; }
     public float MeanVolumeMu { get; set; }
+    public EconomicSnapshot EconomicData { get; set; }
+
     public VolumeCalculationResult StochasticResults { get; set; }
     public OrderComponentResult OrderComponents { get; set; }
 }

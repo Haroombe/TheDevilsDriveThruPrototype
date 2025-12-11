@@ -6,13 +6,16 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
+
+
 namespace Assets._scripts.OrderAlgorithm
 {
     public class OrderManager : MonoBehaviour
     {
-        private List<ComplexityResult> _simulationResults = new List<ComplexityResult>();
-
+        //private List<ComplexityResult> _simulationResults = new List<ComplexityResult>();
+        private List<RunLogData> _allRunsData = new List<RunLogData>();
         // Struct to hold the initial, default state of all parameters
+        private RunLogData _currentRunData;
         private struct InitialParameters
         {
             public float BaseComplexity;
@@ -23,6 +26,7 @@ namespace Assets._scripts.OrderAlgorithm
             public float ItemPctNormalDistDivisor;
             public List<AllocationRule> ItemPrioritiesWeights;
         }
+        public EconomicSnapshot EconomicData { get; set; }
 
         private InitialParameters _initialParams;
 
@@ -56,7 +60,7 @@ namespace Assets._scripts.OrderAlgorithm
             {
                 _seed = newSeed;
                 Debug.Log($"OrderManager seed set to: {_seed}");
-                InitializeGenerator();
+                ResetGenerator(_seed);
             }
         }
 
@@ -132,6 +136,7 @@ namespace Assets._scripts.OrderAlgorithm
         /// </summary>
         public void ResetGenerator(int newSeed)
         {
+
             // 1. RESTORE PARAMETERS TO INITIAL STATE
             BaseComplexity = _initialParams.BaseComplexity;
             AlphaCoefficient = _initialParams.AlphaCoefficient;
@@ -155,6 +160,31 @@ namespace Assets._scripts.OrderAlgorithm
             // 2. UPDATE SEED AND RE-INITIALIZE GENERATOR
             _seed = newSeed;
             InitializeGenerator();
+            _currentRunData = new RunLogData();
+            _allRunsData.Add(_currentRunData); // Add to the master list immediately
+
+            // --- METADATA CAPTURE ---
+            _currentRunData.Metadata.Add("RunNumber", GameManager.Instance.runCount);
+            _currentRunData.Metadata.Add("GeneratedOn", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            _currentRunData.Metadata.Add("StartingGameSeed", _seed.ToString());
+
+            // Order Generator Static Params
+            _currentRunData.Metadata.Add("V_base", OrderGenerator.BaseOrderComplexity.ToString("F2"));
+            _currentRunData.Metadata.Add("Alpha", OrderGenerator.AlphaLinearCoefficient.ToString("F2"));
+            _currentRunData.Metadata.Add("Gamma_Divisor", OrderGenerator.ExponentialDivider.ToString("F2"));
+            _currentRunData.Metadata.Add("Beta_IntraShift", OrderGenerator.BetaIntraShiftCoefficient.ToString("F2"));
+            _currentRunData.Metadata.Add("Sigma_Scaling_Pct", OrderGenerator.GetSigmaScalingFactor().ToString("F2"));
+
+            // Economy Manager Static Params
+            if (EconomyManager.Instance != null)
+            {
+                var eco = EconomyManager.Instance;
+                _currentRunData.Metadata.Add("Eco_BaseInflationRate", eco.baseInflationRate.ToString("F3"));
+                _currentRunData.Metadata.Add("Eco_DifficultyConstantK", eco.difficultyConstantK.ToString("F3"));
+                _currentRunData.Metadata.Add("Eco_MaxDifficultyShift", eco.maxDifficultyShift.ToString());
+                _currentRunData.Metadata.Add("Eco_RunDifficultyIncreaseRate", eco.runDifficultyIncreaseRate.ToString("F3"));
+                _currentRunData.Metadata.Add("Eco_MaxRunDifficulty", eco.maxRunDifficulty.ToString("F3"));
+            }
         }
 
         public Order generateOrder(int totalOrderNum, int ordersPershift)
@@ -164,9 +194,47 @@ namespace Assets._scripts.OrderAlgorithm
                 Debug.LogError("OrderGenerator is not initialized. Cannot generate order.");
                 return null;
             }
-            ComplexityResult orderdetails = OrderGenerator.CalculateComplexity(totalOrderNum, ordersPershift);
 
-            _simulationResults.Add(orderdetails); // LOGGING: Add the full result to the buffer
+            if (_currentRunData == null)
+            {
+                // Safety check: This shouldn't happen if ResetGenerator is called at the start of a run.
+                Debug.LogError("No active run data! Please call ResetGenerator first.");
+                return null;
+            }
+            ComplexityResult orderdetails = OrderGenerator.CalculateComplexity(totalOrderNum, ordersPershift);
+            Debug.Log("generating order details.");
+
+            if (GameManager.Instance != null && EconomyManager.Instance != null) // Check EconomyManager.Instance access
+            {
+                var eco = EconomyManager.Instance;
+
+
+                // You'll need the current shift number to get the curve value
+
+                orderdetails.EconomicData = new EconomicSnapshot
+                {
+                    // Unit Values
+                    ClampedShiftNumber = eco.clampedshift, // Assuming eco exposes this
+                    RunDifficultyMultiplier = eco.CurrentRunMultiplier,
+                    DifficultyCurveValue = eco.curbaseCostRatio, // Using the variable name from your script
+                    PriceMultiplier = eco.priceMultiplier,   // Assuming eco exposes this
+                    EffectiveCostRatio = 1.0f, // Assuming eco exposes this
+
+                    // Final Unit Values
+                    BurgerCost = eco.CurBurgerCost,
+                    BurgerPrice = eco.CurBurgerPrice,
+
+                    // Derived Margins (Always calculate Margin in the snapshot for consistency)
+                    BurgerMargin = eco.CurBurgerPrice - eco.CurBurgerCost,
+                    FriesCost = eco.CurFriesCost,
+                    FriesPrice = eco.CurFriesPrice,
+                    FriesMargin = eco.CurFriesPrice - eco.CurFriesCost,
+                    SodaCost = eco.CurSodaCost,
+                    SodaPrice = eco.CurSodaPrice,
+                    SodaMargin = eco.CurSodaPrice - eco.CurSodaCost
+                };
+            }
+            _currentRunData.DetailedOrderBreakdown.Add(orderdetails);
 
             // --- Extract Item Quantities for Game Order ---
             int totalVolume = orderdetails.StochasticResults.VolumeFinal;
@@ -185,11 +253,12 @@ namespace Assets._scripts.OrderAlgorithm
                 burgers: burgers,
                 fries: fries,
                 sodas: sodas,
-                total_volume: totalVolume
+                total_volume: totalVolume,
+                ShiftNum: GameManager.Instance.shiftNum
             );
 
             // Optional: Log the new order details
-            Debug.Log($"New Order N={totalOrderNum}: V={totalVolume}, B={burgers}, F={fries}, S={sodas}");
+            Debug.Log($"New Order N={totalOrderNum}: V={totalVolume}, B={burgers}, F={fries}, S={sodas} BulkB={newOrder.BurgerBulkBuyAmount} BulkF={newOrder.FriesBulkBuyAmount} BulkS={newOrder.SodaBulkBuyAmount}");
 
             return newOrder;
         }
@@ -206,84 +275,63 @@ namespace Assets._scripts.OrderAlgorithm
         /// Serializes the collected simulation data into a JSON file with Metadata, 
         /// ComplexitiesByShift summary, and the DetailedOrderBreakdown.
         /// </summary>
+        /// 
         private void WriteSimulationToFile()
         {
-            // Safety check: Don't write if no data or generator is missing.
-            if (_simulationResults.Count == 0 || OrderGenerator == null)
+            // Safety check: Don't write if no data has been collected across any runs.
+            if (_allRunsData.Count == 0 || OrderGenerator == null)
             {
-                Debug.Log("OrderManager: No simulation data or generator is missing. File not written.");
+                Debug.Log("OrderManager: No simulation data collected across any runs. File not written.");
                 return;
             }
 
             try
             {
-                var finalOutput = new SimulationOutput();
+                int minutes = (int)(GameManager.Instance.TrueElapsedTime / 60f);
+                int seconds = (int)(GameManager.Instance.TrueElapsedTime % 60f);
+                string Timetext = $"{minutes:00}:{seconds:00}";
+                
+                var datacontainer = new
+                {
+                    TotalPlayTime = Timetext,
+                    bonusperOrder = GameManager.Instance.flatProfitPerOrder,
+                    bonusperShift = GameManager.Instance.flatProfitPerShift,
+                    Runs = _allRunsData
+                };
+                // We now serialize the list of all runs directly. 
+                // The structure of _allRunsData already contains all metadata and detailed breakdowns, 
+                // organized by run.
 
-                // --- 1. DETAILED ORDER BREAKDOWN ---
-                finalOutput.DetailedOrderBreakdown = _simulationResults;
+                // --- 1. Serialize ---
 
-                // --- 2. COMPLEXITIES BY SHIFT (Summary Data) ---
-                // Groups all results by the shift number and creates a summary dictionary for each order.
-                finalOutput.ComplexitiesByShift = _simulationResults
-                    .GroupBy(r => r.ShiftNumberS)
-                    .OrderBy(g => g.Key)
-                    .ToDictionary(
-                        group => group.Key,
-                        group => group.Select(r =>
-                        {
-                            var orderSummary = new Dictionary<string, object>
-                            {
-                                { "Volume_Final", r.StochasticResults.VolumeFinal },
-                                { "Local_Order_Number_N", r.LocalOrderO },
-                                { "Order_Number_N", r.OrderNumberN }
-                            };
+                // Use Newtonsoft.Json for serialization with formatting.
+                // We serialize the master list of RunLogData objects.
+                string jsonString = JsonConvert.SerializeObject(
+                    datacontainer, Formatting.Indented);
 
-                            // Add all allocated item quantities from OrderComponentResult
-                            foreach (var item in r.OrderComponents.Items)
-                            {
-                                orderSummary.Add(item.ItemName + "_Count", item.Quantity);
-                            }
-                            return orderSummary;
-                        }).ToList()
-                    );
-
-                // --- 3. METADATA ---
-
-                // Get OrdersPerShift from the first entry (assuming it's constant)
-                int ordersPerShift = _simulationResults.First().OrdersPerShift;
-
-                finalOutput.Metadata.Add("Description", "Stochastic Order Volume Simulation Output (L1 Mean, L2 Volume, L3 Components)");
-                finalOutput.Metadata.Add("GeneratedOn", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-
-                // Use the retrieved value
-                finalOutput.Metadata.Add("OrdersPerShift_X", ordersPerShift.ToString());
-                // Use the stored _seed variable
-                finalOutput.Metadata.Add("StartingGameSeed", _seed.ToString());
-
-                // Add complexity coefficients from the OrderGenerator object
-                finalOutput.Metadata.Add("V_base", OrderGenerator.BaseOrderComplexity.ToString("F2"));
-                finalOutput.Metadata.Add("Alpha", OrderGenerator.AlphaLinearCoefficient.ToString("F2"));
-                finalOutput.Metadata.Add("Gamma_Divisor", OrderGenerator.ExponentialDivider.ToString("F2"));
-                finalOutput.Metadata.Add("Beta_IntraShift", OrderGenerator.BetaIntraShiftCoefficient.ToString("F2"));
-                finalOutput.Metadata.Add("Sigma_Scaling_Pct", OrderGenerator.GetSigmaScalingFactor().ToString("F2"));
-
-                // --- 4. Serialize and Save ---
-
-                // Use Newtonsoft.Json for serialization with formatting
-                string jsonString = JsonConvert.SerializeObject(finalOutput, Formatting.Indented);
+                // --- 2. Save ---
 
                 string formattedDateTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-                string fileName = $"order_log_{formattedDateTime}_s{_seed}.json";
+
+                // Use a unique identifier from the first run (if available) or a general identifier.
+                // If _seed is only set once for the whole session, it's fine.
+                string fileName = $"tddt_v1_rundata_{formattedDateTime}_s{_seed}.json";
                 string filePath = Path.Combine(Application.persistentDataPath, fileName);
 
                 File.WriteAllText(filePath, jsonString);
 
-                Debug.Log($"OrderManager: Wrote simulation data ({_simulationResults.Count} records) to: {filePath}");
+                Debug.Log($"OrderManager: Wrote simulation data ({_allRunsData.Count} runs) to: {filePath}");
             }
             catch (Exception ex)
             {
                 Debug.LogError($"OrderManager: Failed to write simulation file! Error: {ex.Message}");
             }
+
+            // NOTE: Section 2 (Complexities by Shift Summary) is removed from the file writing 
+            // because it requires querying the combined data, which is now structured per run.
+            // If you need it, you must perform the LINQ aggregation *across* all runs 
+            // (e.g., _allRunsData.SelectMany(r => r.DetailedOrderBreakdown).GroupBy(...) ).
         }
+        
     }
 }

@@ -1,54 +1,65 @@
 using Assets._scripts.OrderAlgorithm;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    //imports
 
-    // init
+    // --- Init ---
     private int lastDisplayedSecond = -1;
     [SerializeField] private bool useRandomSeedInit = false;
     [SerializeField] private bool newSeedOnReset = false;
-    [SerializeField] private int fixedSeed = 1337;
+    [SerializeField] private int fixedSeed = 1338;
     private int gameSeed;
     private bool isFirstRun = true;
+    public int runCount = 1;
+
+    // --- Constants ---
+    private const string POSITIVE_COLOR = "#53C04E"; // Green
+    private const string NEGATIVE_COLOR = "#FF0811"; // Red
+
+    // Helper function for color-coded text
+    private string FormatProfitText(float amount)
+    {
+        string sign = amount >= 0 ? "+" : "-";
+        string color = amount >= 0 ? POSITIVE_COLOR : NEGATIVE_COLOR;
+        float absAmount = Mathf.Abs(amount);
+
+        return $"<color={color}>{sign}${absAmount:F2}</color>";
+    }
+
     public void SetGameSeed()
     {
-        // 1. Determine if a new seed should be generated
         bool shouldGenerateNewSeed;
 
         if (isFirstRun)
         {
-            // On initial game start (like loading a saved game), we only generate a new seed if the setting is ON.
+            runCount = 1;
             shouldGenerateNewSeed = useRandomSeedInit;
             isFirstRun = false;
-        } else if (!isFirstRun && newSeedOnReset) // assume gameseed has been set
+        }
+        else if (!isFirstRun && newSeedOnReset)
         {
-
+            runCount++;
             shouldGenerateNewSeed = true;
-        }else if (!isFirstRun && !newSeedOnReset)
+        }
+        else if (!isFirstRun && !newSeedOnReset)
         {
+            runCount++;
             return;
         }
         else
         {
+            runCount++;
             Debug.LogWarning("Game seed edge case hit");
-            Debug.LogWarning($"isFirstRun: {isFirstRun}, newSeedOnReset: {newSeedOnReset}, useRandomSeedInit : {useRandomSeedInit}");
-            shouldGenerateNewSeed = false; // default fallback
+            shouldGenerateNewSeed = false;
         }
 
-        // 2. Assign the Seed Value
         if (shouldGenerateNewSeed)
         {
-            // Generate a unique seed from system time
-            // TODO: replace with cryptographic random number generator for better randomness?
             int newSeed = (int)DateTime.Now.Ticks;
             if (newSeed < 0) newSeed = -newSeed;
             gameSeed = newSeed;
@@ -56,24 +67,23 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // Use the fixed seed for repeatable testing
             gameSeed = fixedSeed;
             Debug.Log($"GameManager: Using fixed seed for run: {gameSeed}");
         }
         UpdateSeedNum(gameSeed);
-
     }
 
     public enum GameState
     {
         Null,
-        Initializing, // initialize setup, start first shift, first order, etc.
-        ShiftOver, // all end shift stuff and start next shift or end game
-        OrderStart, // create order, display, wait for fulfillment
-        OrderFilled, // payout, apply modifiers, next order or end shift, display feedback
-        Reset, // trigger game reset
-        GameOverRestart, // give up case (button pressed to giveup)
+        Initializing,
+        ShiftOver,
+        OrderStart,
+        OrderFilled,
+        Reset,
+        GameOverRestart,
     }
+
     [Header("UI Elements")]
     [SerializeField] private Canvas gameCanvas;
     [SerializeField] private Canvas pauseCanvas;
@@ -89,32 +99,44 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI FriesAmountText;
     [SerializeField] private TextMeshProUGUI TimerText;
 
+    // --- ITEM RATES UI (3 columns: Cost, Price, Net Profit) ---
     [Header("Items Text")]
     [SerializeField] private TextMeshPro BurgerCostText;
     [SerializeField] private TextMeshPro SodaCostText;
     [SerializeField] private TextMeshPro FriesCostText;
-    [SerializeField] private TextMeshPro BurgerProfitText;
-    [SerializeField] private TextMeshPro SodaProfitText;
-    [SerializeField] private TextMeshPro FriesProfitText;
+
+    [SerializeField] private TextMeshPro BurgerProfitText; // This is now SELL PRICE
+    [SerializeField] private TextMeshPro SodaProfitText;   // This is now SELL PRICE
+    [SerializeField] private TextMeshPro FriesProfitText;  // This is now SELL PRICE
+
+    [SerializeField] private TextMeshPro BurgerNetProfitText; // This is the new Net Profit (Price - Cost)
+    [SerializeField] private TextMeshPro FriesNetProfitText;
+    [SerializeField] private TextMeshPro SodaNetProfitText;
 
     [Header("Round Tracking")]
     [SerializeField] private TextMeshProUGUI ShiftUITextField;
     [SerializeField] private TextMeshProUGUI OrderUITextField;
-    
+
     [Header("Metadata")]
     [SerializeField] private TextMeshProUGUI SeedNumTextField;
 
-
+    // --- ORDER SUMMARY UI (Items + Payout, Cost, Net Profit) ---
     [Header("Order UI")]
     [SerializeField] private TextMeshPro BurgerOrderText;
     [SerializeField] private TextMeshPro FriesOrderText;
     [SerializeField] private TextMeshPro SodaOrderText;
-    [SerializeField] private TextMeshPro OrderPayout;
+    [SerializeField] private TextMeshPro OrderPayout; // TotalPayout (Revenue)
     [SerializeField] private TextMeshPro OrderNumText;
+    [SerializeField] private TextMeshPro OrderPriceText; // TotalCost
+    [SerializeField] private TextMeshPro OrderNetRevenueText; // NetProfit
+    [SerializeField] private TextMeshPro OrderBonusText;
+    [SerializeField] private TextMeshPro ShiftBonusText;
+
 
     [Header("PromptPanels")]
     [SerializeField] public GameObject GiveUpPanel;
     [SerializeField] public GameObject GameOverPanel;
+
     public void SetPanelVisibility(GameObject panel, bool setActive)
     {
         gameOverCanvas.enabled = true;
@@ -131,9 +153,6 @@ public class GameManager : MonoBehaviour
     {
         SetPanelVisibility(panel, !panel.activeSelf);
     }
-
-
-
 
     public List<Order> orderHistory = new List<Order>();
 
@@ -153,6 +172,9 @@ public class GameManager : MonoBehaviour
             SeedNumTextField.text = $"Seed: {seed.ToString()}";
     }
 
+    /// <summary>
+    /// Updates the Order Summary UI using the financial data from the current order.
+    /// </summary>
     public void UpdateOrderValuesUI(Order order)
     {
         if (BurgerOrderText != null)
@@ -161,11 +183,27 @@ public class GameManager : MonoBehaviour
             FriesOrderText.text = $"{order.friesOrderAmount.ToString()}";
         if (SodaOrderText != null)
             SodaOrderText.text = $"{order.sodaOrderAmount.ToString()}";
-        if (OrderPayout != null)
-            OrderPayout.text = $"${order.getPayout():F2}";
-        if (OrderNumText != null)
-            OrderNumText.text = $"Order #{OrderNum.ToString()}";
 
+        if (OrderNumText != null)
+            OrderNumText.text = $"Order #{OrderNum.ToString()} Summary";
+
+        // Display Total Payout (Revenue)
+        if (OrderPayout != null)
+            OrderPayout.text = $"+ ${order.TotalPayout:F2}";
+
+        // Display Total Cost (as a negative)
+        if (OrderPriceText != null)
+            OrderPriceText.text = $"- ${order.TotalCost:F2}";
+
+        // Display Net Profit (Color-coded)
+        if (OrderNetRevenueText != null)
+            OrderNetRevenueText.text = FormatProfitText(order.NetProfit);
+
+        if (OrderBonusText != null)
+            OrderBonusText.text = $"+ ${flatProfitPerOrder*shiftNum:F2}";
+
+        if (ShiftBonusText != null)
+            ShiftBonusText.text = $"+ ${flatProfitPerShift*shiftNum:F2}";
     }
 
     // starting values
@@ -174,8 +212,8 @@ public class GameManager : MonoBehaviour
     public int startingSoda = 0;
     public int startingBurgers = 0;
     public int startingFries = 0;
-    private int shiftNum = 1;
-    public int OrdersPerShift = 7;
+    public int shiftNum = 1;
+    public int OrdersPerShift = 5;
     private int OrderNum = 1;
     private int TotalOrderNum = 1;
 
@@ -190,93 +228,57 @@ public class GameManager : MonoBehaviour
 
     public Order currentOrder;
 
-
-
-
-
-    // cost
-    [Header("Item Costs")]
-    [SerializeField] public float startingburgerCost = 2.50f;
-    [SerializeField] public float startingfriesCost = 1.00f;
-    [SerializeField] public float startingSodaCost = 0.25f;
-
-    // profit
-    [Header("Item Profits")]
-    [SerializeField] public float startingBurgerProfit = 3.99f;
-    [SerializeField] public float startingFriesProfit = 2.22f;
-    [SerializeField] public float startingSodaProfit = 1.20f;
-
+    // --- REPLACED: Removed old cost/profit variables. EconomyManager handles these.
+    // --- ONLY KEEPING FLAT BONUSES ---
+    [Header("player multiplier affectors")]
     [SerializeField] public float startingflatProfitPerOrder = 0f;
     [SerializeField] public float startingflatProfitPerShift = 0f;
-
-    // round trackers
-    // multipliers
-    [Header("Multipliers")]
-
-    //[SerializeField] public int NumOrdersToPlayerEvent = 6; // modulo total orders to check
-    [Header("player multiplier affectors")]
-
-    public float burgerCost;
-    public float friesCost;
-    public float SodaCost;
-    public float BurgerProfit;
-    public float FriesProfit;
-    public float SodaProfit;
     public float flatProfitPerOrder;
     public float flatProfitPerShift;
 
-
-
-
+    // --- REFACTORED: Simplified initRates() and UpdateRateUI() ---
     private void initRates()
     {
-        burgerCost = startingburgerCost;
-        friesCost = startingfriesCost;
-        SodaCost = startingSodaCost;
-        BurgerProfit = startingBurgerProfit;
-        FriesProfit = startingFriesProfit;
-        SodaProfit = startingSodaProfit;
+        // Only initialize flat profits here, real rates come from EconomyManager
         flatProfitPerOrder = startingflatProfitPerOrder;
         flatProfitPerShift = startingflatProfitPerShift;
+
         UpdateRateUI();
     }
+
+    /// <summary>
+    /// Updates the Item Cost/Price/Profit section of the UI using EconomyManager data.
+    /// </summary>
     private void UpdateRateUI()
     {
-        // Update item cost and profit texts
-        BurgerCostText.text = $"{burgerCost:F2}";
-        FriesCostText.text = $"{friesCost:F2}";
-        SodaCostText.text = $"{SodaCost:F2}";
-        BurgerProfitText.text = $"{BurgerProfit:F2}";
-        FriesProfitText.text = $"{FriesProfit:F2}";
-        SodaProfitText.text = $"{SodaProfit:F2}";
-    
+        var eco = EconomyManager.Instance;
+
+        // --- BURGER UI ---
+        BurgerCostText.text = $"${eco.CurBurgerCost:F2}";
+        BurgerProfitText.text = $"${eco.CurBurgerPrice:F2}"; // Selling Price (Renamed from Profit)
+        float burgerNetProfit = eco.CurBurgerPrice - eco.CurBurgerCost;
+        BurgerNetProfitText.text = FormatProfitText(burgerNetProfit);
+
+        // --- FRIES UI ---
+        FriesCostText.text = $"${eco.CurFriesCost:F2}";
+        FriesProfitText.text = $"${eco.CurFriesPrice:F2}"; // Selling Price
+        float friesNetProfit = eco.CurFriesPrice - eco.CurFriesCost;
+        FriesNetProfitText.text = FormatProfitText(friesNetProfit);
+
+        // --- SODA UI ---
+        SodaCostText.text = $"${eco.CurSodaCost:F2}";
+        SodaProfitText.text = $"${eco.CurSodaPrice:F2}"; // Selling Price
+        float sodaNetProfit = eco.CurSodaPrice - eco.CurSodaCost;
+        SodaNetProfitText.text = FormatProfitText(sodaNetProfit);
     }
-
-    // burger price multiplier
-    // soda price multiplier
-    // fries price multiplier
-    // burger profit multiplier
-    // soda profit multiplier
-    // fries profit multiplier
-    // per order price multiplier 
-    // per shift price multiplier
-    // per order profit multiplier
-    // per shift profit multiplier
-    // order volume increase multiplier
-
-    // chance
-    // order reroll randomizer
-    // shift randomizer
-    // order randomizer
-
 
     // timer
     private float elapsedTime = 0f;
+    public float TrueElapsedTime = 0f;
 
-    // Actions
+
+    // Actionse
     public event Action ResetGameAction;
-
-
 
     private void Awake()
     {
@@ -295,18 +297,20 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.Instance.PlayBGM(0); // Play main menu BGM
-        SetGameSeed(); // add ui update seed number
+        // Ensure OrderManager is set up before the GameLoop starts
+        SetGameSeed();
+
         OrderManager.Instance.SetSeed(gameSeed);
+        AudioManager.Instance.PlayBGM(0);
 
         GameLoop(GameState.Initializing);
     }
-
 
     private void Update()
     {
         HandleInput();
         elapsedTime += Time.deltaTime;
+        TrueElapsedTime += Time.deltaTime;
         int currentSecond = (int)elapsedTime;
         if (currentSecond != lastDisplayedSecond)
         {
@@ -331,40 +335,26 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             ResetGame();
         }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            FadingMessage.Instance.ShowMessage("This is a fading message ex!");
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            FadingMessage.Instance.ShowMessage("This is a fading message ex!", true);
-
-        }
+        // ... (other input handling)
         if (Input.GetKeyDown(KeyCode.Space))
         {
             curOrderDisplayDebug.TogglePanel();
         }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            SetPanelVisibility(GiveUpPanel,true);
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            SetPanelVisibility(GiveUpPanel, false);
-
-        }
-
-
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    SetPanelVisibility(GiveUpPanel, true);
+        //}
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    SetPanelVisibility(GiveUpPanel, false);
+        //}
     }
 
-
     // game loop
-
     public void GameLoop(GameState state)
     {
         if (curGameState == state) return;
@@ -373,10 +363,11 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case GameState.Initializing:
-                // initialize game
                 Debug.Log("initializing");
-                currentOrder=null;
+                currentOrder = null;
 
+                // --- INTEGRATION: Initialize Economy ---
+                EconomyManager.Instance.InitializeEconomy(runCount);
 
                 initRates();
                 initializePlayerItems();
@@ -384,36 +375,39 @@ public class GameManager : MonoBehaviour
                 InitializeFirstShiftOrder();
                 ResumeGame();
                 GameLoop(GameState.OrderStart);
-
-
-
                 break;
+
             case GameState.OrderStart:
-                                // start order
-                Debug.Log("order number "+ OrderNum.ToString() +" start");
+                Debug.Log("order number " + OrderNum.ToString() + " start");
                 CustomerManager.Instance.SpawnToMid();
+
+                // Creates order, which uses EconomyManager prices to calculate Payout, Cost, and NetProfit
                 currentOrder = CreateOrder();
+
                 UpdateOrderValuesUI(currentOrder);
-
-
-                // create order and display
                 break;
+
             case GameState.OrderFilled:
                 Debug.Log("order number " + OrderNum.ToString() + " filled during shift " + shiftNum.ToString());
 
                 OrderNum++;
                 TotalOrderNum++;
-                if (OrderNum >= OrdersPerShift+1)
+
+                if (OrderNum >= OrdersPerShift + 1)
                 {
                     Debug.Log("shift number " + shiftNum.ToString() + " over");
                     shiftNum++;
                     OrderNum = 1;
-                    addAmountF(ref playerMoney, flatProfitPerShift);
+                    addAmountF(ref playerMoney, flatProfitPerShift*shiftNum);
+
+                    // --- INTEGRATION: Update Economy for Next Shift ---
+                    EconomyManager.Instance.UpdateShiftEconomy(shiftNum);
+
+                    UpdateRateUI(); // Refresh UI with the new Shift prices
 
                     UpdateOrderUI(OrderNum);
                     UpdateShiftUI(shiftNum);
                     FadingMessage.Instance.ShowCallout($"Starting Shift {shiftNum}", .9f, 1.9f);
-
                 }
                 else
                 {
@@ -422,15 +416,14 @@ public class GameManager : MonoBehaviour
                     Debug.Log("starting next order number " + OrderNum.ToString());
                     UpdateOrderUI(OrderNum);
                 }
-                
 
                 GameLoop(GameState.OrderStart);
-
                 break;
+
             case GameState.GameOverRestart:
                 ResetGame();
-
                 break;
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
@@ -442,22 +435,19 @@ public class GameManager : MonoBehaviour
         TotalOrderNum = 1;
         shiftNum = 1;
         OrderNum = 1;
-        FadingMessage.Instance.ShowCallout($"Starting Shift {shiftNum}",.9f, 2f);
+        FadingMessage.Instance.ShowCallout($"Starting Shift {shiftNum}", .9f, 2f);
 
         UpdateShiftUI(shiftNum);
         UpdateOrderUI(OrderNum);
-
     }
 
     private Order CreateOrder()
-    { // add modifiers, shift, order randomizers, volume increases
-        //return new Order(burgers: 1, sodas: 1, fries: 1);
+    {
         return OrderManager.Instance.generateOrder(TotalOrderNum, OrdersPerShift);
     }
-    
 
-    // --- UI Update Methods ---
-    // ------------------------------
+
+    // --- Helper Math Methods ---
     private void UpdateUI<T>(TextMeshProUGUI field, T value)
     {
         field.text = value.ToString();
@@ -497,6 +487,8 @@ public class GameManager : MonoBehaviour
     {
         baseAmount -= amount;
     }
+    // ---------------------------
+
 
     private void initializePlayerItems()
     {
@@ -515,26 +507,18 @@ public class GameManager : MonoBehaviour
         UpdateUI(FriesAmountText, playerFries);
     }
 
-
     private void updateTimerUI()
     {
         int minutes = (int)(elapsedTime / 60f);
         int seconds = (int)(elapsedTime % 60f);
         string text = $"{minutes:00}:{seconds:00}";
         TimerText.text = text;
-
     }
-    // ------------------------------
 
     // Game data
-
-
-
-
     private bool isPaused = false;
 
     // --- Public Methods ---
-
     public void PauseGame()
     {
         Cursor.visible = true;
@@ -554,9 +538,6 @@ public class GameManager : MonoBehaviour
         gameOverCanvas.enabled = false;
         SetPanelVisibility(GiveUpPanel, false);
         SetPanelVisibility(GameOverPanel, false);
-
-
-
     }
 
     public bool IsPaused()
@@ -566,7 +547,6 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
-        //Debug.Log("GameManager ResetGame called");
         SetGameSeed();
         OrderManager.Instance.ResetGenerator(gameSeed);
 
@@ -577,95 +557,137 @@ public class GameManager : MonoBehaviour
 
         elapsedTime = 0f;
         GameLoop(GameState.Initializing);
-
-
     }
 
 
     // checks
-    // has enough money to purchase x
     public void FulfillOrder()
     {
         if (!canFulfillOrder(currentOrder))
         {
-            FadingMessage.Instance.ShowMessage("Can't fill order!"); // ui
+            FadingMessage.Instance.ShowMessage("Can't fill order!");
             AudioManager.Instance.PlaySFX("No", playInstantly: true);
-
             return;
         }
 
         // Deduct inventory
+        AudioManager.Instance.PlaySFX("Pay", playInstantly: true);
+
         minusAmount(ref playerBurgers, currentOrder.burgerOrderAmount);
         minusAmount(ref playerFries, currentOrder.friesOrderAmount);
         minusAmount(ref playerSoda, currentOrder.sodaOrderAmount);
 
-        // Add money
-        addAmountF(ref playerMoney, currentOrder.getPayout());
+        // Add money (TotalPayout is used)
+        addAmountF(ref playerMoney, currentOrder.TotalPayout);
 
         //fulfilled timestamp
         currentOrder.FulfilledTime = elapsedTime;
         currentOrder.CalculateFulfilledTimeString();
-        // Add to history
 
+        // Add to history
         orderHistory.Add(currentOrder);
 
         // Update UI
-        UpdateUI(BurgerAmountText, playerBurgers);
-        UpdateUI(FriesAmountText, playerFries);
-        UpdateUI(SodaAmountText, playerSoda);
-        UpdateUIF(MoneyAmountText, playerMoney, "F2");
+        UpdateAllInventoryUI();
 
-        FadingMessage.Instance.ShowMessage($"Order #{OrderNum} filled! Earned +${currentOrder.getPayout():F2}", true,.6f ,2f); // ui
+        FadingMessage.Instance.ShowMessage($"Order #{OrderNum} filled!", true, .6f, 2f);
 
         CustomerManager.Instance.ServeCustomer();
         GameLoop(GameState.OrderFilled);
-
-
     }
+
     // current player inventory can fulfill order
-    public bool canFulfillOrder(Order curOrder) {
+    public bool canFulfillOrder(Order curOrder)
+    {
         bool hasEnoughBurgers = playerBurgers >= curOrder.burgerOrderAmount;
         bool hasEnoughFries = playerFries >= curOrder.friesOrderAmount;
         bool hasEnoughSoda = playerSoda >= curOrder.sodaOrderAmount;
 
         return hasEnoughBurgers && hasEnoughFries && hasEnoughSoda;
-
     }
 
     // Game actions
 
     // Generic buy function
-    private void BuyFood(ref int playerInventory, float cost, TextMeshProUGUI inventoryText, string foodName)
+    // -----------------------------------------------------------
+    // NEW METHOD TO REPLACE CURRENT ORDER (for Reroll/Modifier logic)
+    // -----------------------------------------------------------
+    /// <summary>
+    /// Replaces the current order with a new one based on external factors (Reroll or Modifier).
+    /// </summary>
+    public void ReplaceCurrentOrder(int burgers, int fries, int sodas)
     {
-        if (playerMoney >= cost)
-        {
-            minusAmountF(ref playerMoney, cost);
-            addAmount(ref playerInventory, 1);
-            UpdateUIF(MoneyAmountText, playerMoney, "F2");
-            UpdateUI(inventoryText, playerInventory);
-            FadingMessage.Instance.ShowMessage($"Bought 1 {foodName} for ${cost:F2}!", true);
 
+        // Create the new Order object, which calculates all financials and bulk amounts from scratch.
+        int newVolume = burgers + fries + sodas;
+        currentOrder = new Order(burgers, fries, sodas, newVolume, shiftNum);
+        Debug.Log($"Order replaced: B={burgers}, F={fries}, S={sodas}.  BulkB={currentOrder.BurgerBulkBuyAmount} BulkF={currentOrder.FriesBulkBuyAmount} BulkS={currentOrder.SodaBulkBuyAmount} Creating new Order object.");
+
+        // Update the UI to show the new order amounts and financials.
+        UpdateOrderValuesUI(currentOrder);
+    }
+
+
+    // -----------------------------------------------------------
+    // MODIFIED/NEW BUY METHODS (must support bulk buying)
+    // -----------------------------------------------------------
+
+    // 1. Generic Buy Function Overload (accepts amount)
+    private void BuyFood(ref int playerInventory, float costPerItem, TextMeshProUGUI inventoryText, string foodName, int amount)
+    {
+        float totalCost = costPerItem * amount;
+
+        if (playerMoney >= totalCost)
+        {
+            AudioManager.Instance.PlaySFX("Buy", playInstantly: true);
+
+            minusAmountF(ref playerMoney, totalCost);
+            addAmount(ref playerInventory, amount);
+
+            UpdateAllInventoryUI(); // Update all UI for safety
+
+            FadingMessage.Instance.ShowMessage($"Bought {amount} {foodName}(s)!", true);
         }
         else
         {
-            FadingMessage.Instance.ShowMessage($"Not enough money to buy {foodName}!");
+            AudioManager.Instance.PlaySFX("No", playInstantly: true);
+
+            FadingMessage.Instance.ShowMessage($"Need ${totalCost:F2} for {amount} {foodName}(s)!");
         }
     }
 
-    // Simplified buy methods
+    // 2. Modified Simplified buy methods to call the BULK overload:
+
+    // Modify the existing BuyBurger to use the new bulk method (defaulting to 1)
     public void BuyBurger()
     {
-        BuyFood(ref playerBurgers, burgerCost, BurgerAmountText, "burger");
-    } 
+        BuyBurger(1); // Default to buying 1
+    }
+    public void BuyBurger(int amount)
+    {
+        float unitCost = EconomyManager.Instance.CurBurgerCost;
+        BuyFood(ref playerBurgers, unitCost, BurgerAmountText, "burger", amount);
+    }
 
+    // Modify the existing BuyFries to use the new bulk method (defaulting to 1)
     public void BuyFries()
     {
-        BuyFood(ref playerFries, friesCost, FriesAmountText, "fries");
+        BuyFries(1); // Default to buying 1
+    }
+    public void BuyFries(int amount)
+    {
+        float unitCost = EconomyManager.Instance.CurFriesCost;
+        BuyFood(ref playerFries, unitCost, FriesAmountText, "fries", amount);
     }
 
+    // Modify the existing BuySoda to use the new bulk method (defaulting to 1)
     public void BuySoda()
     {
-        BuyFood(ref playerSoda, SodaCost, SodaAmountText, "soda");
+        BuySoda(1); // Default to buying 1
     }
-
+    public void BuySoda(int amount)
+    {
+        float unitCost = EconomyManager.Instance.CurSodaCost;
+        BuyFood(ref playerSoda, unitCost, SodaAmountText, "soda", amount);
+    }
 }

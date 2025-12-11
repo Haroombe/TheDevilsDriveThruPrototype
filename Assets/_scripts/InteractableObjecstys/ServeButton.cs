@@ -4,6 +4,7 @@ using System;
 public class ServeButton : Interactable
 {
     private string _name = "Drive Thru Window";
+    public override bool canBuy => true;
 
     public override string InteractableName
     {
@@ -13,6 +14,9 @@ public class ServeButton : Interactable
     {
         GameManager.Instance.FulfillOrder();
 
+    }
+    public override void BulkInteract()
+    {
     }
     public override string getDialogue()
     {
