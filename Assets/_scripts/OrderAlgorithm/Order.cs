@@ -18,9 +18,9 @@ public class Order
     public int FriesBulkBuyAmount { get; private set; }
     public int SodaBulkBuyAmount { get; private set; }
 
-    private float fulfilledTime = 0f;
-    private string fulfilledTimeString;
-    private int shiftNum;
+    public float fulfilledTime = 0f;
+    public string fulfilledTimeString;
+    public int shiftNum;
 
     public float FulfilledTime
     {
