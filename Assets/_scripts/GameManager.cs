@@ -441,7 +441,7 @@ public class GameManager : MonoBehaviour
         UpdateOrderUI(OrderNum);
     }
 
-    private Order CreateOrder()
+    public Order CreateOrder()
     {
         return OrderManager.Instance.generateOrder(TotalOrderNum, OrdersPerShift);
     }
@@ -473,7 +473,7 @@ public class GameManager : MonoBehaviour
         baseAmount += amount;
     }
 
-    private void addAmount(ref int baseAmount, int amount)
+    public void addAmount(ref int baseAmount, int amount)
     {
         baseAmount += amount;
     }
@@ -499,7 +499,7 @@ public class GameManager : MonoBehaviour
         setAmount(ref playerBurgers, startingBurgers);
         setAmount(ref playerFries, startingFries);
     }
-    private void UpdateAllInventoryUI()
+    public void UpdateAllInventoryUI()
     {
         UpdateUIF(MoneyAmountText, playerMoney, "F2");
         UpdateUI(SodaAmountText, playerSoda);
@@ -606,13 +606,7 @@ public class GameManager : MonoBehaviour
         return hasEnoughBurgers && hasEnoughFries && hasEnoughSoda;
     }
 
-    // Game actions
 
-    // Generic buy function
-    // -----------------------------------------------------------
-    // NEW METHOD TO REPLACE CURRENT ORDER (for Reroll/Modifier logic)
-    // -----------------------------------------------------------
-    /// <summary>
     /// Replaces the current order with a new one based on external factors (Reroll or Modifier).
     /// </summary>
     public void ReplaceCurrentOrder(int burgers, int fries, int sodas)
@@ -628,9 +622,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // -----------------------------------------------------------
-    // MODIFIED/NEW BUY METHODS (must support bulk buying)
-    // -----------------------------------------------------------
 
     // 1. Generic Buy Function Overload (accepts amount)
     private void BuyFood(ref int playerInventory, float costPerItem, TextMeshProUGUI inventoryText, string foodName, int amount)

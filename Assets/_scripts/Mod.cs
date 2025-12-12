@@ -12,10 +12,10 @@ public abstract class Mod : ScriptableObject
 {
     public abstract string ModName { get; }
     public abstract string description { get; }
+    public abstract string modUsedMessage { get; }
 
-    [Header("Uses Per Shift/Run")]
-    [SerializeField]
-    public int initialDuration = 1;
+
+    public abstract int InitialUses { get; }
     public int UsesRemaining { get; protected set; }
     public bool isExpired { get; protected set; }
 
@@ -23,7 +23,7 @@ public abstract class Mod : ScriptableObject
 
     public virtual void Initialize()
     {
-        UsesRemaining = initialDuration;
+        UsesRemaining = InitialUses;
         isExpired = false;
     }
 
@@ -31,12 +31,20 @@ public abstract class Mod : ScriptableObject
     {
         if (modType == ModType.Permanent)
             return true;
+
         if (UsesRemaining > 0)
         {
             UsesRemaining--;
-            return true;
+
+            if (UsesRemaining <= 0)
+            {
+                isExpired = true;
+            }
+
+            return true; // Use succeeded!
         }
-        isExpired = true; 
+
+        isExpired = true;
         return false;
     }
 
@@ -56,12 +64,14 @@ public abstract class Mod : ScriptableObject
     public virtual float GetFriesCostOverride() { return -1.0f; }
     public virtual float GetSodaCostOverride() { return -1.0f; }
 
+    public virtual int GetSodaInventoryWeightMultiplier() { return 1; }
+    public virtual int GetBurgerInventoryWeightMultiplier() { return 1; }
+    public virtual int GetFriesInventoryWeightMultiplier() { return 1; }
 
 
 
-    // Add other pipeline methods as needed...
 
-    // --- PER-ORDER LOGIC & CLEANUP ---
-    // Called for every order. Returns true if the mod is finished/expired.
+
+
     public abstract void ProcessOrder(Order order);
 }

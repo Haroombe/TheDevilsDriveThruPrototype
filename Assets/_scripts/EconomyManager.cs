@@ -156,4 +156,7 @@ public class EconomyManager : MonoBehaviour
         // Cost = Current Price * Effective Cost Ratio (The true difficulty)
         currentCost = currentPrice * costRatio;
     }
+
+
+    // TODO: Price override mod requires clean function to call to update item values ie reapply mod multipliers and overrides
 }

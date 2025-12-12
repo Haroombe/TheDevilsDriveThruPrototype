@@ -7,10 +7,13 @@ namespace Assets._scripts.Mods
     public class OrderRerollNormal : Mod
     {
 
-        public int volumeReductionPercent = 30;
-        public override string ModName => "Order Reroll";
-        public override string description => $"Reroll the current order with {volumeReductionPercent}% reduction in volume (Stackable). Only usable {GameManager.Instance.OrdersPerShift} times.";
+        public float volumeReduction = 0.30f;
 
+        public override int InitialUses => GameManager.Instance.OrdersPerShift;
+        public override string ModName => "Basic Order Reroll";
+        public override string description => $"Reroll the current order with {volumeReduction*100}% reduction in size (Stackable). Only usable {GameManager.Instance.OrdersPerShift} times.";
+
+        public override string modUsedMessage => $"Rerolled current order, ({UsesRemaining}/{InitialUses} uses left (Debug:Volume={GameManager.Instance.currentOrder.totalVolumeOrdered}))";
         public override ModType modType => ModType.Clickable;
 
         public override void ProcessOrder(Order order)
@@ -24,11 +27,14 @@ namespace Assets._scripts.Mods
             {
                 return;
             }
+            Order rerolledOrder = GameManager.Instance.CreateOrder();
+
             GameManager.Instance.ReplaceCurrentOrder(
-                fries: (int)Mathf.Round(GameManager.Instance.currentOrder.friesOrderAmount * (volumeReductionPercent / 100)),
-                sodas: (int)Mathf.Round(GameManager.Instance.currentOrder.sodaOrderAmount * (volumeReductionPercent / 100)),
-                burgers: (int)Mathf.Round(GameManager.Instance.currentOrder.burgerOrderAmount * (volumeReductionPercent / 100))
+                fries: (int)Mathf.Round(rerolledOrder.friesOrderAmount * (1-volumeReduction)),
+                sodas: (int)Mathf.Round(rerolledOrder.sodaOrderAmount * (1-volumeReduction)),
+                burgers: (int)Mathf.Round(rerolledOrder.burgerOrderAmount * (1-volumeReduction))
                 );
+            //maybe add click notifs
         }
 
     }
