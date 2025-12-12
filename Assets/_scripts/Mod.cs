@@ -10,7 +10,6 @@ public enum ModType
 }
 public abstract class Mod : ScriptableObject
 {
-    // --- STATE & METADATA ---
     public abstract string ModName { get; }
     public abstract string description { get; }
 
@@ -22,29 +21,25 @@ public abstract class Mod : ScriptableObject
 
     public abstract ModType modType { get; }
 
-    // Use a virtual method so the base class handles the counter
     public virtual void Initialize()
     {
         UsesRemaining = initialDuration;
         isExpired = false;
     }
 
-    // CORE PLAYER-ACTION HOOK: Called when the player clicks the Reroll button.
-    // Returns true if the use was consumed successfully.
-public virtual bool TryUseAbility()
+    public virtual bool TryUseAbility()
     {
+        if (modType == ModType.Permanent)
+            return true;
         if (UsesRemaining > 0)
         {
             UsesRemaining--;
             return true;
         }
-        // If the ability use fails, the mod is now fully exhausted.
-        // It's often safer to set the expiration flag here.
         isExpired = true; 
         return false;
     }
 
-    // --- PIPELINE INJECTION METHODS (Defaults to 1.0f) ---
     public virtual float GetVolumeMultiplier() { return 1.0f; }
     public virtual float GetPayoutMultiplier() { return 1.0f; }
 
@@ -53,12 +48,20 @@ public virtual bool TryUseAbility()
 
     public virtual float GetFriesPriceMultiplier() { return 1.0f; }
     public virtual float GetFriesCostMultiplier() { return 1.0f; }
-    public virtual float GetSodeCostMultiplier() { return 1.0f; }
+    public virtual float GetSodaCostMultiplier() { return 1.0f; }
     public virtual float GetSodaPriceMultiplier() { return 1.0f; }
+    public virtual float GetBulkPriceMultiplier() { return 1.0f; }
+
+    public virtual float GetBurgerCostOverride() { return -1.0f; }
+    public virtual float GetFriesCostOverride() { return -1.0f; }
+    public virtual float GetSodaCostOverride() { return -1.0f; }
+
+
+
 
     // Add other pipeline methods as needed...
 
     // --- PER-ORDER LOGIC & CLEANUP ---
     // Called for every order. Returns true if the mod is finished/expired.
-    public abstract bool ProcessOrder(Order order);
+    public abstract void ProcessOrder(Order order);
 }

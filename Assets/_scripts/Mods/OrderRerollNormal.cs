@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+
 using UnityEngine;
 
 namespace Assets._scripts.Mods
@@ -12,9 +13,22 @@ namespace Assets._scripts.Mods
 
         public override ModType modType => ModType.Clickable;
 
-        public override bool ProcessOrder(Order order)
+        public override void ProcessOrder(Order order)
         {
-            
+ 
+        }
+
+        public void OnRerollOrderPressed()
+        {
+            if (!this.TryUseAbility())
+            {
+                return;
+            }
+            GameManager.Instance.ReplaceCurrentOrder(
+                fries: (int)Mathf.Round(GameManager.Instance.currentOrder.friesOrderAmount * (volumeReductionPercent / 100)),
+                sodas: (int)Mathf.Round(GameManager.Instance.currentOrder.sodaOrderAmount * (volumeReductionPercent / 100)),
+                burgers: (int)Mathf.Round(GameManager.Instance.currentOrder.burgerOrderAmount * (volumeReductionPercent / 100))
+                );
         }
 
     }

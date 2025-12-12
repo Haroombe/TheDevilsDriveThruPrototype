@@ -16,11 +16,9 @@ public class ModManager : MonoBehaviour
 
     private void Awake()
     {
-        // --- CRITICAL FIX 1: Singleton Implementation ---
         if (Instance == null)
         {
             Instance = this;
-            // DontDestroyOnLoad(gameObject); // Optional, but common for managers
         }
         else
         {
@@ -28,11 +26,8 @@ public class ModManager : MonoBehaviour
             return;
         }
 
-        // Initialize allMods list from the serialized array
         foreach (Mod mod in mods)
         {
-            // Note: Use Instantiate(mod) if mods are ScriptableObjects 
-            // and you want each instance to have unique state (recommended).
             allMods.Add(mod);
         }
     }
@@ -112,7 +107,7 @@ public class ModManager : MonoBehaviour
 
     public float GetTotalVolumeMultiplier()
     {
-        float totalVolumeMultiplier = 0;
+        float totalVolumeMultiplier = 1;
         foreach (Mod mod in activeMods)
         {
             totalVolumeMultiplier *= mod.GetVolumeMultiplier();
@@ -121,12 +116,154 @@ public class ModManager : MonoBehaviour
     }
     public float GetTotalPayoutMultiplier()
     {
-        float totalVolumeMultiplier = 0;
+        float totalVolumeMultiplier = 1;
         foreach (Mod mod in activeMods)
         {
             totalVolumeMultiplier *= mod.GetVolumeMultiplier();
         }
         return totalVolumeMultiplier;
+    }
+    public float GetTotalBurgerPriceMultiplier()
+    {
+        float total = 1.0f;
+        foreach (Mod mod in activeMods)
+        {
+            total *= mod.GetBurgerPriceMultiplier();
+        }
+        return total;
+    }
+
+    public float GetTotalFriesPriceMultiplier()
+    {
+        float total = 1.0f;
+        foreach (Mod mod in activeMods)
+        {
+            total *= mod.GetFriesPriceMultiplier();
+        }
+        return total;
+    }
+
+    public float GetTotalSodaPriceMultiplier()
+    {
+        float total = 1.0f;
+        foreach (Mod mod in activeMods)
+        {
+            total *= mod.GetSodaPriceMultiplier();
+        }
+        return total;
+    }
+
+    public float GetTotalBulkPriceMultiplier()
+    {
+        float total = 1.0f;
+        foreach (Mod mod in activeMods)
+        {
+            total *= mod.GetBulkPriceMultiplier();
+        }
+        return total;
+    }
+    public float GetTotalBurgerCostMultiplier()
+    {
+        float total = 1.0f;
+        foreach (Mod mod in activeMods)
+        {
+            total *= mod.GetBurgerCostMultiplier();
+        }
+        return total;
+    }
+
+    public float GetTotalFriesCostMultiplier()
+    {
+        float total = 1.0f;
+        foreach (Mod mod in activeMods)
+        {
+            total *= mod.GetFriesCostMultiplier();
+        }
+        return total;
+    }
+
+    public float GetTotalSodaCostMultiplier()
+    {
+        float total = 1.0f;
+        foreach (Mod mod in activeMods)
+        {
+            total *= mod.GetSodaCostMultiplier();
+        }
+        return total;
+    }
+    // ModManager.cs
+
+    private const float NO_OVERRIDE = -1.0f;
+
+    /// <summary>
+    /// Finds the lowest absolute cost override for Burgers among all active mods.
+    /// Returns -1.0f if no mod provides a valid override.
+    /// </summary>
+    public float GetTotalBurgerCostOverride()
+    {
+        float lowestOverrideCost = NO_OVERRIDE;
+
+        foreach (Mod mod in activeMods)
+        {
+            float currentOverride = mod.GetBurgerCostOverride();
+
+            // 1. Check if the current mod actually provides an override price (>= 0.0f)
+            if (currentOverride >= 0.0f)
+            {
+                // 2. Check if this is the first valid override OR if the current override is cheaper
+                if (lowestOverrideCost == NO_OVERRIDE || currentOverride < lowestOverrideCost)
+                {
+                    lowestOverrideCost = currentOverride;
+                }
+            }
+        }
+        return lowestOverrideCost;
+    }
+
+    /// <summary>
+    /// Finds the lowest absolute cost override for Fries among all active mods.
+    /// Returns -1.0f if no mod provides a valid override.
+    /// </summary>
+    public float GetTotalFriesCostOverride()
+    {
+        float lowestOverrideCost = NO_OVERRIDE;
+
+        foreach (Mod mod in activeMods)
+        {
+            float currentOverride = mod.GetFriesCostOverride();
+
+            if (currentOverride >= 0.0f)
+            {
+                if (lowestOverrideCost == NO_OVERRIDE || currentOverride < lowestOverrideCost)
+                {
+                    lowestOverrideCost = currentOverride;
+                }
+            }
+        }
+        return lowestOverrideCost;
+    }
+
+    /// <summary>
+    /// Finds the lowest absolute cost override for Soda among all active mods.
+    /// Returns -1.0f if no mod provides a valid override.
+    /// </summary>
+    public float GetTotalSodaCostOverride()
+    {
+        float lowestOverrideCost = NO_OVERRIDE;
+
+        foreach (Mod mod in activeMods)
+        {
+            float currentOverride = mod.GetSodaCostOverride();
+
+            if (currentOverride >= 0.0f)
+            {
+                if (lowestOverrideCost == NO_OVERRIDE || currentOverride < lowestOverrideCost)
+                {
+                    lowestOverrideCost = currentOverride;
+                }
+            }
+        }
+        return lowestOverrideCost;
     }
     // ... (Your other methods like UpdateOrderModifiers/ProcessOrderMods should be added here) ...
 }
