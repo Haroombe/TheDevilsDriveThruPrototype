@@ -22,7 +22,7 @@ public class FryStation : Interactable
     public override void BulkInteract()
     {
         int amountToBuy = GetOrderBulkAmount();
-        GameManager.Instance.BuyFries(amountToBuy);
+        GameManager.Instance.BuyFries(amountToBuy,true);
 
     }
 

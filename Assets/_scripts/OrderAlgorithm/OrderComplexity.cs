@@ -143,11 +143,11 @@ public class OrderComplexity
     private List<AllocationRule> _currentRules;
 
     private static int CeilToInt(float f) => (int)Math.Ceiling(f);
-    private readonly List<AllocationRule> _defaultRules = new List<AllocationRule>
+    public List<AllocationRule> _defaultRules = new List<AllocationRule>
     {
         new AllocationRule { ItemName = "Burger", PrioritySlot = 1, MinPct = 0.2f, MaxPct = 0.6f, RandomnessType = RandomnessType.Normal },
-        new AllocationRule { ItemName = "Fries", PrioritySlot = 2, MinPct = 0.2f, MaxPct = 0.7f, RandomnessType = RandomnessType.Normal },
-        new AllocationRule { ItemName = "Soda", PrioritySlot = 3, MinPct = 0.3f, MaxPct = 0.4f, RandomnessType = RandomnessType.Normal }
+        new AllocationRule { ItemName = "Soda", PrioritySlot = 2, MinPct = 0.2f, MaxPct = 0.7f, RandomnessType = RandomnessType.Normal },
+        new AllocationRule { ItemName = "Fries", PrioritySlot = 3, MinPct = 0.3f, MaxPct = 0.4f, RandomnessType = RandomnessType.Normal }
     };
 
     public OrderComplexity(

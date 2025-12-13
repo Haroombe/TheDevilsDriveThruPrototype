@@ -16,7 +16,7 @@ public class SodaMachine : Interactable
     public override void BulkInteract()
     {
         int amountToBuy = GetOrderBulkAmount();
-        GameManager.Instance.BuySoda(amountToBuy);
+        GameManager.Instance.BuySoda(amountToBuy, true);
 
     }
     public override string getDialogue()

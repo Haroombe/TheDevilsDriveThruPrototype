@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private int gameSeed;
     private bool isFirstRun = true;
     public int runCount = 1;
+    public float largestpayout = 0f;
 
     // --- Constants ---
     private const string POSITIVE_COLOR = "#53C04E"; // Green
@@ -217,6 +218,10 @@ public class GameManager : MonoBehaviour
     private int OrderNum = 1;
     private int TotalOrderNum = 1;
 
+    public int getOrderNum()
+    {
+        return OrderNum;
+    }
     private GameState curGameState;
 
     // game variables
@@ -579,6 +584,7 @@ public class GameManager : MonoBehaviour
 
         // Add money (TotalPayout is used)
         addAmountF(ref playerMoney, currentOrder.TotalPayout);
+        largestpayout = Mathf.Max(largestpayout, currentOrder.TotalPayout);
 
         //fulfilled timestamp
         currentOrder.FulfilledTime = elapsedTime;
@@ -654,7 +660,7 @@ public class GameManager : MonoBehaviour
     {
         BuyBurger(1); // Default to buying 1
     }
-    public void BuyBurger(int amount)
+    public void BuyBurger(int amount, bool isBulk = false)
     {
         float unitCost = EconomyManager.Instance.CurBurgerCost;
         BuyFood(ref playerBurgers, unitCost, BurgerAmountText, "burger", amount);
@@ -665,7 +671,7 @@ public class GameManager : MonoBehaviour
     {
         BuyFries(1); // Default to buying 1
     }
-    public void BuyFries(int amount)
+    public void BuyFries(int amount, bool isBulk= false)
     {
         float unitCost = EconomyManager.Instance.CurFriesCost;
         BuyFood(ref playerFries, unitCost, FriesAmountText, "fries", amount);
@@ -676,7 +682,7 @@ public class GameManager : MonoBehaviour
     {
         BuySoda(1); // Default to buying 1
     }
-    public void BuySoda(int amount)
+    public void BuySoda(int amount, bool isBulk = false)
     {
         float unitCost = EconomyManager.Instance.CurSodaCost;
         BuyFood(ref playerSoda, unitCost, SodaAmountText, "soda", amount);

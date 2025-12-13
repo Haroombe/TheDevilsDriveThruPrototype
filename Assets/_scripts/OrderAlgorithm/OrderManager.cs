@@ -36,8 +36,8 @@ namespace Assets._scripts.OrderAlgorithm
         public List<AllocationRule> ItemPrioritiesWeights = new List<AllocationRule>
         {
             new AllocationRule { ItemName = "Burger", PrioritySlot = 1, MinPct = 0.2f, MaxPct = 0.6f, RandomnessType = RandomnessType.Normal },
-            new AllocationRule { ItemName = "Fries", PrioritySlot = 2, MinPct = 0.2f, MaxPct = 0.7f, RandomnessType = RandomnessType.Normal },
-            new AllocationRule { ItemName = "Soda", PrioritySlot = 3, MinPct = 0.3f, MaxPct = 0.4f, RandomnessType = RandomnessType.Normal }
+            new AllocationRule { ItemName = "Soda", PrioritySlot = 2, MinPct = 0.2f, MaxPct = 0.7f, RandomnessType = RandomnessType.Normal },
+            new AllocationRule { ItemName = "Fries", PrioritySlot = 3, MinPct = 0.3f, MaxPct = 0.4f, RandomnessType = RandomnessType.Normal }
         };
 
         public static OrderManager Instance { get; private set; }

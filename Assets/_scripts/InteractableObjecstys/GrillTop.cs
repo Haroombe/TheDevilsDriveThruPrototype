@@ -17,7 +17,7 @@ public class GrillTop : Interactable
     public override void BulkInteract()
     {
         int amountToBuy = GetOrderBulkAmount();
-        GameManager.Instance.BuyBurger(amountToBuy);
+        GameManager.Instance.BuyBurger(amountToBuy,true);
 
     }
     public override string getDialogue()
