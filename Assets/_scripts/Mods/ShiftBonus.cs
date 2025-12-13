@@ -12,7 +12,10 @@ namespace Assets._scripts.Mods
         public override string description => $"Every shift, the base Bonus increases by the largest payout this shift permanently";
         public override string modUsedMessage => $"Base shift payout is {GameManager.Instance.flatProfitPerShift}";
 
-
+        public override void ResetMod()
+        {
+            GameManager.Instance.largestpayout = 0;
+        }
         public override ModType modType => ModType.Permanent;
 
         // this actually puts the second largest but who is checking lmfao

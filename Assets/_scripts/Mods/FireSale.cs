@@ -13,6 +13,10 @@ namespace Assets._scripts.Mods
         public override string description => $"(Single Use) For 1 order, every food item costs ${ingredientOverrideCost}";
         public override string modUsedMessage => $"Food items cost ${ingredientOverrideCost}!";
 
+        public override void ResetMod()
+        {
+            
+        }
 
         public override ModType modType => ModType.Clickable;
 

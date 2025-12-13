@@ -13,6 +13,9 @@ public class ModManager : MonoBehaviour
     public int seed = -1;
     [SerializeField] private int PlayerModChoiceCount = 2;
 
+    private List<List<Mod>> _modhistory = new List<List<Mod>>();
+
+    private ModType[] autoApplyModTypes = new ModType[] {ModType.Permanent, ModType.Finite};
 
     private void Awake()
     {
@@ -31,6 +34,30 @@ public class ModManager : MonoBehaviour
             allMods.Add(mod);
         }
     }
+
+
+    public void ResetMods()
+        {
+            _modhistory.Add(activeMods);
+            foreach (Mod modInstance in activeMods)
+            {
+                modInstance.ResetMod();
+
+                Destroy(modInstance);
+            }
+
+            activeMods = new List<Mod>(); //overwrite
+            allMods = new List<Mod>(); //overwrite
+
+
+            foreach (Mod modAsset in mods) // reset available mods list to include all mods
+            {
+                allMods.Add(modAsset);
+            }
+
+
+            Debug.Log("Game state reset: Available mods repopulated from master templates.");
+        }
 
 
     private List<Mod> ModChoicesForPlayer()
@@ -77,25 +104,57 @@ public class ModManager : MonoBehaviour
         }
     }
 
+
+    public void OnOrderInitializeActiveMods()
+    {
+        //check expiry and remove
+        RemoveExpiredActiveMods();
+
+        foreach (Mod mod in activeMods) // run all mods except clickables
+        {
+            if (autoApplyModTypes.Contains(mod.modType))
+            {
+                mod.ProcessOrder(GameManager.Instance.currentOrder);
+            }
+        }
+
+    }
+
+    public void OnOrderFilledActiveMods()
+    {
+        foreach (Mod mod in activeMods) // run all mods except clickables
+        {
+            if (autoApplyModTypes.Contains(mod.modType))
+            {
+                mod.TryUseAbility();
+            }
+        }
+    }
+
     /// <summary>
     /// Checks active mods for expiration and removes them. 
-    /// Should be called after every order is processed.
     /// </summary>
     public void RemoveExpiredActiveMods()
     {
-        // --- CRITICAL FIX 3: Safe Backward For Loop ---
         for (int i = activeMods.Count - 1; i >= 0; i--)
         {
             Mod mod = activeMods[i];
 
-            // Note: You still need a method to check expiration.
-            // The isExpired flag should be set in Mod.ProcessOrder() or Mod.TryUseAbility().
             if (mod.isExpired)
             {
-                // Optional: Call mod.Revert() if the mod made permanent changes
                 activeMods.RemoveAt(i);
+                Destroy(mod);
                 Debug.Log($"Removed expired mod: {mod.ModName}");
             }
+        }
+    }
+
+    public void RemoveActiveMod(Mod modInstance)
+    {
+        if (activeMods.Contains(modInstance))
+        {
+            activeMods.Remove(modInstance);
+            Destroy(modInstance); // Good practice to destroy the instance
         }
     }
 

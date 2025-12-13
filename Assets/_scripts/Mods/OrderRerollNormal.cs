@@ -21,6 +21,10 @@ namespace Assets._scripts.Mods
  
         }
 
+        public override void ResetMod()
+        {
+
+        }
         public void OnRerollOrderPressed()
         {
             if (!this.TryUseAbility())

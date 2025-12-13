@@ -13,7 +13,10 @@ namespace Assets._scripts.Mods
         public override string description => $"Each food item in your inventory weighs '{ItemWeightMult}x' permanently.fulfills '{ItemWeightMult}x' the order";
         public override string modUsedMessage => $"Food Items weigh '{ItemWeightMult}x'!";
 
+        public override void ResetMod()
+        {
 
+        }
         public override ModType modType => ModType.Permanent;
 
         public override int GetBurgerInventoryWeightMultiplier()

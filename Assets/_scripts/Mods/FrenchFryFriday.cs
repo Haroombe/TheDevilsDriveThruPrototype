@@ -13,6 +13,10 @@ namespace Assets._scripts.Mods
         public override string description => $"For 1 shift, Fries payout '{paymentMult}x'";
         public override string modUsedMessage => $"'{paymentMult}x' payout on Fries!";
 
+        public override void ResetMod()
+        {
+            
+        }
 
         public override ModType modType => ModType.Finite;
 

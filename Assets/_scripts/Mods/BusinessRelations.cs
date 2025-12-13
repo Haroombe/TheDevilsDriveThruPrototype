@@ -13,6 +13,9 @@ namespace Assets._scripts.Mods
         public override string description => $"The cost of all food items drops by {discount*100}% permanently!";
         public override string modUsedMessage => $"Applied!";
 
+        public override void ResetMod()
+        {
+        }
 
         public override ModType modType => ModType.Permanent;
 

@@ -10,11 +10,14 @@ namespace Assets._scripts.Mods
 
         public override int InitialUses => 1;
         public override string ModName => "Supply Drop";
-        public override string description => $"Add '{supplyDropMult}x' your the current order to your inventory.";
-        public override string modUsedMessage => $"Added '{supplyDropMult}x' current order to inventory!";
+        public override string description => $"Add '{supplyDropMult}x' your the current order size to your inventory.";
+        public override string modUsedMessage => $"Added '{supplyDropMult}x' current order size to inventory!";
 
         public override ModType modType => ModType.Finite;
-
+        public override void ResetMod()
+        {
+            // no need to reset since inventory is managed by game manager
+        }
         public override void ProcessOrder(Order order)
         {
 

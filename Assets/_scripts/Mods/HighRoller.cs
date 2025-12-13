@@ -14,6 +14,10 @@ namespace Assets._scripts.Mods
         public override string description => $"For 1 shift, The order size is '{volumeMult}x', but the payouts are '{paymentMult}x'";
         public override string modUsedMessage => $"'{volumeMult}x' order size, but '{paymentMult}x' payouts!";
 
+        public override void ResetMod()
+        {
+            
+        }
 
         public override ModType modType => ModType.Finite;
 

@@ -15,16 +15,26 @@ namespace Assets._scripts.Mods
         public override string ModName => "Red40";
         public override string description => $"Sodas appear {weightReductionPercent*100}% less permanently";
         public override string modUsedMessage => $"Applied!";
+        private float originalMaxPCT;
+        private float originalMinPCT;
 
+
+        public override void ResetMod()
+        {
+            OrderManager.Instance.ItemPrioritiesWeights[1].MaxPct = originalMaxPCT;
+            OrderManager.Instance.ItemPrioritiesWeights[1].MinPct = originalMinPCT;
+        }
 
         public override ModType modType => ModType.Permanent;
 
 
         public override void ProcessOrder(Order order)
         {
-            if (!isSet) { 
-                OrderManager.Instance.ItemPrioritiesWeights[1].MaxPct *= 1-weightReductionPercent;
-                OrderManager.Instance.ItemPrioritiesWeights[1].MinPct *= 1 - weightReductionPercent;
+            if (!isSet) {
+                originalMaxPCT = OrderManager.Instance.ItemPrioritiesWeights[1].MaxPct;
+                originalMinPCT = OrderManager.Instance.ItemPrioritiesWeights[1].MinPct;
+                OrderManager.Instance.ItemPrioritiesWeights[1].MaxPct *= (1-weightReductionPercent);
+                OrderManager.Instance.ItemPrioritiesWeights[1].MinPct *= (1 - weightReductionPercent);
 
             }
 

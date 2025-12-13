@@ -27,6 +27,8 @@ public abstract class Mod : ScriptableObject
         isExpired = false;
     }
 
+    public abstract void ResetMod();
+
     public virtual bool TryUseAbility()
     {
         if (modType == ModType.Permanent)

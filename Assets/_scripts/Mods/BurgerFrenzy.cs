@@ -21,15 +21,25 @@ namespace Assets._scripts.Mods
 
         public override ModType modType => ModType.Finite;
 
+
+        public override float GetBurgerCostMultiplier()
+        {
+            return 1 - burgercostDiscount;
+        }
+
+        public override float GetBurgerPriceMultiplier()
+        {
+            return 1 - burgerpayoutIncrease;
+
+        }
+
         // TODO 
         // ADD how to handle this, change it back after shift
         public override void ProcessOrder(Order order)
         {
             if (GameManager.Instance.getOrderNum() == GameManager.Instance.OrdersPerShift) // reset
             {
-                OrderManager.Instance.ItemPrioritiesWeights[0] = OrderManager.Instance.OrderGenerator._defaultRules[0];
-                OrderManager.Instance.OrderGenerator.UpdateAllocationRules(OrderManager.Instance.OrderGenerator._defaultRules);
-                
+                ResetMod();
             }else if (setWeight == false)
             {
                 OrderManager.Instance.ItemPrioritiesWeights[0].MaxPct = .8f;
@@ -39,5 +49,17 @@ namespace Assets._scripts.Mods
 
         }
 
+
+        /// <summary>
+        /// Will be called 
+        /// - If Shift ends
+        /// - If player resets game
+        /// No possibility of discarding without resetting 
+        /// </summary>
+        public override void ResetMod()
+        {
+            OrderManager.Instance.ItemPrioritiesWeights[0] = OrderManager.Instance.OrderGenerator._defaultRules[0];
+            OrderManager.Instance.OrderGenerator.UpdateAllocationRules(OrderManager.Instance.OrderGenerator._defaultRules);
+        }
     }
 }

@@ -13,6 +13,10 @@ namespace Assets._scripts.Mods
         public override string description => $"Buying in Bulk gives you a {(int)(bulkDiscountfl*100)}% discount!";
         public override string modUsedMessage => $"Bulk discount {(int)(bulkDiscountfl * 100)}% applied";
 
+        public override void ResetMod()
+        {
+            
+        }
 
         public override ModType modType => ModType.Permanent;
 

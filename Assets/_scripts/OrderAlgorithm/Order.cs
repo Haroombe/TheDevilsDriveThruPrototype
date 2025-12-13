@@ -9,6 +9,7 @@ public class Order
     public int totalVolumeOrdered;
 
     // --- Financial Data ---
+    public float TotalPayoutNonMod { get; private set; }
     public float TotalPayout { get; private set; }
     public float TotalCost { get; private set; }
     public float NetProfit { get; private set; }
@@ -22,6 +23,7 @@ public class Order
     public string fulfilledTimeString;
     public int shiftNum;
 
+    public float orderPayoutMultiplier = 1f;
     public float FulfilledTime
     {
         get { return fulfilledTime; }
@@ -37,6 +39,9 @@ public class Order
         totalVolumeOrdered = total_volume;
 
         // **NEW: Calculate and cache the fixed bulk amounts**
+
+        orderPayoutMultiplier = ModManager.Instance.GetTotalPayoutMultiplier();
+        
         CalculateBulkBuyAmounts(burgers, fries, sodas);
 
         CalculateFinancials();
@@ -51,16 +56,7 @@ public class Order
         SodaBulkBuyAmount = Mathf.Max(1, Mathf.CeilToInt(sodas * 0.10f));
     }
 
-    public float CalculatePayout()
-    {
-        // ... (Existing implementation for CalculatePayout, which updates TotalPayout, TotalCost, NetProfit)
-        // Ensure this method is setting TotalPayout, TotalCost, and NetProfit
-        // using EconomyManager.Instance.Cur...Price and EconomyManager.Instance.Cur...Cost
 
-        // NOTE: The previous refactor placed this logic in CalculateFinancials(). 
-        // Ensure only one method (e.g., CalculateFinancials) handles the financial calculation.
-        return TotalPayout; // Return the final TotalPayout/Revenue
-    }
 
     public void CalculateFinancials()
     {
@@ -70,7 +66,8 @@ public class Order
         float sodaRevenue = EconomyManager.Instance.CurSodaPrice * sodaOrderAmount;
         float flatBonus = GameManager.Instance.flatProfitPerOrder;
 
-        TotalPayout = burgerRevenue + friesRevenue + sodaRevenue;
+        TotalPayoutNonMod = burgerRevenue + friesRevenue + sodaRevenue;
+        TotalPayout = TotalPayoutNonMod * orderPayoutMultiplier;
         Debug.Log($"Order Payout Calculation: Burgers(${burgerRevenue:F2}) + Fries(${friesRevenue:F2}) + Sodas(${sodaRevenue:F2}) + Bonus(${flatBonus * shiftNum:F2}) = TotalPayout(${TotalPayout:F2})");
 
         // 2. Calculate Cost

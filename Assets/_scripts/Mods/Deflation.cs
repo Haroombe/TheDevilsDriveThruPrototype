@@ -15,6 +15,9 @@ namespace Assets._scripts.Mods
 
         public override ModType modType => ModType.Finite;
 
+        public override void ResetMod()
+        {
+        }
         public override float GetBurgerCostMultiplier()
         {
             return 1-ItemDeflationMult;

@@ -15,6 +15,10 @@ namespace Assets._scripts.Mods
 
         public override ModType modType => ModType.Finite;
 
+        public override void ResetMod()
+        {
+                // no need to reset since inventory is managed by game manager
+        }
         public override void ProcessOrder(Order order)
         {
             

@@ -21,12 +21,18 @@ namespace Assets._scripts.Mods
  
         }
 
+        public override void ResetMod()
+        {
+            
+        }
+
         public override float GetPayoutMultiplier()
         {
             return payoutMult;
         }
         public void OnRerollOrderPressed()
         {
+            //TODO QOL: SFX
             if (!this.TryUseAbility())
             {
                 return;
