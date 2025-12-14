@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/ShiftBonus")]
+
     public class ShiftBonus : Mod
     {
 
@@ -19,10 +21,15 @@ namespace Assets._scripts.Mods
         public override ModType modType => ModType.Permanent;
 
         // this actually puts the second largest but who is checking lmfao
+        // IM CHECKING: If the player does a special move last turn and mods the payout they will hit an edge case bc the last order is skipped
         public override void ProcessOrder(Order order)
         {
             if (GameManager.Instance.getOrderNum() == GameManager.Instance.OrdersPerShift)
+            {
                 GameManager.Instance.flatProfitPerShift += GameManager.Instance.largestpayout;
+                Debug.Log($"{ModName} set shift profit {GameManager.Instance.flatProfitPerShift}");
+
+            } // TEST ME
 
         }
 

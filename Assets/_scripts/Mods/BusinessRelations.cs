@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/BusinessRelations")]
+
     public class BusinessRelations : Mod
     {
 
-        private float discount = 0.30f;
+        public float discount = 0.30f;
         public override int InitialUses => GameManager.Instance.OrdersPerShift;
 
         public override string ModName => "Business Relations";
@@ -20,17 +22,17 @@ namespace Assets._scripts.Mods
         public override ModType modType => ModType.Permanent;
 
 
-        public override float GetBurgerCostMultiplier()
+        public override float _GetBurgerCostMultiplier()
         {
             return 1-discount;
         }
 
-        public override float GetFriesCostMultiplier()
+        public override float _GetFriesCostMultiplier()
         {
             return 1-discount;
         }
 
-        public override float GetSodaCostMultiplier()
+        public override float _GetSodaCostMultiplier()
         {
             return 1 - discount;
         }

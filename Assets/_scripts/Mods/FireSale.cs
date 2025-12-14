@@ -3,11 +3,18 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/FireSale")]
+
     public class FireSale : Mod
     {
-        private float ingredientOverrideCost = 0.01f;
+        public float ingredientOverrideCost = 0.01f;
         public override int InitialUses => 1;
-        private bool isClicked = false;
+        private bool _isClicked = false;
+
+        public override bool isClicked()
+        {
+            return _isClicked;
+        }
 
         public override string ModName => "Fire Sale";
         public override string description => $"(Single Use) For 1 order, every food item costs ${ingredientOverrideCost}";
@@ -15,23 +22,24 @@ namespace Assets._scripts.Mods
 
         public override void ResetMod()
         {
-            
+            _isClicked = true;
+            EconomyManager.Instance.UpdateShiftEconomy(GameManager.Instance.shiftNum);
         }
 
         public override ModType modType => ModType.Clickable;
 
-        public override float GetBurgerCostOverride()
+        public override float _GetBurgerCostOverride()
         {
-            return isClicked? ingredientOverrideCost : base.GetBurgerCostOverride(); 
+            return _isClicked? ingredientOverrideCost : base._GetBurgerCostOverride(); 
         }
 
-        public override float GetFriesCostOverride()
+        public override float _GetFriesCostOverride()
         {
-            return isClicked ? ingredientOverrideCost : base.GetFriesCostOverride();
+            return _isClicked ? ingredientOverrideCost : base._GetFriesCostOverride();
         }
-        public override float GetSodaCostOverride()
+        public override float _GetSodaCostOverride()
         {
-            return isClicked ? ingredientOverrideCost : base.GetSodaCostOverride();
+            return _isClicked ? ingredientOverrideCost : base._GetSodaCostOverride();
         }     
         public override void ProcessOrder(Order order)
         {
@@ -39,8 +47,8 @@ namespace Assets._scripts.Mods
         }
         public void onModClick()
         {
-            isClicked = true;
-            // add method that is integrated with gamemanager that is used to caclulate the price of the items TODO
+            _isClicked = true;
+            EconomyManager.Instance.UpdateShiftEconomy(GameManager.Instance.shiftNum);
 
         }
 

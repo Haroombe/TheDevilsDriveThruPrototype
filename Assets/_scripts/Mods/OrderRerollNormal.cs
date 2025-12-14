@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/OrderRerollNormal")]
+
     public class OrderRerollNormal : Mod
     {
 
@@ -22,12 +24,12 @@ namespace Assets._scripts.Mods
         }
 
         public override void ResetMod()
-        {
+        { // game manager resets the order
 
         }
         public void OnRerollOrderPressed()
         {
-            if (!this.TryUseAbility())
+            if (!this.ConsumeUsage())
             {
                 return;
             }

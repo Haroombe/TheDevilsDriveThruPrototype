@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/ImBulking")]
+
     public class ImBulking : Mod
     {
 
-        private float bulkDiscountfl = 0.25f;
+        public float bulkDiscountfl = 0.35f;
         public override int InitialUses => GameManager.Instance.OrdersPerShift;
 
         public override string ModName => "I'm Bulking";
@@ -20,7 +22,7 @@ namespace Assets._scripts.Mods
 
         public override ModType modType => ModType.Permanent;
 
-        public override float GetBulkPriceMultiplier()
+        public override float _GetBulkPriceMultiplier()
         {
             return 1 - bulkDiscountfl;
         }

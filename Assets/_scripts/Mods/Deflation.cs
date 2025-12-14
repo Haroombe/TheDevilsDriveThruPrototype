@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/Deflation")]
     public class Deflation : Mod
     {
-        private float ItemDeflationMult = 0.30f;
+        public float ItemDeflationMult = 0.30f;
         public override int InitialUses => GameManager.Instance.OrdersPerShift * 2;
 
         public override string ModName => "Deflation";
@@ -18,16 +19,16 @@ namespace Assets._scripts.Mods
         public override void ResetMod()
         {
         }
-        public override float GetBurgerCostMultiplier()
+        public override float _GetBurgerCostMultiplier()
         {
             return 1-ItemDeflationMult;
         }
 
-        public override float GetFriesCostMultiplier()
+        public override float _GetFriesCostMultiplier()
         {
             return 1 - ItemDeflationMult;
         }
-        public override float GetSodaCostMultiplier()
+        public override float _GetSodaCostMultiplier()
         {
             return 1 - ItemDeflationMult;
         }

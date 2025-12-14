@@ -208,9 +208,12 @@ public class OrderComplexity
         float meanVolumeMu = BaseOrderComplexity + complexityFactor;
 
 
-        // --- LEVEL 2: Stochastic Volume Generation ---
+        // --- LEVEL 2: Stochastic Volume Generation AND MODS---
         var volumeResults = _randomizer.GenerateFinalVolume(meanVolumeMu, BaseOrderComplexity);
         int finalVolumeTarget = volumeResults.VolumeFinal;
+
+        // MODS
+        finalVolumeTarget = (int)MathF.Round(finalVolumeTarget * ModManager.Instance.GetTotalVolumeMultiplier());
 
 
         // --- LEVEL 3: Component Allocation ---

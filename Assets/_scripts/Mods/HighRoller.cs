@@ -3,11 +3,13 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/HighRoller")]
+
     public class HighRoller : Mod
     {
 
-        private int volumeMult = 2;
-        private int paymentMult = 5;
+        public int volumeMult = 2;
+        public int paymentMult = 5;
         public override int InitialUses => GameManager.Instance.OrdersPerShift;
 
         public override string ModName => "High Roller";
@@ -21,12 +23,12 @@ namespace Assets._scripts.Mods
 
         public override ModType modType => ModType.Finite;
 
-        public override float GetVolumeMultiplier()
+        public override float _GetVolumeMultiplier()
         {
             return volumeMult;
         }
 
-        public override float GetPayoutMultiplier()
+        public override float _GetPayoutMultiplier()
         {
             return paymentMult;
         }

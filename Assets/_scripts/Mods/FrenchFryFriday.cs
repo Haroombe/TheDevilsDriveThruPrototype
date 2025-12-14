@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/FrenchFryFriday")]
+
     public class FrenchFryFriday : Mod
     {
 
-        private float paymentMult = 3f;
+        public float paymentMult = 3f;
         public override int InitialUses => GameManager.Instance.OrdersPerShift;
 
         public override string ModName => "French Fries Friday";
@@ -20,7 +22,7 @@ namespace Assets._scripts.Mods
 
         public override ModType modType => ModType.Finite;
 
-        public override float GetFriesPriceMultiplier()
+        public override float _GetFriesPriceMultiplier()
         {
             return paymentMult;
         }

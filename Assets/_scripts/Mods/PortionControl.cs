@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/PortionControl")]
+
     public class PortionControl : Mod
     {
 
-        private int ItemWeightMult = 2;
+        public int ItemWeightMult = 2;
         public override int InitialUses => -10; //arbitrary 
 
         public override string ModName => "Portion Control";
@@ -19,17 +21,17 @@ namespace Assets._scripts.Mods
         }
         public override ModType modType => ModType.Permanent;
 
-        public override int GetBurgerInventoryWeightMultiplier()
+        public override int _GetBurgerInventoryWeightMultiplier()
         {
             return ItemWeightMult;
         }
 
-        public override int GetFriesInventoryWeightMultiplier()
+        public override int _GetFriesInventoryWeightMultiplier()
         {
             return ItemWeightMult;
         }
 
-        public override int GetSodaInventoryWeightMultiplier()
+        public override int _GetSodaInventoryWeightMultiplier()
         {
             return ItemWeightMult;
         }

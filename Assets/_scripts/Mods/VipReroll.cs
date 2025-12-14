@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/VipReroll")]
+
     public class VipReroll : Mod
     {
 
@@ -26,14 +28,14 @@ namespace Assets._scripts.Mods
             
         }
 
-        public override float GetPayoutMultiplier()
+        public override float _GetPayoutMultiplier()
         {
             return payoutMult;
         }
         public void OnRerollOrderPressed()
         {
             //TODO QOL: SFX
-            if (!this.TryUseAbility())
+            if (!this.ConsumeUsage())
             {
                 return;
             }

@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/SittingOnGold")]
+
     public class SittingOnGold : Mod
     {
 

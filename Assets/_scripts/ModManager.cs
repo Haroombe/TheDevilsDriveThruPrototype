@@ -11,11 +11,13 @@ public class ModManager : MonoBehaviour
     [SerializeField] private Mod[] mods;
 
     public int seed = -1;
-    [SerializeField] private int PlayerModChoiceCount = 2;
+    [SerializeField] private const int PlayerModChoiceCount = 2;
 
     private List<List<Mod>> _modhistory = new List<List<Mod>>();
 
     private ModType[] autoApplyModTypes = new ModType[] {ModType.Permanent, ModType.Finite};
+
+    public bool isResetting = false;
 
     private void Awake()
     {
@@ -37,41 +39,44 @@ public class ModManager : MonoBehaviour
 
 
     public void ResetMods()
+    {
+        isResetting = true;
+        _modhistory.Add(activeMods);
+        foreach (Mod modInstance in activeMods)
         {
-            _modhistory.Add(activeMods);
-            foreach (Mod modInstance in activeMods)
-            {
-                modInstance.ResetMod();
+            modInstance.ResetMod();
 
-                Destroy(modInstance);
-            }
-
-            activeMods = new List<Mod>(); //overwrite
-            allMods = new List<Mod>(); //overwrite
-
-
-            foreach (Mod modAsset in mods) // reset available mods list to include all mods
-            {
-                allMods.Add(modAsset);
-            }
-
-
-            Debug.Log("Game state reset: Available mods repopulated from master templates.");
+            Destroy(modInstance);
         }
 
+        activeMods = new List<Mod>(); //overwrite
+        allMods = new List<Mod>(); //overwrite
 
-    private List<Mod> ModChoicesForPlayer()
+
+        foreach (Mod modAsset in mods) // reset available mods list to include all mods
+        {
+            allMods.Add(modAsset);
+        }
+
+        isResetting = false;
+
+        Debug.Log("Game state reset: Available mods repopulated from master templates.");
+    }
+
+
+    public List<Mod> ModChoicesForPlayer()
     {
+        List<Mod> list = new List<Mod>();
         if (seed == -1)
         {
             Debug.LogWarning("Mod Manager seed not set. Will not generate Mod choices for player");
-            return null;
+            return list;
         }
 
         if (allMods.Count == 0)
         {
             Debug.LogWarning("No mods available");
-            return null;
+            return list;
         }
 
         // --- CRITICAL FIX 2: Use .Count property ---
@@ -81,7 +86,7 @@ public class ModManager : MonoBehaviour
             PlayerModChoiceCount
         );
 
-        List<Mod> list = new List<Mod>();
+        
         foreach (int mod_index in selectedIndices)
         {
             list.Add(allMods[mod_index]);
@@ -105,7 +110,7 @@ public class ModManager : MonoBehaviour
     }
 
 
-    public void OnOrderInitializeActiveMods()
+    public void OnOrderStartInitializeActiveMods()
     {
         //check expiry and remove
         RemoveExpiredActiveMods();
@@ -115,6 +120,7 @@ public class ModManager : MonoBehaviour
             if (autoApplyModTypes.Contains(mod.modType))
             {
                 mod.ProcessOrder(GameManager.Instance.currentOrder);
+                Debug.Log(mod.modUsedMessage);
             }
         }
 
@@ -126,7 +132,7 @@ public class ModManager : MonoBehaviour
         {
             if (autoApplyModTypes.Contains(mod.modType))
             {
-                mod.TryUseAbility();
+                mod.ConsumeUsage();
             }
         }
     }
@@ -136,6 +142,7 @@ public class ModManager : MonoBehaviour
     /// </summary>
     public void RemoveExpiredActiveMods()
     {
+        int removedMods = 0;
         for (int i = activeMods.Count - 1; i >= 0; i--)
         {
             Mod mod = activeMods[i];
@@ -144,9 +151,11 @@ public class ModManager : MonoBehaviour
             {
                 activeMods.RemoveAt(i);
                 Destroy(mod);
+                removedMods++;
                 Debug.Log($"Removed expired mod: {mod.ModName}");
             }
         }
+        Debug.Log($"Scraped {removedMods} expired mods");
     }
 
     public void RemoveActiveMod(Mod modInstance)
@@ -169,6 +178,10 @@ public class ModManager : MonoBehaviour
         float totalVolumeMultiplier = 1;
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             totalVolumeMultiplier *= mod.GetVolumeMultiplier();
         }
         return totalVolumeMultiplier;
@@ -178,6 +191,10 @@ public class ModManager : MonoBehaviour
         float totalVolumeMultiplier = 1;
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             totalVolumeMultiplier *= mod.GetVolumeMultiplier();
         }
         return totalVolumeMultiplier;
@@ -187,6 +204,10 @@ public class ModManager : MonoBehaviour
         float total = 1.0f;
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             total *= mod.GetBurgerPriceMultiplier();
         }
         return total;
@@ -197,6 +218,10 @@ public class ModManager : MonoBehaviour
         float total = 1.0f;
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             total *= mod.GetFriesPriceMultiplier();
         }
         return total;
@@ -207,6 +232,10 @@ public class ModManager : MonoBehaviour
         float total = 1.0f;
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             total *= mod.GetSodaPriceMultiplier();
         }
         return total;
@@ -217,6 +246,10 @@ public class ModManager : MonoBehaviour
         float total = 1.0f;
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             total *= mod.GetBulkPriceMultiplier();
         }
         return total;
@@ -226,6 +259,10 @@ public class ModManager : MonoBehaviour
         float total = 1.0f;
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             total *= mod.GetBurgerCostMultiplier();
         }
         return total;
@@ -236,6 +273,10 @@ public class ModManager : MonoBehaviour
         float total = 1.0f;
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             total *= mod.GetFriesCostMultiplier();
         }
         return total;
@@ -246,13 +287,18 @@ public class ModManager : MonoBehaviour
         float total = 1.0f;
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             total *= mod.GetSodaCostMultiplier();
         }
         return total;
     }
     // ModManager.cs
 
-    private const float NO_OVERRIDE = -1.0f;
+    public const float NO_OVERRIDE = -1.0f;
+    public float getNO_OVERRIDE => NO_OVERRIDE;
 
     /// <summary>
     /// Finds the lowest absolute cost override for Burgers among all active mods.
@@ -264,6 +310,10 @@ public class ModManager : MonoBehaviour
 
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             float currentOverride = mod.GetBurgerCostOverride();
 
             // 1. Check if the current mod actually provides an override price (>= 0.0f)
@@ -289,6 +339,10 @@ public class ModManager : MonoBehaviour
 
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             float currentOverride = mod.GetFriesCostOverride();
 
             if (currentOverride >= 0.0f)
@@ -312,6 +366,10 @@ public class ModManager : MonoBehaviour
 
         foreach (Mod mod in activeMods)
         {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
             float currentOverride = mod.GetSodaCostOverride();
 
             if (currentOverride >= 0.0f)

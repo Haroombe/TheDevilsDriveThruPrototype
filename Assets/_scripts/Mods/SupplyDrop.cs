@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/SupplyDrop")]
+
     public class SupplyDrop : Mod
     {
 
-        private int supplyDropMult = 4;
+        public int supplyDropMult = 4;
 
         public override int InitialUses => 1;
         public override string ModName => "Supply Drop";

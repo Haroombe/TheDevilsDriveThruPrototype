@@ -6,6 +6,8 @@ using Assets._scripts.OrderAlgorithm;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/Red40")]
+
     public class Red40 : Mod
     {
         public override int InitialUses => -10;
@@ -21,6 +23,8 @@ namespace Assets._scripts.Mods
 
         public override void ResetMod()
         {
+            isSet = false;
+
             OrderManager.Instance.ItemPrioritiesWeights[1].MaxPct = originalMaxPCT;
             OrderManager.Instance.ItemPrioritiesWeights[1].MinPct = originalMinPCT;
         }
@@ -35,7 +39,8 @@ namespace Assets._scripts.Mods
                 originalMinPCT = OrderManager.Instance.ItemPrioritiesWeights[1].MinPct;
                 OrderManager.Instance.ItemPrioritiesWeights[1].MaxPct *= (1-weightReductionPercent);
                 OrderManager.Instance.ItemPrioritiesWeights[1].MinPct *= (1 - weightReductionPercent);
-
+                Debug.Log($"{ModName}: set soda weights {OrderManager.Instance.ItemPrioritiesWeights[1].MinPct}-{OrderManager.Instance.ItemPrioritiesWeights[1].MaxPct}");
+                isSet = true;
             }
 
         }

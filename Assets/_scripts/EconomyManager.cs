@@ -62,13 +62,18 @@ public class EconomyManager : MonoBehaviour
         {
             Instance = this;
             Debug.Log("EconomyManager initializing.");
-            InitializeEconomy(1);
             // Initialization is now managed by the GameManager calling InitializeEconomy()
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        InitializeEconomy(1);
+
     }
 
     /// <summary>
@@ -129,12 +134,53 @@ public class EconomyManager : MonoBehaviour
         // Final hard limit on difficulty (preventing unstable costs)
         effectiveCostRatio = Mathf.Clamp(effectiveCostRatio, 0.05f, 5.0f);
 
+        // --- 1.5 Mods 
+        // Price is affected by price multiplier
+        // Cost is affected by effectivecostRatio
+        // Cost is a function of price (Price*CostRatio = Cost)
+        float burgerEffectiveCostRatio = effectiveCostRatio * ModManager.Instance.GetTotalBurgerCostMultiplier();
+        float friesEffectiveCostRatio = effectiveCostRatio * ModManager.Instance.GetTotalFriesCostMultiplier();
+        float sodaEffectiveCostRatio = effectiveCostRatio * ModManager.Instance.GetTotalSodaCostMultiplier();
+
+        // --- Price Multipliers (NEW) ---
+        // The final price multiplier for an item is the Global Inflation * the Mod's Price Adjustment.
+        float burgerFinalPriceMult = priceMultiplier * ModManager.Instance.GetTotalBurgerPriceMultiplier();
+        float friesFinalPriceMult = priceMultiplier * ModManager.Instance.GetTotalFriesPriceMultiplier();
+        float sodaFinalPriceMult = priceMultiplier * ModManager.Instance.GetTotalSodaPriceMultiplier();
+
+        float burgerCostOverride = ModManager.Instance.GetTotalBurgerCostOverride();
+        float friesCostOverride = ModManager.Instance.GetTotalFriesCostOverride();
+        float sodaCostOverride = ModManager.Instance.GetTotalSodaCostOverride();
+
         // --- 2. Update All Item Prices and Costs ---
 
-        // Use the private fields for the ref arguments
-        UpdateItemValues(ref _curBurgerPrice, ref _curBurgerCost, baseBurgerPrice, priceMultiplier, effectiveCostRatio);
-        UpdateItemValues(ref _curFriesPrice, ref _curFriesCost, baseFriesPrice, priceMultiplier, effectiveCostRatio);
-        UpdateItemValues(ref _curSodaPrice, ref _curSodaCost, baseSodaPrice, priceMultiplier, effectiveCostRatio);
+        // We pass the final, Mod-adjusted Price Multiplier AND the final, Mod-adjusted Cost Ratio.
+
+        UpdateItemValues(
+            ref _curBurgerPrice,
+            ref _curBurgerCost,
+            baseBurgerPrice,
+            burgerFinalPriceMult,       
+            burgerEffectiveCostRatio    
+        );
+
+        UpdateItemValues(
+            ref _curFriesPrice,
+            ref _curFriesCost,
+            baseFriesPrice,
+            friesFinalPriceMult,         
+            friesEffectiveCostRatio     
+        );
+
+        UpdateItemValues(
+            ref _curSodaPrice,
+            ref _curSodaCost,
+            baseSodaPrice,
+            sodaFinalPriceMult,          
+            sodaEffectiveCostRatio      
+        );
+
+        GameManager.Instance.UpdateRateUI();
 
         // Log for tuning/debugging
         float marginPct = (1f - effectiveCostRatio) * 100f;
@@ -148,13 +194,17 @@ public class EconomyManager : MonoBehaviour
     // --- Helper Function ---
 
     private void UpdateItemValues(ref float currentPrice, ref float currentCost,
-                                  float basePrice, float multiplier, float costRatio)
+                                  float basePrice, float multiplier, float costRatio, float costOverride = -1f)
     {
         // Price = Base Price * Multiplier (The illusion of scale)
         currentPrice = basePrice * multiplier;
 
         // Cost = Current Price * Effective Cost Ratio (The true difficulty)
         currentCost = currentPrice * costRatio;
+        if (costOverride != -1f)
+        {
+            currentCost = costOverride;
+        }
     }
 
 

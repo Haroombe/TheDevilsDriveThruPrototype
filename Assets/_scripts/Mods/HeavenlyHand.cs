@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/HeavenlyHand")]
+
     public class HeavenlyHand : Mod
     {
         public override int InitialUses => -10;
@@ -17,7 +19,7 @@ namespace Assets._scripts.Mods
         }
         public override ModType modType => ModType.Permanent;
 
-        public override float GetPayoutMultiplier()
+        public override float _GetPayoutMultiplier()
         {
             return (float) GameManager.Instance.shiftNum;
         }

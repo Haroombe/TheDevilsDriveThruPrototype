@@ -5,13 +5,14 @@ using UnityEngine;
 
 namespace Assets._scripts.Mods
 {
+    [CreateAssetMenu(fileName = "NewMod_", menuName = "Game/Mod/BurgerFrenzy")]
     public class BurgerFrenzy : Mod
     {
         public override int InitialUses => GameManager.Instance.OrdersPerShift;
 
-        private float burgerweightordervolume = .80f;
-        private float burgercostDiscount = .80f;
-        private float burgerpayoutIncrease = .80f;
+        public float burgerweightordervolume = .80f;
+        public float burgercostDiscount = .80f;
+        public float burgerpayoutIncrease = .80f;
         private bool setWeight = false;
 
         public override string ModName => "Burger Frenzy";
@@ -22,12 +23,12 @@ namespace Assets._scripts.Mods
         public override ModType modType => ModType.Finite;
 
 
-        public override float GetBurgerCostMultiplier()
+        public override float _GetBurgerCostMultiplier()
         {
             return 1 - burgercostDiscount;
         }
 
-        public override float GetBurgerPriceMultiplier()
+        public override float _GetBurgerPriceMultiplier()
         {
             return 1 - burgerpayoutIncrease;
 
@@ -44,6 +45,7 @@ namespace Assets._scripts.Mods
             {
                 OrderManager.Instance.ItemPrioritiesWeights[0].MaxPct = .8f;
                 OrderManager.Instance.ItemPrioritiesWeights[0].MinPct= .8f;
+                setWeight = true;
 
             }
 
@@ -58,6 +60,8 @@ namespace Assets._scripts.Mods
         /// </summary>
         public override void ResetMod()
         {
+            Debug.Log("Reset Burger frenzy burger weights");
+            setWeight = false;
             OrderManager.Instance.ItemPrioritiesWeights[0] = OrderManager.Instance.OrderGenerator._defaultRules[0];
             OrderManager.Instance.OrderGenerator.UpdateAllocationRules(OrderManager.Instance.OrderGenerator._defaultRules);
         }

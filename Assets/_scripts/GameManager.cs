@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas gameCanvas;
     [SerializeField] private Canvas pauseCanvas;
     [SerializeField] private Canvas gameOverCanvas;
-
+    public ModShopUI modShopUI;
 
     [SerializeField] private OrderHistoryDisplay curOrderDisplayDebug;
 
@@ -254,7 +254,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Updates the Item Cost/Price/Profit section of the UI using EconomyManager data.
     /// </summary>
-    private void UpdateRateUI()
+    public void UpdateRateUI()
     {
         var eco = EconomyManager.Instance;
 
@@ -304,6 +304,8 @@ public class GameManager : MonoBehaviour
     {
         // Ensure OrderManager is set up before the GameLoop starts
         SetGameSeed();
+        ModManager.Instance.seed = gameSeed;
+
 
         OrderManager.Instance.SetSeed(gameSeed);
         AudioManager.Instance.PlayBGM(0);
@@ -383,6 +385,12 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.OrderStart:
+                if (ModManager.Instance.activeMods.Count > 0)
+                {
+                    ModManager.Instance.OnOrderStartInitializeActiveMods();
+                    Debug.Log($"{ModManager.Instance.activeMods.Count} Mods initialized for Order #{OrderNum}");
+                }
+
                 Debug.Log("order number " + OrderNum.ToString() + " start");
                 CustomerManager.Instance.SpawnToMid();
 
@@ -397,6 +405,11 @@ public class GameManager : MonoBehaviour
 
                 OrderNum++;
                 TotalOrderNum++;
+                if (ModManager.Instance.activeMods.Count > 0)
+                {
+                    ModManager.Instance.OnOrderFilledActiveMods();
+                    Debug.Log($"Mods Usage Consumption triggered");
+                }
 
                 if (OrderNum >= OrdersPerShift + 1)
                 {
@@ -408,11 +421,13 @@ public class GameManager : MonoBehaviour
                     // --- INTEGRATION: Update Economy for Next Shift ---
                     EconomyManager.Instance.UpdateShiftEconomy(shiftNum);
 
-                    UpdateRateUI(); // Refresh UI with the new Shift prices
+                    //UpdateRateUI(); // Refresh UI with the new Shift prices
 
                     UpdateOrderUI(OrderNum);
                     UpdateShiftUI(shiftNum);
                     FadingMessage.Instance.ShowCallout($"Starting Shift {shiftNum}", .9f, 1.9f);
+                    GameLoop(GameState.ShiftOver);
+
                 }
                 else
                 {
@@ -420,9 +435,22 @@ public class GameManager : MonoBehaviour
 
                     Debug.Log("starting next order number " + OrderNum.ToString());
                     UpdateOrderUI(OrderNum);
+                    GameLoop(GameState.OrderStart);
+
                 }
 
-                GameLoop(GameState.OrderStart);
+                break;
+            case GameState.ShiftOver:
+                ModShopPause();
+                bool modsDisplayed = modShopUI.PlayerModChoiceSelection();
+                // unpause and calling gameloop order start handled on mouse click
+                if (!modsDisplayed)
+                {
+                    modShopUI.turnOffModCanvas();
+                    ModShopUnPause();
+                    FadingMessage.Instance.ShowMessage("Not enough Mods to display, skipping mod selection...");
+                    GameLoop(GameState.OrderStart);
+                }
                 break;
 
             case GameState.GameOverRestart:
@@ -524,6 +552,28 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
 
     // --- Public Methods ---
+    public void ModShopPause()
+    {
+        Cursor.visible = true;
+        isPaused = true;
+        Time.timeScale = 0f;
+        gameCanvas.enabled = false;
+        pauseCanvas.enabled = false;
+
+    }
+
+    public void ModShopUnPause()
+    {
+        Cursor.visible = false;
+        isPaused = false;
+        Time.timeScale = 0f;
+        gameCanvas.enabled = true;
+        pauseCanvas.enabled = false;
+        gameOverCanvas.enabled = false;
+        SetPanelVisibility(GiveUpPanel, false);
+        SetPanelVisibility(GameOverPanel, false);
+
+    }
     public void PauseGame()
     {
         Cursor.visible = true;
@@ -554,6 +604,7 @@ public class GameManager : MonoBehaviour
     {
         SetGameSeed();
         OrderManager.Instance.ResetGenerator(gameSeed);
+        ModManager.Instance.seed = gameSeed;
 
         curGameState = GameState.Null;
         ResetGameAction?.Invoke();
@@ -630,9 +681,13 @@ public class GameManager : MonoBehaviour
 
 
     // 1. Generic Buy Function Overload (accepts amount)
-    private void BuyFood(ref int playerInventory, float costPerItem, TextMeshProUGUI inventoryText, string foodName, int amount)
+    private void BuyFood(ref int playerInventory, float costPerItem, TextMeshProUGUI inventoryText, string foodName, int amount, bool _isBulk=false)
     {
         float totalCost = costPerItem * amount;
+        if (_isBulk)
+        {
+            totalCost *= ModManager.Instance.GetTotalBulkPriceMultiplier(); // MODS
+        }
 
         if (playerMoney >= totalCost)
         {
@@ -663,7 +718,7 @@ public class GameManager : MonoBehaviour
     public void BuyBurger(int amount, bool isBulk = false)
     {
         float unitCost = EconomyManager.Instance.CurBurgerCost;
-        BuyFood(ref playerBurgers, unitCost, BurgerAmountText, "burger", amount);
+        BuyFood(ref playerBurgers, unitCost, BurgerAmountText, "burger", amount, isBulk);
     }
 
     // Modify the existing BuyFries to use the new bulk method (defaulting to 1)
@@ -674,7 +729,7 @@ public class GameManager : MonoBehaviour
     public void BuyFries(int amount, bool isBulk= false)
     {
         float unitCost = EconomyManager.Instance.CurFriesCost;
-        BuyFood(ref playerFries, unitCost, FriesAmountText, "fries", amount);
+        BuyFood(ref playerFries, unitCost, FriesAmountText, "fries", amount, isBulk);
     }
 
     // Modify the existing BuySoda to use the new bulk method (defaulting to 1)
@@ -685,6 +740,16 @@ public class GameManager : MonoBehaviour
     public void BuySoda(int amount, bool isBulk = false)
     {
         float unitCost = EconomyManager.Instance.CurSodaCost;
-        BuyFood(ref playerSoda, unitCost, SodaAmountText, "soda", amount);
+        BuyFood(ref playerSoda, unitCost, SodaAmountText, "soda", amount, isBulk);
+    }
+
+
+
+    public void OnPlayerModChoiceClick(Mod mod)
+    {
+        ModManager.Instance.PlayerChoosesMod(mod);
+        //ui 
+        // sfx
+        GameLoop(GameState.OrderStart);
     }
 }
