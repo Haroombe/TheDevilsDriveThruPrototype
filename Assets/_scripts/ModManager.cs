@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -16,6 +17,11 @@ public class ModManager : MonoBehaviour
     private List<List<Mod>> _modhistory = new List<List<Mod>>();
 
     private ModType[] autoApplyModTypes = new ModType[] {ModType.Permanent, ModType.Finite};
+    public event Action<Mod> OnModAdded;
+    public event Action<Mod> OnClickableModExpired;
+
+    public event Action ResetClickableModsAction;
+
 
     public bool isResetting = false;
 
@@ -41,6 +47,7 @@ public class ModManager : MonoBehaviour
     public void ResetMods()
     {
         isResetting = true;
+        ResetClickableModsAction?.Invoke();
         _modhistory.Add(activeMods);
         foreach (Mod modInstance in activeMods)
         {
@@ -96,14 +103,16 @@ public class ModManager : MonoBehaviour
     }
 
     // Public hook for UI to call when a mod is chosen
-    public void PlayerChoosesMod(Mod chosenMod)
+    public void PlayerChoosesMod(Mod _chosenMod)
     {
         // 1. Initialize and activate the mod
+        Mod chosenMod = Instantiate(_chosenMod);
         chosenMod.Initialize(); // Initialize uses
         activeMods.Add(chosenMod);
+        OnModAdded?.Invoke(chosenMod);
 
         // 2. Remove from the available pool (assuming single-purchase)
-        if (!allMods.Remove(chosenMod))
+        if (!allMods.Remove(_chosenMod))
         {
             Debug.LogWarning($"Failed to remove mod '{chosenMod.ModName}' from available pool. Was it already used?");
         }
@@ -149,6 +158,10 @@ public class ModManager : MonoBehaviour
 
             if (mod.isExpired)
             {
+                if (mod.modType == ModType.Clickable)
+                {
+                    OnClickableModExpired?.Invoke(mod);
+                }
                 activeMods.RemoveAt(i);
                 Destroy(mod);
                 removedMods++;
@@ -188,14 +201,14 @@ public class ModManager : MonoBehaviour
     }
     public float GetTotalPayoutMultiplier()
     {
-        float totalVolumeMultiplier = 1;
+        float totalVolumeMultiplier = 1f;
         foreach (Mod mod in activeMods)
         {
             if (mod.modType == ModType.Clickable && !mod.isClicked())
             {
                 continue;
             }
-            totalVolumeMultiplier *= mod.GetVolumeMultiplier();
+            totalVolumeMultiplier *= mod.GetPayoutMultiplier();
         }
         return totalVolumeMultiplier;
     }

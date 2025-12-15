@@ -25,7 +25,7 @@ public class SodaMachine : Interactable
         float unitCost = EconomyManager.Instance.CurSodaCost;
         float bulkCost = unitCost * bulkAmount;
 
-        string bulkOption = $"'b' to Buy {bulkAmount} Sodas (-${bulkCost:F2})";
+        string bulkOption = $"'c' to Buy {bulkAmount} Sodas (-${bulkCost:F2})";
 
         // --- Option 2: Single Unit Buy (Optional action, needs separate input) ---
         float singleCost = unitCost;

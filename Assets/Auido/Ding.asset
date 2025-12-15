@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1cc4b318f429e14181b7fe2ade1dd4a, type: 3}
-  m_Name: HighRollerMod
+  m_Script: {fileID: 11500000, guid: ef5f059251193ac4ca8e2df9389c7a7a, type: 3}
+  m_Name: Ding
   m_EditorClassIdentifier: 
-  volumeMult: 2
-  paymentMult: 5
+  clips:
+  - {fileID: 8300000, guid: b7e13eb6e29074d4ba1b9ff724fa9ae3, type: 3}
+  volume: 0.2

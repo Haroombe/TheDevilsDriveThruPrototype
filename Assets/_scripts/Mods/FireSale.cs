@@ -22,7 +22,7 @@ namespace Assets._scripts.Mods
 
         public override void ResetMod()
         {
-            _isClicked = true;
+            _isClicked = false;
             EconomyManager.Instance.UpdateShiftEconomy(GameManager.Instance.shiftNum);
         }
 
@@ -45,11 +45,17 @@ namespace Assets._scripts.Mods
         {
 
         }
-        public void onModClick()
+        public bool onModClick()
         {
+            if (!this.ConsumeUsage())
+            {
+                return false;
+            }
             _isClicked = true;
+            
             EconomyManager.Instance.UpdateShiftEconomy(GameManager.Instance.shiftNum);
-
+            FadingMessage.Instance.ShowMessage($"{modUsedMessage}", true, .6f, 1.7f);
+            return true;  
         }
 
 

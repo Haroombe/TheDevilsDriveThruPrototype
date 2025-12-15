@@ -7,6 +7,7 @@ public class ModShopUI : MonoBehaviour
     // Assign these TWO fixed UI elements in the Inspector
     [SerializeField] private GameObject cardContainer1;
     [SerializeField] private GameObject cardContainer2;
+    [SerializeField] private Canvas ModShopCanvas;
 
 
     // A list to hold our two choice wrappers
@@ -14,20 +15,19 @@ public class ModShopUI : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.SetActive(false);
-
-        
-    }
-
-    private void Start()
-    {
+        ModShopCanvas.enabled = false;
+        Debug.Log("adding modshop choice wrappers");
         // Get the wrapper scripts from the fixed UI cards once
         choiceWrappers.Add(cardContainer1.GetComponent<ModButtonWrapper>());
         choiceWrappers.Add(cardContainer2.GetComponent<ModButtonWrapper>());
+
+
     }
+
 
     public bool PlayerModChoiceSelection()
     {
+
         // 1. Get the choices from the Manager
         List<Mod> modChoices = ModManager.Instance.ModChoicesForPlayer();
 
@@ -56,13 +56,15 @@ public class ModShopUI : MonoBehaviour
         }
 
         // Show the entire choice panel
-        gameObject.SetActive(true);
+        ModShopCanvas.enabled = true;
+
         return true;
 
     }
 
     public void turnOffModCanvas()
     {
-        gameObject.SetActive(false);
+        ModShopCanvas.enabled = false;
+
     }
 }

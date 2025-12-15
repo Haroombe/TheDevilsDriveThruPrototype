@@ -41,18 +41,18 @@ public class ModButtonWrapper : MonoBehaviour
         {
             // The single, clean call to the manager
             ModManager.Instance.PlayerChoosesMod(assignedMod);
-
+            AudioManager.Instance.PlaySFX("Ding", playInstantly: true);
             // Hide the Mod Shop UI after selection
-            FadingMessage.Instance.ShowMessage($"You got the '{assignedMod.ModName}' modifier!", isGreen:true);
+            FadingMessage.Instance.ShowMessage($"You got the '{assignedMod.ModName}' modifier!", isGreen:true,customFadeDuration: 1.7f);
 
 
         }
         else
         {
 
-            FadingMessage.Instance.ShowMessage($"Error:Failed to apply mod!!!");
+            FadingMessage.Instance.ShowMessage($"Error:Failed to apply mod!!!", customFadeDuration: 1.7f);
         }
-        ShopCanvas.gameObject.SetActive(false);
+        ShopCanvas.enabled = false;
         GameManager.Instance.ModShopUnPause();
         GameManager.Instance.GameLoop(GameState.OrderStart);
 

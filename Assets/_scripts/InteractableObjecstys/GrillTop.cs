@@ -27,7 +27,7 @@ public class GrillTop : Interactable
         float unitCost = EconomyManager.Instance.CurBurgerCost;
         float bulkCost = unitCost * bulkAmount;
 
-        string bulkOption = $"'b' to Buy {bulkAmount} Burgers (-${bulkCost:F2})";
+        string bulkOption = $"'c' to Buy {bulkAmount} Burgers (-${bulkCost:F2})";
 
         // --- Option 2: Single Unit Buy (Optional action, needs separate input) ---
         float singleCost = unitCost;

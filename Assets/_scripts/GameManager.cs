@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas pauseCanvas;
     [SerializeField] private Canvas gameOverCanvas;
     public ModShopUI modShopUI;
+    public ModBookUI bookUI;
 
     [SerializeField] private OrderHistoryDisplay curOrderDisplayDebug;
 
@@ -127,6 +128,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshPro FriesOrderText;
     [SerializeField] private TextMeshPro SodaOrderText;
     [SerializeField] private TextMeshPro OrderPayout; // TotalPayout (Revenue)
+    [SerializeField] private TextMeshPro OrderPayoutMultiplier; 
+
     [SerializeField] private TextMeshPro OrderNumText;
     [SerializeField] private TextMeshPro OrderPriceText; // TotalCost
     [SerializeField] private TextMeshPro OrderNetRevenueText; // NetProfit
@@ -190,7 +193,15 @@ public class GameManager : MonoBehaviour
 
         // Display Total Payout (Revenue)
         if (OrderPayout != null)
-            OrderPayout.text = $"+ ${order.TotalPayout:F2}";
+            OrderPayout.text = $"+ ${order.TotalPayoutNonMod:F2}";
+
+        if (OrderPayoutMultiplier != null && order.orderPayoutMultiplier != 1f)
+        { OrderPayoutMultiplier.text = $"x{order.orderPayoutMultiplier:F2}"; }
+        else
+        {
+            OrderPayoutMultiplier.text = "";
+        }
+
 
         // Display Total Cost (as a negative)
         if (OrderPriceText != null)
@@ -349,7 +360,14 @@ public class GameManager : MonoBehaviour
         // ... (other input handling)
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            curOrderDisplayDebug.TogglePanel();
+            bookUI.ToggleUI();
+            if (!isPaused)
+            {
+                ModBookPause();
+            } else
+            {
+                ModBookUnPause();
+            }
         }
         //if (Input.GetKeyDown(KeyCode.G))
         //{
@@ -385,11 +403,18 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.OrderStart:
+
                 if (ModManager.Instance.activeMods.Count > 0)
                 {
                     ModManager.Instance.OnOrderStartInitializeActiveMods();
                     Debug.Log($"{ModManager.Instance.activeMods.Count} Mods initialized for Order #{OrderNum}");
                 }
+
+                if (shiftNum == 2 && OrderNum == 1)
+                {
+                    FadingMessage.Instance.ShowMessageAfterDelay(5f, "Press 'space' to show active mods", true, .5f, 2f);
+                }
+
 
                 Debug.Log("order number " + OrderNum.ToString() + " start");
                 CustomerManager.Instance.SpawnToMid();
@@ -402,6 +427,7 @@ public class GameManager : MonoBehaviour
 
             case GameState.OrderFilled:
                 Debug.Log("order number " + OrderNum.ToString() + " filled during shift " + shiftNum.ToString());
+                AudioManager.Instance.PlaySFX("ThankYou", playInstantly: false, minDelay: 0.15f, maxDelay: 0.35f);
 
                 OrderNum++;
                 TotalOrderNum++;
@@ -560,13 +586,37 @@ public class GameManager : MonoBehaviour
         gameCanvas.enabled = false;
         pauseCanvas.enabled = false;
 
+
+    }
+    public void ModBookPause()
+    {
+        Cursor.visible = true;
+        isPaused = true;
+        Time.timeScale = 0f;
+        gameCanvas.enabled = false;
+        pauseCanvas.enabled = false;
+        SetPanelVisibility(GiveUpPanel, false);
+        SetPanelVisibility(GameOverPanel, false);
+
+    }
+    public void ModBookUnPause()
+    {
+        Cursor.visible = false;
+        isPaused = false;
+        Time.timeScale = 1f;
+        gameCanvas.enabled = true;
+        pauseCanvas.enabled = false;
+        SetPanelVisibility(GiveUpPanel, false);
+        SetPanelVisibility(GameOverPanel, false);
+
     }
 
     public void ModShopUnPause()
     {
         Cursor.visible = false;
         isPaused = false;
-        Time.timeScale = 0f;
+        Time.timeScale = 1f;
+        
         gameCanvas.enabled = true;
         pauseCanvas.enabled = false;
         gameOverCanvas.enabled = false;
@@ -605,6 +655,7 @@ public class GameManager : MonoBehaviour
         SetGameSeed();
         OrderManager.Instance.ResetGenerator(gameSeed);
         ModManager.Instance.seed = gameSeed;
+        ModManager.Instance.ResetMods();
 
         curGameState = GameState.Null;
         ResetGameAction?.Invoke();

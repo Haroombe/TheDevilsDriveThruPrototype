@@ -27,12 +27,14 @@ namespace Assets._scripts.Mods
         { // game manager resets the order
 
         }
-        public void OnRerollOrderPressed()
+        public bool onModClick()
         {
             if (!this.ConsumeUsage())
             {
-                return;
+
+                return false;
             }
+
             Order rerolledOrder = GameManager.Instance.CreateOrder();
 
             GameManager.Instance.ReplaceCurrentOrder(
@@ -40,6 +42,8 @@ namespace Assets._scripts.Mods
                 sodas: (int)Mathf.Round(rerolledOrder.sodaOrderAmount * (1-volumeReduction)),
                 burgers: (int)Mathf.Round(rerolledOrder.burgerOrderAmount * (1-volumeReduction))
                 );
+            FadingMessage.Instance.ShowMessage($"{modUsedMessage}", true, .6f, 1.7f);
+            return true;
             //maybe add click notifs
         }
 

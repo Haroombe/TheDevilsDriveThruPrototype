@@ -130,7 +130,7 @@ public class AudioManager : MonoBehaviour
         var src = GetAvailableSource();
         src.clip = clip;
         src.volume = group.volume * SfxVolume * masterVolume;
-
+        src.pitch = group.GetRandomPitch();
         if (playInstantly)
         {
             src.Play(); // ignore delay

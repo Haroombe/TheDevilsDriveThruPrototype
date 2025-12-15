@@ -10,6 +10,7 @@ namespace Assets._scripts.Mods
     {
 
         public float payoutMult = 4f;
+        private bool _isClicked = false;
 
         public override int InitialUses => 1;
         public override string ModName => "VIP Customer";
@@ -25,21 +26,26 @@ namespace Assets._scripts.Mods
 
         public override void ResetMod()
         {
-            
+            _isClicked = false;
+
         }
 
         public override float _GetPayoutMultiplier()
         {
-            return payoutMult;
+            return _isClicked ? payoutMult : base._GetPayoutMultiplier();
+
         }
-        public void OnRerollOrderPressed()
+        public bool onModClick()
         {
             //TODO QOL: SFX
             if (!this.ConsumeUsage())
             {
-                return;
+                return false;
             }
+            _isClicked = true;
             GameManager.Instance.currentOrder = GameManager.Instance.CreateOrder();
+            FadingMessage.Instance.ShowMessage($"{modUsedMessage}", true, .6f, 1.7f);
+            return true;
         }
 
 
