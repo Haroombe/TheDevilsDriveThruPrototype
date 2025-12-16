@@ -29,6 +29,7 @@ namespace Assets._scripts.Mods
 
         public override void ProcessOrder(Order order)
         {
+            EconomyManager.Instance.UpdateShiftEconomy(GameManager.Instance.shiftNum);
 
         }
 

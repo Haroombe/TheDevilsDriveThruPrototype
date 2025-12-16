@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 
 using UnityEngine;
 
@@ -11,9 +12,13 @@ namespace Assets._scripts.Mods
 
         public float payoutMult = 4f;
         private bool _isClicked = false;
-
+        private TextMeshPro UsesRemainingTextField;
+        private void getUsesTextField()
+        {
+            UsesRemainingTextField= ModManager.Instance.getClickModUsesTextField(this.ModName);
+        }
         public override int InitialUses => 1;
-        public override string ModName => "VIP Customer";
+        public override string ModName => "VIP Customer Reroll";
         public override string description => $"(Single Use) Reroll the current order with '{payoutMult}x' payout!";
 
         public override string modUsedMessage => $"Rerolled current order!)";
@@ -30,6 +35,15 @@ namespace Assets._scripts.Mods
 
         }
 
+        public override void Initialize()
+        {
+            base.Initialize();
+            getUsesTextField();
+            setUsesTextField();
+        }
+        public void setUsesTextField() {
+            UsesRemainingTextField.text = $"Uses: ({UsesRemaining}/{InitialUses})";
+        }
         public override float _GetPayoutMultiplier()
         {
             return _isClicked ? payoutMult : base._GetPayoutMultiplier();
@@ -42,6 +56,8 @@ namespace Assets._scripts.Mods
             {
                 return false;
             }
+            setUsesTextField();
+
             _isClicked = true;
             GameManager.Instance.currentOrder = GameManager.Instance.CreateOrder();
             FadingMessage.Instance.ShowMessage($"{modUsedMessage}", true, .6f, 1.7f);

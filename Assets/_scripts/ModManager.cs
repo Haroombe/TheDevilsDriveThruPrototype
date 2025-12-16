@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Assets._scripts.Mods;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class ModManager : MonoBehaviour
@@ -9,6 +11,7 @@ public class ModManager : MonoBehaviour
     public List<Mod> activeMods = new List<Mod>();
     public List<Mod> allMods = new List<Mod>();
 
+    [SerializeField] public ModButtonPress[] ClickableModPressButtons;
     [SerializeField] private Mod[] mods;
 
     public int seed = -1;
@@ -43,7 +46,24 @@ public class ModManager : MonoBehaviour
         }
     }
 
-
+    [SerializeField] private TextMeshPro[] UsageFields;
+    public TextMeshPro getClickModUsesTextField(string modName)
+    {
+        if (modName == "VIP Customer Reroll")
+        {
+            return UsageFields[0];
+        }
+        if (modName == "Fire Sale")
+        {
+            return UsageFields[1];
+        }
+        if (modName == "Basic Order Reroll")
+        {
+            return UsageFields[2];
+        }
+        Debug.LogWarning($"No Clickable Mod Button found for mod name: {modName}");
+        return null;
+    }
     public void ResetMods()
     {
         isResetting = true;
@@ -102,6 +122,20 @@ public class ModManager : MonoBehaviour
         return list;
     }
 
+    private void EnsureAllClickableButtonsActive()
+    {
+        // Find ALL objects with the ModButtonPress script, including those that are inactive.
+
+        foreach (var button in ClickableModPressButtons)
+        {
+            // If the button is currently inactive, activate it.
+            // This will trigger ModButtonPress.OnEnable(), which subscribes it to events.
+            if (!button.gameObject.activeSelf)
+            {
+                button.gameObject.SetActive(true);
+            }
+        }
+    }
     // Public hook for UI to call when a mod is chosen
     public void PlayerChoosesMod(Mod _chosenMod)
     {
@@ -109,6 +143,13 @@ public class ModManager : MonoBehaviour
         Mod chosenMod = Instantiate(_chosenMod);
         chosenMod.Initialize(); // Initialize uses
         activeMods.Add(chosenMod);
+        Debug.Log($"Player chose mod: {chosenMod.ModName} INVOKE EVENT");  
+        if (chosenMod.modType == ModType.Clickable)
+        {
+            Debug.Log("Clickable mod chosen, turn on all buttons");
+            EnsureAllClickableButtonsActive();
+            // reference to script so that all buttons with script attached can turn on
+        }
         OnModAdded?.Invoke(chosenMod);
 
         // 2. Remove from the available pool (assuming single-purchase)
@@ -308,8 +349,48 @@ public class ModManager : MonoBehaviour
         }
         return total;
     }
-    // ModManager.cs
 
+
+    public int GetTotalSodaWeightMultiplier()
+    {
+        int total = 1;
+        foreach (Mod mod in activeMods)
+        {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
+            total *= mod.GetSodaInventoryWeightMultiplier();
+        }
+        return total;
+    }
+    public int GetTotalBurgerWeightMultiplier()
+    {
+        int total = 1;
+        foreach (Mod mod in activeMods)
+        {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
+            total *= mod.GetBurgerInventoryWeightMultiplier();
+        }
+        return total;
+    }
+    // ModManager.cs
+    public int GetTotalFriesWeightMultiplier()
+    {
+        int total = 1;
+        foreach (Mod mod in activeMods)
+        {
+            if (mod.modType == ModType.Clickable && !mod.isClicked())
+            {
+                continue;
+            }
+            total *= mod.GetFriesInventoryWeightMultiplier();
+        }
+        return total;
+    }
     public const float NO_OVERRIDE = -1.0f;
     public float getNO_OVERRIDE => NO_OVERRIDE;
 
@@ -418,7 +499,7 @@ public static class ModSelectionUtility
         }
 
         // 2. Initialize Seeded RNG
-        System.Random rng = new System.Random(seed);
+        System.Random rng = new System.Random(seed + GameManager.Instance.shiftNum);
 
         // 3. Create a list of all possible indices (0, 1, 2, 3, ...)
         List<int> allIndices = Enumerable.Range(0, availableModCount).ToList();

@@ -37,7 +37,7 @@ namespace Assets._scripts.Mods
         }
         public override void ProcessOrder(Order order)
         {
-
+            GameManager.Instance.UpdateAllInventoryUI();
         }
 
 

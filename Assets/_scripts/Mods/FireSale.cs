@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 namespace Assets._scripts.Mods
@@ -15,7 +16,21 @@ namespace Assets._scripts.Mods
         {
             return _isClicked;
         }
-
+        private TextMeshPro UsesRemainingTextField;
+        private void getUsesTextField()
+        {
+            UsesRemainingTextField = ModManager.Instance.getClickModUsesTextField(this.ModName);
+        }
+        public override void Initialize()
+        {
+            base.Initialize();
+            getUsesTextField();
+            setUsesTextField();
+        }
+        public void setUsesTextField()
+        {
+            UsesRemainingTextField.text = $"Uses: ({UsesRemaining}/{InitialUses})";
+        }
         public override string ModName => "Fire Sale";
         public override string description => $"(Single Use) For 1 order, every food item costs ${ingredientOverrideCost}";
         public override string modUsedMessage => $"Food items cost ${ingredientOverrideCost}!";
@@ -51,6 +66,8 @@ namespace Assets._scripts.Mods
             {
                 return false;
             }
+            setUsesTextField();
+
             _isClicked = true;
             
             EconomyManager.Instance.UpdateShiftEconomy(GameManager.Instance.shiftNum);

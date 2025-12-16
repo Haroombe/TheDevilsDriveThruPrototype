@@ -37,7 +37,7 @@ public class FryStation : Interactable
         float unitCost = EconomyManager.Instance.CurFriesCost;
         float bulkCost = unitCost * bulkAmount;
 
-        string bulkOption = $"'b' Buy {bulkAmount} Fries (-${bulkCost:F2})";
+        string bulkOption = $"'c' Buy {bulkAmount} Fries (-${bulkCost:F2})";
 
         // --- Option 2: Single Unit Buy (Optional action, needs separate input) ---
         float singleCost = unitCost;

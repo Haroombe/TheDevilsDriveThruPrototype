@@ -16,7 +16,7 @@ public class GiveUpButton : Interactable
         GameManager.Instance.SetPanelVisibility(GameManager.Instance.GiveUpPanel, true);
         GameManager.Instance.SetPanelVisibility(GameManager.Instance.GameOverPanel, false);
 
-        GameManager.Instance.PauseGame();
+        GameManager.Instance.PauseGame(true);
 
     }
     public override void BulkInteract()

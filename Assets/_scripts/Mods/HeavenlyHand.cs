@@ -9,14 +9,12 @@ namespace Assets._scripts.Mods
     {
         public override int InitialUses => -10;
         private bool isSet = false;
-        private float shiftbasedMult = 0f; // Initialize to 0 (or -1, if 0 is a valid multiplier)
+        private float shiftbasedMult = 2f; // Initialize to 0 (or -1, if 0 is a valid multiplier)
 
         // Helper property to determine the multiplier value to display
-        private float DisplayMultiplier =>
-            shiftbasedMult > 0f ? shiftbasedMult : (float)GameManager.Instance.shiftNum;
         public override string ModName => "Heavenly Hand";
-        public override string description => $"Each order payout is permanently multiplied based on the immediate shift number! ('{DisplayMultiplier}x')";
-        public override string modUsedMessage => $"Payout will increase {DisplayMultiplier}x!";
+        public override string description => $"Each order payout is permanently multiplied by {shiftbasedMult}!";
+        public override string modUsedMessage => $"Payout will increase {shiftbasedMult}x!";
 
         public override void ResetMod()
         {
@@ -34,7 +32,7 @@ namespace Assets._scripts.Mods
         {
             if (!isSet)
             {
-                shiftbasedMult = (float)GameManager.Instance.shiftNum;
+                shiftbasedMult = 2;
                 isSet = true;
             }
 

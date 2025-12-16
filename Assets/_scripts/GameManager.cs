@@ -100,6 +100,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI BurgerAmountText;
     [SerializeField] private TextMeshProUGUI FriesAmountText;
     [SerializeField] private TextMeshProUGUI TimerText;
+    [SerializeField] private TextMeshProUGUI BurgerMultText;
+    [SerializeField] private TextMeshProUGUI FriesMultText;
+    [SerializeField] private TextMeshProUGUI SodaMultText;
+
+
 
     // --- ITEM RATES UI (3 columns: Cost, Price, Net Profit) ---
     [Header("Items Text")]
@@ -107,9 +112,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshPro SodaCostText;
     [SerializeField] private TextMeshPro FriesCostText;
 
-    [SerializeField] private TextMeshPro BurgerProfitText; // This is now SELL PRICE
-    [SerializeField] private TextMeshPro SodaProfitText;   // This is now SELL PRICE
-    [SerializeField] private TextMeshPro FriesProfitText;  // This is now SELL PRICE
+    [SerializeField] private TextMeshPro BurgerSellText; // This is now SELL PRICE
+    [SerializeField] private TextMeshPro SodaSellText;   // This is now SELL PRICE
+    [SerializeField] private TextMeshPro FriesSellText;  // This is now SELL PRICE
 
     [SerializeField] private TextMeshPro BurgerNetProfitText; // This is the new Net Profit (Price - Cost)
     [SerializeField] private TextMeshPro FriesNetProfitText;
@@ -271,19 +276,19 @@ public class GameManager : MonoBehaviour
 
         // --- BURGER UI ---
         BurgerCostText.text = $"${eco.CurBurgerCost:F2}";
-        BurgerProfitText.text = $"${eco.CurBurgerPrice:F2}"; // Selling Price (Renamed from Profit)
+        BurgerSellText.text = $"${eco.CurBurgerPrice:F2}"; // Selling Price (Renamed from Profit)
         float burgerNetProfit = eco.CurBurgerPrice - eco.CurBurgerCost;
         BurgerNetProfitText.text = FormatProfitText(burgerNetProfit);
 
         // --- FRIES UI ---
         FriesCostText.text = $"${eco.CurFriesCost:F2}";
-        FriesProfitText.text = $"${eco.CurFriesPrice:F2}"; // Selling Price
+        FriesSellText.text = $"${eco.CurFriesPrice:F2}"; // Selling Price
         float friesNetProfit = eco.CurFriesPrice - eco.CurFriesCost;
         FriesNetProfitText.text = FormatProfitText(friesNetProfit);
 
         // --- SODA UI ---
         SodaCostText.text = $"${eco.CurSodaCost:F2}";
-        SodaProfitText.text = $"${eco.CurSodaPrice:F2}"; // Selling Price
+        SodaSellText.text = $"${eco.CurSodaPrice:F2}"; // Selling Price
         float sodaNetProfit = eco.CurSodaPrice - eco.CurSodaCost;
         SodaNetProfitText.text = FormatProfitText(sodaNetProfit);
     }
@@ -404,11 +409,8 @@ public class GameManager : MonoBehaviour
 
             case GameState.OrderStart:
 
-                if (ModManager.Instance.activeMods.Count > 0)
-                {
-                    ModManager.Instance.OnOrderStartInitializeActiveMods();
-                    Debug.Log($"{ModManager.Instance.activeMods.Count} Mods initialized for Order #{OrderNum}");
-                }
+                ModManager.Instance.OnOrderStartInitializeActiveMods();
+                Debug.Log($"{ModManager.Instance.activeMods.Count} Mods initialized for Order #{OrderNum}");
 
                 if (shiftNum == 2 && OrderNum == 1)
                 {
@@ -537,14 +539,17 @@ public class GameManager : MonoBehaviour
         baseAmount += amount;
     }
 
-    private void minusAmountF(ref float baseAmount, float amount)
+    private void minusAmountF(ref float baseAmount, float amount, float mult = 1)
     {
-        baseAmount -= amount;
+        baseAmount = (baseAmount*mult) - amount;
+        baseAmount = Mathf.Max(0, baseAmount);
     }
 
-    private void minusAmount(ref int baseAmount, int amount)
+    private void minusAmount(ref int baseAmount, int amount, int mult = 1)
     {
-        baseAmount -= amount;
+        baseAmount = (baseAmount * mult) - amount;
+        baseAmount = Mathf.Max(0, baseAmount);
+
     }
     // ---------------------------
 
@@ -564,6 +569,23 @@ public class GameManager : MonoBehaviour
         UpdateUI(SodaAmountText, playerSoda);
         UpdateUI(BurgerAmountText, playerBurgers);
         UpdateUI(FriesAmountText, playerFries);
+        int burgerMult = ModManager.Instance.GetTotalBurgerWeightMultiplier();
+        int friesMult = ModManager.Instance.GetTotalFriesWeightMultiplier();
+        int sodaMult = ModManager.Instance.GetTotalSodaWeightMultiplier();
+
+        if (burgerMult != 1)
+        {
+            UpdateUI(BurgerMultText, $"x{burgerMult}");
+        } else { UpdateUI(BurgerMultText, $""); }
+        if (friesMult != 1)
+        {
+            UpdateUI(FriesMultText, $"x{friesMult}");
+        } else { UpdateUI(FriesMultText, $""); }
+        if (sodaMult != 1)
+        {
+            UpdateUI(SodaMultText, $"x{sodaMult}");
+        } else { UpdateUI(SodaMultText, $""); }
+
     }
 
     private void updateTimerUI()
@@ -624,13 +646,19 @@ public class GameManager : MonoBehaviour
         SetPanelVisibility(GameOverPanel, false);
 
     }
-    public void PauseGame()
+    public void PauseGame(bool skip_canvas = false)
     {
         Cursor.visible = true;
         isPaused = true;
         Time.timeScale = 0f;
         gameCanvas.enabled = false;
-        pauseCanvas.enabled = true;
+        if (skip_canvas)
+        { 
+            pauseCanvas.enabled = false; }
+        else
+        {
+            pauseCanvas.enabled = true;
+        }
     }
 
     public void ResumeGame()
@@ -707,9 +735,9 @@ public class GameManager : MonoBehaviour
     // current player inventory can fulfill order
     public bool canFulfillOrder(Order curOrder)
     {
-        bool hasEnoughBurgers = playerBurgers >= curOrder.burgerOrderAmount;
-        bool hasEnoughFries = playerFries >= curOrder.friesOrderAmount;
-        bool hasEnoughSoda = playerSoda >= curOrder.sodaOrderAmount;
+        bool hasEnoughBurgers = playerBurgers * ModManager.Instance.GetTotalBurgerWeightMultiplier() >= curOrder.burgerOrderAmount;
+        bool hasEnoughFries = playerFries * ModManager.Instance.GetTotalFriesWeightMultiplier() >= curOrder.friesOrderAmount;
+        bool hasEnoughSoda = playerSoda * ModManager.Instance.GetTotalSodaWeightMultiplier() >= curOrder.sodaOrderAmount;
 
         return hasEnoughBurgers && hasEnoughFries && hasEnoughSoda;
     }

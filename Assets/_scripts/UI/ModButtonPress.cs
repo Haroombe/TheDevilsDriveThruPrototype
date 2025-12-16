@@ -14,23 +14,46 @@ public enum ClickableModname
 public class ModButtonPress : MonoBehaviour
 {
     [SerializeField]
-    private ClickableModname buttonModKey;
-    private void Start()
-    {
-        ModManager.Instance.OnModAdded += OnModPurchased;
-        ModManager.Instance.OnClickableModExpired += OnModExpired;
-
-        ModManager.Instance.ResetClickableModsAction += disableButton;
-
-    }
+    public ClickableModname buttonModKey;
 
     private void Awake()
     {
+        Debug.Log("subbed to modbuttonpress gamemanger events");
         gameObject.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        Debug.Log("subbed to modbuttonpress gamemanger events");
+
+        if (ModManager.Instance != null)
+        {
+            ModManager.Instance.OnModAdded += OnModPurchased;
+            ModManager.Instance.OnClickableModExpired += OnModExpired;
+            ModManager.Instance.ResetClickableModsAction += disableButton;
+
+        }
+        else
+        {
+            Debug.LogError("ModManager instance is missing! Cannot subscribe to events.");
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (ModManager.Instance != null)
+        {
+            Debug.Log("disable to modbuttonpress gamemanger events");
+
+            ModManager.Instance.OnModAdded -= OnModPurchased;
+            ModManager.Instance.OnClickableModExpired -= OnModExpired;
+            ModManager.Instance.ResetClickableModsAction -= disableButton;
+        }
+    }
     private void OnModPurchased(Mod selectedmod)
     {
+        Debug.Log("purchase mod event recieved in modbutton");
+
         if (selectedmod.GetType() == typeof(OrderRerollNormal) && buttonModKey == ClickableModname.OrderRerollNormal)
         {
             gameObject.SetActive(true);
@@ -43,6 +66,11 @@ public class ModButtonPress : MonoBehaviour
         else if (selectedmod.GetType() == typeof(FireSale) && buttonModKey == ClickableModname.FireSale)
         {
             gameObject.SetActive(true);
+
+        }
+        else
+        {
+            disableButton();
 
         }
     }
