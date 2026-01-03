@@ -17,7 +17,7 @@ public class OrderHistoryDisplay : MonoBehaviour
     // NEW: Define the scale factor as a serialized field for easy adjustment
     [Header("Styling")]
     [Tooltip("Scale factor for history text size (e.g., 0.75 for 75%).")]
-    [SerializeField] private float historyTextScale = 0.85f;
+    [SerializeField] private float historyTextScale = 0.92f;
 
     private bool isPanelActive = false;
 
@@ -73,7 +73,7 @@ public class OrderHistoryDisplay : MonoBehaviour
             if (itemText != null)
             {
                 // Format the string using the data from the struct
-                string formattedText = $"Order #{i + 1} | Time: {record.getFulfilledTimeString()} | Payout: ${record.getPayout()} (B:{record.burgerOrderAmount} | F:{record.friesOrderAmount} | S:{record.sodaOrderAmount})";
+                string formattedText = $"Order #{i + 1} | Time: {record.getFulfilledTimeString()} | Payout: ${record.getPayout().ToString("F2")} (B:{record.burgerOrderAmount} | F:{record.friesOrderAmount} | S:{record.sodaOrderAmount})";
                 itemText.text = formattedText;
 
                 // --- NEW SIZE ADJUSTMENT LOGIC ---

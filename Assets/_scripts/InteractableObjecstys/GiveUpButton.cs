@@ -5,6 +5,8 @@ public class GiveUpButton : Interactable
 {
     private string _name = "Give Up Button";
 
+    public override bool canBuy => true;
+
     public override string InteractableName
     {
         get { return _name; }
@@ -16,6 +18,9 @@ public class GiveUpButton : Interactable
 
         GameManager.Instance.PauseGame();
 
+    }
+    public override void BulkInteract()
+    {
     }
     public override string getDialogue()
     {
