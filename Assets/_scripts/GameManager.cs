@@ -374,7 +374,19 @@ public class GameManager : MonoBehaviour
                 ModBookUnPause();
             }
         }
-        //if (Input.GetKeyDown(KeyCode.G))
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (currentOrder != null)
+            {
+
+                BuyBurger(currentOrder.burgerOrderAmount,true);
+                BuyFries(currentOrder.friesOrderAmount, true);
+                BuySoda(currentOrder.sodaOrderAmount, true);
+                FulfillOrder();
+            }
+
+        }
         //{
         //    SetPanelVisibility(GiveUpPanel, true);
         //}

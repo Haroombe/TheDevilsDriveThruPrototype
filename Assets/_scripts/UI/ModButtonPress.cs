@@ -16,6 +16,8 @@ public class ModButtonPress : MonoBehaviour
     [SerializeField]
     public ClickableModname buttonModKey;
 
+    public bool ModActive = false;
+
     private void Awake()
     {
         Debug.Log("subbed to modbuttonpress gamemanger events");
@@ -53,42 +55,51 @@ public class ModButtonPress : MonoBehaviour
     private void OnModPurchased(Mod selectedmod)
     {
         Debug.Log("purchase mod event recieved in modbutton");
+        if (ModActive)
+        {
+            return; // Mod already active so we should not disable it
+        }
 
         if (selectedmod.GetType() == typeof(OrderRerollNormal) && buttonModKey == ClickableModname.OrderRerollNormal)
         {
             gameObject.SetActive(true);
+            ModActive = true;
 
         } else if (selectedmod.GetType() == typeof(VipReroll) && buttonModKey == ClickableModname.VIPReroll)
         {
             gameObject.SetActive(true);
+            ModActive = true;
 
         }
         else if (selectedmod.GetType() == typeof(FireSale) && buttonModKey == ClickableModname.FireSale)
         {
             gameObject.SetActive(true);
-
+            ModActive = true;
         }
         else
         {
             disableButton();
 
+
         }
     }
     private void OnModExpired(Mod selectedmod)
     {
+        Debug.Log($"{buttonModKey} mod expired event recieved in modbutton");
         if (selectedmod.GetType() == typeof(OrderRerollNormal) && buttonModKey == ClickableModname.OrderRerollNormal)
         {
-            gameObject.SetActive(false);
+            disableButton();
 
         }
         else if (selectedmod.GetType() == typeof(VipReroll) && buttonModKey == ClickableModname.VIPReroll)
         {
-            gameObject.SetActive(false);
+            disableButton();
+
 
         }
         else if (selectedmod.GetType() == typeof(FireSale) && buttonModKey == ClickableModname.FireSale)
         {
-            gameObject.SetActive(false);
+            disableButton();
 
         }
     }
@@ -96,6 +107,8 @@ public class ModButtonPress : MonoBehaviour
     public void disableButton()
     {
         gameObject.SetActive(false);
+        ModActive = false;
+
     }
 
     public void OnRerollModButtonClick()

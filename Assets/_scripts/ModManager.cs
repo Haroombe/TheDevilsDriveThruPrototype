@@ -149,8 +149,8 @@ public class ModManager : MonoBehaviour
             Debug.Log("Clickable mod chosen, turn on all buttons");
             EnsureAllClickableButtonsActive();
             // reference to script so that all buttons with script attached can turn on
+            OnModAdded?.Invoke(chosenMod);
         }
-        OnModAdded?.Invoke(chosenMod);
 
         // 2. Remove from the available pool (assuming single-purchase)
         if (!allMods.Remove(_chosenMod))

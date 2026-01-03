@@ -2771,6 +2771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonModKey: 3
+  ModActive: 0
 --- !u!65 &224544974
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10521,8 +10522,8 @@ MonoBehaviour:
   inputKeyDownJump: 0
   inputKeyDownSlide: 0
   inputKeyDownCursor: 0
-  mouseSensitivityX: 2.66
-  mouseSensitivityY: 2.66
+  mouseSensitivityX: 2.34
+  mouseSensitivityY: 2.34
   mouseSnappiness: 20
   invertLookY: 0
   clampLookY: 90
@@ -12215,8 +12216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterVolume: 1
-  BgmVolume: 0
-  SfxVolume: 1
+  BgmVolume: 0.33
+  SfxVolume: 0.93
   bgmTracks:
   - {fileID: 11400000, guid: 05ca1615ba180da419342d4d40486c03, type: 2}
   startingBGMIndex: 0
@@ -13629,8 +13630,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 14.299988, y: 460.50018}
-  m_SizeDelta: {x: -1756.8002, y: -1053.2001}
+  m_AnchoredPosition: {x: 14.299988, y: 456.5501}
+  m_SizeDelta: {x: -1756.8002, y: -1045.2999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1102665014
 MonoBehaviour:
@@ -14940,6 +14941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonModKey: 2
+  ModActive: 0
 --- !u!114 &1263396664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18783,7 +18785,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Business Relations
+  m_text: Business Relations vip repll
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8bc55f3d5d5b90c4494e513fc61eb524, type: 2}
   m_sharedMaterial: {fileID: -3171035012982364965, guid: 8bc55f3d5d5b90c4494e513fc61eb524, type: 2}
@@ -18810,8 +18812,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.9
-  m_fontSizeBase: 27.9
+  m_fontSize: 23.62
+  m_fontSizeBase: 23.62
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -18822,7 +18824,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -29.3
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -19497,8 +19499,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.9
-  m_fontSizeBase: 27.9
+  m_fontSize: 21.36
+  m_fontSizeBase: 21.36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -19535,7 +19537,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: -1.0312853, z: 0, w: -0.5156288}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -19596,7 +19598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useRandomSeedInit: 0
   newSeedOnReset: 0
-  fixedSeed: 1339
+  fixedSeed: 1336
   runCount: 1
   largestpayout: 0
   gameCanvas: {fileID: 326967944}
@@ -19616,9 +19618,9 @@ MonoBehaviour:
   BurgerCostText: {fileID: 1080553021}
   SodaCostText: {fileID: 1673757451}
   FriesCostText: {fileID: 1175657018}
-  BurgerSellText: {fileID: 1080553021}
-  SodaSellText: {fileID: 1673757451}
-  FriesSellText: {fileID: 1175657018}
+  BurgerSellText: {fileID: 1149281667}
+  SodaSellText: {fileID: 1391515746}
+  FriesSellText: {fileID: 682413430}
   BurgerNetProfitText: {fileID: 1982787012}
   FriesNetProfitText: {fileID: 852478028}
   SodaNetProfitText: {fileID: 438364908}
@@ -21230,6 +21232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonModKey: 1
+  ModActive: 0
 --- !u!65 &1813136812
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22948,8 +22951,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.9
-  m_fontSizeBase: 27.9
+  m_fontSize: 23.62
+  m_fontSizeBase: 23.62
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -22960,7 +22963,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -29.3
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -23054,8 +23057,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -24.700073, y: 460.50003}
-  m_SizeDelta: {x: -1756.8002, y: -1053.2001}
+  m_AnchoredPosition: {x: -24.700073, y: 456.55002}
+  m_SizeDelta: {x: -1756.8002, y: -1045.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1963728557
 MonoBehaviour:
