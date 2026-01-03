@@ -30,6 +30,8 @@ public class Order
         set { fulfilledTime = value; }
     }
 
+    private float bulkBuyPercent = .25f;
+
     public Order(int burgers, int fries, int sodas, int total_volume, int ShiftNum)
     {
         shiftNum = ShiftNum;
@@ -51,9 +53,9 @@ public class Order
     private void CalculateBulkBuyAmounts(int burgers, int fries, int sodas)
     {
         // 10% of the ordered amount, rounded up, with a minimum of 1
-        BurgerBulkBuyAmount = Mathf.Max(1, Mathf.CeilToInt(burgers * 0.10f));
-        FriesBulkBuyAmount = Mathf.Max(1, Mathf.CeilToInt(fries * 0.10f));
-        SodaBulkBuyAmount = Mathf.Max(1, Mathf.CeilToInt(sodas * 0.10f));
+        BurgerBulkBuyAmount = Mathf.Max(1, Mathf.CeilToInt(burgers * bulkBuyPercent));
+        FriesBulkBuyAmount = Mathf.Max(1, Mathf.CeilToInt(fries * bulkBuyPercent));
+        SodaBulkBuyAmount = Mathf.Max(1, Mathf.CeilToInt(sodas * bulkBuyPercent));
     }
 
 

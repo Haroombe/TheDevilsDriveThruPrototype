@@ -53,7 +53,7 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && current != null)
             current.Interact();
-        if (Input.GetKeyDown(KeyCode.B) && current != null && current.canBuy)
+        if (Input.GetKeyDown(KeyCode.C) && current != null && current.canBuy)
             current.BulkInteract();
 
     }

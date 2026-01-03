@@ -212,9 +212,6 @@ public class OrderComplexity
         var volumeResults = _randomizer.GenerateFinalVolume(meanVolumeMu, BaseOrderComplexity);
         int finalVolumeTarget = volumeResults.VolumeFinal;
 
-        // MODS
-        finalVolumeTarget = (int)MathF.Round(finalVolumeTarget * ModManager.Instance.GetTotalVolumeMultiplier());
-
 
         // --- LEVEL 3: Component Allocation ---
         var componentResults = _componentGenerator.GenerateComponents(finalVolumeTarget, _currentRules);
@@ -269,6 +266,10 @@ public class StochasticVolumeRandomizer
         float volumeRaw = NextGaussian(meanVolumeMu, sigma);
         int volumeRounded = (int)Math.Round(volumeRaw);
         int volumeFinal = Math.Max(volumeRounded, (int)baseOrderComplexity);
+
+        // MODS
+        volumeFinal = (int)MathF.Round(volumeFinal * ModManager.Instance.GetTotalVolumeMultiplier());
+
 
         return new VolumeCalculationResult
         {

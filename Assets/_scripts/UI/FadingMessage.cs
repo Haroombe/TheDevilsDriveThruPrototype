@@ -154,4 +154,23 @@ public class FadingMessage : MonoBehaviour
         TextField.text = "";
         currentFadeRoutine = null; // Mark the routine as fully finished
     }
+
+    public void ShowMessageAfterDelay(float delay, string message, bool isgreen, float fDuration, float dVisible)
+    {
+        StartCoroutine(this._ShowMessageAfterDelay(delay, message, isgreen, fDuration, dVisible));
+    }
+    public IEnumerator _ShowMessageAfterDelay(float delay, string message,bool isgreen, float fDuration, float dVisible)
+    {
+        // Wait for the specified delay
+        yield return new WaitForSeconds(delay);
+
+        // Check if the message system is available before calling it
+        if (FadingMessage.Instance != null)
+        {
+            // Use ShowCallout for a less intrusive, secondary notification
+            ShowMessage(message, isgreen, fDuration, dVisible);
+
+            // Note: If you want to use the main message text, use ShowMessage(hintMessage)
+        }
+    }
 }

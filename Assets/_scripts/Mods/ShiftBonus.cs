@@ -11,7 +11,7 @@ namespace Assets._scripts.Mods
         public override int InitialUses => -10;
 
         public override string ModName => "Shift Bonus";
-        public override string description => $"Every shift, the base Bonus increases by the largest payout this shift permanently";
+        public override string description => $"Every shift, the base shift Bonus increases by the largest payout in that shift.";
         public override string modUsedMessage => $"Base shift payout is {GameManager.Instance.flatProfitPerShift}";
 
         public override void ResetMod()
@@ -28,6 +28,7 @@ namespace Assets._scripts.Mods
             {
                 GameManager.Instance.flatProfitPerShift += GameManager.Instance.largestpayout;
                 Debug.Log($"{ModName} set shift profit {GameManager.Instance.flatProfitPerShift}");
+                GameManager.Instance.UpdateRateUI();
 
             } // TEST ME
 

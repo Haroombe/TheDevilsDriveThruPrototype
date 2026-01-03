@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bebe12e456bf09547ad7f330e3e3b391, type: 3}
   m_Name: FrenchFryFridayMod
   m_EditorClassIdentifier: 
+  paymentMult: 3
