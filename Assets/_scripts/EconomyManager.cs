@@ -161,7 +161,8 @@ public class EconomyManager : MonoBehaviour
             ref _curBurgerCost,
             baseBurgerPrice,
             burgerFinalPriceMult,       
-            burgerEffectiveCostRatio    
+            burgerEffectiveCostRatio,
+            burgerCostOverride
         );
 
         UpdateItemValues(
@@ -169,7 +170,8 @@ public class EconomyManager : MonoBehaviour
             ref _curFriesCost,
             baseFriesPrice,
             friesFinalPriceMult,         
-            friesEffectiveCostRatio     
+            friesEffectiveCostRatio,
+            friesCostOverride
         );
 
         UpdateItemValues(
@@ -177,7 +179,8 @@ public class EconomyManager : MonoBehaviour
             ref _curSodaCost,
             baseSodaPrice,
             sodaFinalPriceMult,          
-            sodaEffectiveCostRatio      
+            sodaEffectiveCostRatio,
+            sodaCostOverride
         );
 
         GameManager.Instance.UpdateRateUI();

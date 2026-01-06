@@ -1725,7 +1725,6 @@ GameObject:
   - component: {fileID: 137149977}
   - component: {fileID: 137149980}
   - component: {fileID: 137149979}
-  - component: {fileID: 137149978}
   m_Layer: 5
   m_Name: background
   m_TagString: Untagged
@@ -1752,23 +1751,6 @@ RectTransform:
   m_AnchoredPosition: {x: 11.37, y: -4.67}
   m_SizeDelta: {x: 1959.37, y: 1087.6}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &137149978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 137149976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c37c8ac52b04d164ca772a129cfd0a28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameText: {fileID: 0}
-  descriptionText: {fileID: 0}
-  selectButton: {fileID: 88060269}
-  ModType: {fileID: 0}
-  ShopCanvas: {fileID: 1977386440}
 --- !u!114 &137149979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6230,7 +6212,6 @@ GameObject:
   - component: {fileID: 557271943}
   - component: {fileID: 557271946}
   - component: {fileID: 557271945}
-  - component: {fileID: 557271944}
   m_Layer: 5
   m_Name: background (2)
   m_TagString: Untagged
@@ -6257,23 +6238,6 @@ RectTransform:
   m_AnchoredPosition: {x: 4.45, y: -4.67}
   m_SizeDelta: {x: 1959.37, y: 1087.6}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &557271944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 557271942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c37c8ac52b04d164ca772a129cfd0a28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameText: {fileID: 0}
-  descriptionText: {fileID: 0}
-  selectButton: {fileID: 88060269}
-  ModType: {fileID: 0}
-  ShopCanvas: {fileID: 1977386440}
 --- !u!114 &557271945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12216,7 +12180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterVolume: 1
-  BgmVolume: 0.33
+  BgmVolume: 0
   SfxVolume: 0.93
   bgmTracks:
   - {fileID: 11400000, guid: 05ca1615ba180da419342d4d40486c03, type: 2}
@@ -18384,7 +18348,6 @@ GameObject:
   - component: {fileID: 1522463558}
   - component: {fileID: 1522463561}
   - component: {fileID: 1522463560}
-  - component: {fileID: 1522463559}
   m_Layer: 5
   m_Name: red
   m_TagString: Untagged
@@ -18411,23 +18374,6 @@ RectTransform:
   m_AnchoredPosition: {x: 15.79, y: -5.76}
   m_SizeDelta: {x: 1964.3, y: 1090.5}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1522463559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1522463557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c37c8ac52b04d164ca772a129cfd0a28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameText: {fileID: 0}
-  descriptionText: {fileID: 0}
-  selectButton: {fileID: 88060269}
-  ModType: {fileID: 0}
-  ShopCanvas: {fileID: 1977386440}
 --- !u!114 &1522463560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23190,6 +23136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37c8ac52b04d164ca772a129cfd0a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  assignedMod: {fileID: 0}
   nameText: {fileID: 1541366236}
   descriptionText: {fileID: 1925018851}
   selectButton: {fileID: 474819591}
@@ -24585,6 +24532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37c8ac52b04d164ca772a129cfd0a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  assignedMod: {fileID: 0}
   nameText: {fileID: 1961642205}
   descriptionText: {fileID: 1757934355}
   selectButton: {fileID: 88060269}
