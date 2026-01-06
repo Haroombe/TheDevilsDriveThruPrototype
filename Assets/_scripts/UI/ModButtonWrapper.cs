@@ -6,13 +6,13 @@ using static GameManager;
 public class ModButtonWrapper : MonoBehaviour
 {
     // The specific Mod object for this card
-    private Mod assignedMod;
+    public Mod assignedMod;
 
     // UI elements to update (assign in Inspector)
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private Button selectButton;
-    [SerializeField]  private TextMeshProUGUI ModType;
+    [SerializeField] public TextMeshProUGUI nameText;
+    [SerializeField] public TextMeshProUGUI descriptionText;
+    [SerializeField] public Button selectButton;
+    [SerializeField]  public TextMeshProUGUI ModType;
     [SerializeField] private Canvas ShopCanvas;
 
     private void Awake()
