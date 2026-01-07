@@ -12,7 +12,7 @@ namespace Assets._scripts.Mods
 
         public override int InitialUses => 1;
         public override string ModName => "Supply Drop";
-        public override string description => $"Add '{supplyDropMult}x' your the current order size to your inventory.";
+        public override string description => $"Add '{supplyDropMult}x' the current order size to your inventory.";
         public override string modUsedMessage => $"Added '{supplyDropMult}x' current order size to inventory!";
 
         public override ModType modType => ModType.Finite;
