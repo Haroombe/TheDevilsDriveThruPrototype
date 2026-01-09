@@ -204,6 +204,7 @@ public class ModManager : MonoBehaviour
                     OnClickableModExpired?.Invoke(mod);
                 }
                 activeMods.RemoveAt(i);
+                mod.ResetMod();
                 Destroy(mod);
                 removedMods++;
                 Debug.Log($"Removed expired mod: {mod.ModName}");

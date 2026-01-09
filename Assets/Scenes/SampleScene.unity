@@ -986,8 +986,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.5172639
-      value: 1.1719593
+      time: -0.47866178
+      value: 1.1212745
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -995,44 +995,53 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.548769
-      value: 0.87441015
-      inSlope: -0.20468117
-      outSlope: -0.20468117
+      time: -0.0042660683
+      value: 0.69010663
+      inSlope: -0.16608758
+      outSlope: -0.16608758
       tangentMode: 136
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1.6741815
-      value: 0.7234117
-      inSlope: 0
-      outSlope: 0
+      time: 0.6701653
+      value: 0.64240515
+      inSlope: -0.010522488
+      outSlope: -0.010522488
       tangentMode: 136
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 3.259266
-      value: 0.76727796
-      inSlope: 0.047964163
-      outSlope: 0.047964163
+      time: 1.6674868
+      value: 0.6380074
+      inSlope: 0.06509239
+      outSlope: 0.06509239
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.94855887
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 2.6684036
+      value: 0.79277456
+      inSlope: 0.09509433
+      outSlope: 0.09509433
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
       outWeight: 0.5585245
     - serializedVersion: 3
-      time: 6.1059256
-      value: 0.93092763
-      inSlope: 0.08818839
-      outSlope: 0.04683912
+      time: 4.105383
+      value: 1.106066
+      inSlope: 0.23125102
+      outSlope: 0.25749865
       tangentMode: 1
       weightedMode: 0
-      inWeight: 0.5459195
-      outWeight: 0.14192672
+      inWeight: 0.8935762
+      outWeight: 0.066194475
     - serializedVersion: 3
-      time: 29.870287
-      value: 4.4201345
+      time: 28.104076
+      value: 10.0774555
       inSlope: 0.18099971
       outSlope: 0.18099971
       tangentMode: 0
@@ -7054,7 +7063,7 @@ MonoBehaviour:
   <BaseComplexity>k__BackingField: 3.3
   <AlphaCoefficient>k__BackingField: 3.89
   <ExponentialDivider>k__BackingField: 6.86
-  <BetaCoefficient>k__BackingField: 0.63
+  <BetaCoefficient>k__BackingField: 0.96
   <SigmaTuningPct>k__BackingField: 0.08
   <ItemPctNormalDistDivisor>k__BackingField: 6
 --- !u!1 &604205289
@@ -19544,7 +19553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useRandomSeedInit: 0
   newSeedOnReset: 0
-  fixedSeed: 1336
+  fixedSeed: 133
   runCount: 1
   largestpayout: 0
   gameCanvas: {fileID: 326967944}
