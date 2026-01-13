@@ -14,6 +14,8 @@ public class RerollButton : Interactable
     }
     public override void Interact()
     {
+        AudioManager.Instance.PlaySFX("mod_click", playInstantly: true);
+
         foreach (ModButtonPress modButton in ModManager.Instance.ClickableModPressButtons)
         {
             if (modButton.buttonModKey == ClickableModname.OrderRerollNormal)

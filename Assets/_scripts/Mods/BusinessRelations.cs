@@ -9,7 +9,7 @@ namespace Assets._scripts.Mods
     {
 
         public float discount = 0.30f;
-        public override int InitialUses => GameManager.Instance.OrdersPerShift;
+        public override int InitialUses => -10;
 
         public override string ModName => "Business Relations";
         public override string description => $"The cost of all food items drops by {discount*100}% permanently!";

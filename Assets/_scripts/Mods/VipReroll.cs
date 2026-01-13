@@ -29,6 +29,11 @@ namespace Assets._scripts.Mods
  
         }
 
+        public override bool isClicked()
+        {
+            return _isClicked;
+        }
+
         public override void ResetMod()
         {
             _isClicked = false;
@@ -60,6 +65,7 @@ namespace Assets._scripts.Mods
 
             _isClicked = true;
             GameManager.Instance.currentOrder = GameManager.Instance.CreateOrder();
+            GameManager.Instance.UpdateOrderValuesUI(GameManager.Instance.currentOrder);
             FadingMessage.Instance.ShowMessage($"{modUsedMessage}", true, .6f, 1.7f);
             return true;
         }

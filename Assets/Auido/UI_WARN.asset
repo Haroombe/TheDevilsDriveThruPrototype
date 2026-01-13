@@ -9,7 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9817fb84233e5b43a1ebcef97d1b5ad, type: 3}
-  m_Name: BusinessRelationsMod
+  m_Script: {fileID: 11500000, guid: ef5f059251193ac4ca8e2df9389c7a7a, type: 3}
+  m_Name: UI_WARN
   m_EditorClassIdentifier: 
-  discount: 0.21
+  clips:
+  - {fileID: 8300000, guid: 6935b5bacde6eb14c8c470b26ded1d48, type: 3}
+  volume: 0.69
+  isRandomPitch: 0
+  minPitch: -0.13
+  maxPitch: 0.02

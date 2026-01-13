@@ -25,13 +25,13 @@ public class GrillTop : Interactable
         // --- Option 1: Bulk Buy (The default Interact action) ---
         int bulkAmount = GetOrderBulkAmount();
         float unitCost = EconomyManager.Instance.CurBurgerCost;
-        float bulkCost = unitCost * bulkAmount;
+        float bulkCost = unitCost * bulkAmount * ModManager.Instance.GetTotalBulkPriceMultiplier();
 
-        string bulkOption = $"'c' to Buy {bulkAmount} Burgers (-${bulkCost:F2})";
+        string bulkOption = $"'c' to Buy {bulkAmount} Burgers (-${bulkCost:N2})";
 
         // --- Option 2: Single Unit Buy (Optional action, needs separate input) ---
         float singleCost = unitCost;
-        string singleOption = $"Buy 1 Burger (-${singleCost:F2})";
+        string singleOption = $"Buy 1 Burger (-${singleCost:N2})";
 
         // Combine into a single, two-line dialogue prompt
         // NOTE: Your UI/Input system needs to handle [E] and [1] separately.

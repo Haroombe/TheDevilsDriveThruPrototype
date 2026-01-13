@@ -23,13 +23,13 @@ public class SodaMachine : Interactable
     {
         int bulkAmount = GetOrderBulkAmount();
         float unitCost = EconomyManager.Instance.CurSodaCost;
-        float bulkCost = unitCost * bulkAmount;
+        float bulkCost = unitCost * bulkAmount * ModManager.Instance.GetTotalBulkPriceMultiplier();
 
-        string bulkOption = $"'c' to Buy {bulkAmount} Sodas (-${bulkCost:F2})";
+        string bulkOption = $"'c' to Buy {bulkAmount} Sodas (-${bulkCost:N2})";
 
         // --- Option 2: Single Unit Buy (Optional action, needs separate input) ---
         float singleCost = unitCost;
-        string singleOption = $"Buy 1 Soda (-${singleCost:F2})";
+        string singleOption = $"Buy 1 Soda (-${singleCost:N2})";
         if (bulkAmount <= 1)
         {
             // If bulk amount is 1 or less, only show single option

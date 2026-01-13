@@ -9,7 +9,7 @@ namespace Assets._scripts.Mods
     {
         public override int InitialUses => -10;
         private bool isSet = false;
-        private float shiftbasedMult = 2f; // Initialize to 0 (or -1, if 0 is a valid multiplier)
+        public float shiftbasedMult = 3f; // Initialize to 0 (or -1, if 0 is a valid multiplier)
 
         // Helper property to determine the multiplier value to display
         public override string ModName => "Heavenly Hand";

@@ -8,7 +8,7 @@ namespace Assets._scripts.Mods
     public class ImBulking : Mod
     {
 
-        public float bulkDiscountfl = 0.35f;
+        public float bulkDiscountfl = 0.10f;
         public override int InitialUses => GameManager.Instance.OrdersPerShift;
 
         public override string ModName => "I'm Bulking";
