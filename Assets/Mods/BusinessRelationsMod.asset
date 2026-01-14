@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9817fb84233e5b43a1ebcef97d1b5ad, type: 3}
   m_Name: BusinessRelationsMod
   m_EditorClassIdentifier: 
-  discount: 0.21
+  discount: 0.5

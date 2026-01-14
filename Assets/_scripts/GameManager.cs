@@ -476,13 +476,13 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"{ModManager.Instance.activeMods.Count} Mods initialized for Order #{OrderNum}");
 
 
-                if (shiftNum == 1 && OrderNum == 3)
+                if (shiftNum == 1 && OrderNum == 3 && runCount == 1)
                 {
                     AudioManager.Instance.PlaySFX("UI_WARN", minDelay:4.6f, maxDelay:5f);
 
                     FadingMessage.Instance.ShowMessageAfterDelay(5f, "Press 'Q' to show Order HUD", true, .5f, 3.5f);
                 }
-                if (shiftNum == 2 && OrderNum == 1)
+                if (shiftNum == 2 && OrderNum == 1 && runCount == 1)
                 {
 
 
@@ -490,7 +490,7 @@ public class GameManager : MonoBehaviour
                     AudioManager.Instance.PlaySFX("UI_WARN", minDelay: 4.6f, maxDelay: 5f);
 
                 }
-                if (shiftNum == 3 && OrderNum == 1)
+                if (shiftNum == 3 && OrderNum == 1 && runCount == 1)
                 {
                     AudioManager.Instance.PlaySFX("UI_WARN", minDelay: 4.6f, maxDelay: 5f);
 

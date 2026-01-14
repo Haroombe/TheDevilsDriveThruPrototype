@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef5f059251193ac4ca8e2df9389c7a7a, type: 3}
-  m_Name: UI_WARN
+  m_Script: {fileID: 11500000, guid: 0fd6fcd310b52ce4688ea828876b95ef, type: 3}
+  m_Name: Night_ambiance
   m_EditorClassIdentifier: 
-  clips:
-  - {fileID: 8300000, guid: 6935b5bacde6eb14c8c470b26ded1d48, type: 3}
-  volume: 0.22
-  isRandomPitch: 0
-  minPitch: -0.13
-  maxPitch: 0.02
+  clip: {fileID: 8300000, guid: ede78e41955673c4aaab9c76721eab0b, type: 3}
+  volume: 0.61
+  loop: 1

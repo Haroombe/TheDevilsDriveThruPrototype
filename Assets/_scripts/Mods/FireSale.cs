@@ -45,16 +45,16 @@ namespace Assets._scripts.Mods
 
         public override float _GetBurgerCostMultiplier()
         {
-            return _isClicked? foodItemReductionDecimal : base._GetBurgerCostMultiplier(); 
+            return _isClicked? 1-foodItemReductionDecimal : base._GetBurgerCostMultiplier(); 
         }
 
         public override float _GetFriesCostMultiplier()
         {
-            return _isClicked ? foodItemReductionDecimal : base._GetFriesCostMultiplier();
+            return _isClicked ? 1-foodItemReductionDecimal : base._GetFriesCostMultiplier();
         }
         public override float _GetSodaCostMultiplier()
         {
-            return _isClicked ? foodItemReductionDecimal : base._GetSodaCostMultiplier();
+            return _isClicked ? 1-foodItemReductionDecimal : base._GetSodaCostMultiplier();
         }     
         public override void ProcessOrder(Order order)
         {

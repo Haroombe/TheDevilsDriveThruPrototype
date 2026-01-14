@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd70c910b10ea2a439ffbecac0f45dfd, type: 3}
   m_Name: VipRerollMod
   m_EditorClassIdentifier: 
-  payoutMult: 4
+  payoutMult: 10

@@ -20,13 +20,13 @@ public class ModButtonPress : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("subbed to modbuttonpress gamemanger events");
+        //Debug.Log("subbed to modbuttonpress gamemanger events");
         gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
-        Debug.Log("subbed to modbuttonpress gamemanger events");
+        //Debug.Log("subbed to modbuttonpress gamemanger events");
 
         if (ModManager.Instance != null)
         {
@@ -45,7 +45,7 @@ public class ModButtonPress : MonoBehaviour
     {
         if (ModManager.Instance != null)
         {
-            Debug.Log("disable to modbuttonpress gamemanger events");
+            //Debug.Log("disable to modbuttonpress gamemanger events");
 
             ModManager.Instance.OnModAdded -= OnModPurchased;
             ModManager.Instance.OnClickableModExpired -= OnModExpired;
@@ -54,7 +54,7 @@ public class ModButtonPress : MonoBehaviour
     }
     private void OnModPurchased(Mod selectedmod)
     {
-        Debug.Log("purchase mod event recieved in modbutton");
+        //Debug.Log("purchase mod event recieved in modbutton");
         if (ModActive)
         {
             return; // Mod already active so we should not disable it

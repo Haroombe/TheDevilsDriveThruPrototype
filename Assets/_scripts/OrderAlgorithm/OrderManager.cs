@@ -266,10 +266,10 @@ namespace Assets._scripts.OrderAlgorithm
         /// <summary>
         /// Unity Lifecycle Method: Called when the application is quitting or closing.
         /// </summary>
-        public void OnApplicationQuit()
-        {
-            WriteSimulationToFile();
-        }
+        //public void OnApplicationQuit()
+        //{
+        //    WriteSimulationToFile();
+        //}
 
         /// <summary>
         /// Serializes the collected simulation data into a JSON file with Metadata, 
