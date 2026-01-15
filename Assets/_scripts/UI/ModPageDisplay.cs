@@ -17,7 +17,7 @@ public class ModPageDisplay : MonoBehaviour
         {
             // Clear the UI if no mod is passed (e.g., if we go past the last page)
             modNameText.text = "No Active Mod";
-            modDescriptionText.text = "You currently don't have this many mods active.";
+            modDescriptionText.text = "You currently don't have any mods.";
             modTypeText.text = "";
             usesRemainingText.text = "";
             return;

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets._scripts.UI
 {
@@ -28,11 +29,8 @@ namespace Assets._scripts.UI
 
         public void OnGameOverQuitPressed()
         {
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #else
-                Application.Quit();
-            #endif
+            SceneManager.LoadScene("TitleScene");
+
         }
     }
 }

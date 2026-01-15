@@ -38,7 +38,7 @@ namespace Assets._scripts.Mods
         }
         public override void ProcessOrder(Order order)
         {
-
+            Debug.Log("Business Relations Mod ProcessOrder called");
         }
 
 

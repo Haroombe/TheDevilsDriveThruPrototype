@@ -191,6 +191,7 @@ public class GameManager : MonoBehaviour
     }
     public void UpdateSeedNum(int seed)
     {
+        Debug.Log($"Seed set to {seed}");
         if (SeedNumTextField != null)
             SeedNumTextField.text = $"Seed: {seed.ToString()}";
     }
