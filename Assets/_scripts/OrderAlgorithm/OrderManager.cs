@@ -169,11 +169,11 @@ namespace Assets._scripts.OrderAlgorithm
             _currentRunData.Metadata.Add("StartingGameSeed", _seed.ToString());
 
             // Order Generator Static Params
-            _currentRunData.Metadata.Add("V_base", OrderGenerator.BaseOrderComplexity.ToString("F2"));
-            _currentRunData.Metadata.Add("Alpha", OrderGenerator.AlphaLinearCoefficient.ToString("F2"));
-            _currentRunData.Metadata.Add("Gamma_Divisor", OrderGenerator.ExponentialDivider.ToString("F2"));
-            _currentRunData.Metadata.Add("Beta_IntraShift", OrderGenerator.BetaIntraShiftCoefficient.ToString("F2"));
-            _currentRunData.Metadata.Add("Sigma_Scaling_Pct", OrderGenerator.GetSigmaScalingFactor().ToString("F2"));
+            _currentRunData.Metadata.Add("V_base", OrderGenerator.BaseOrderComplexity.ToString("N2"));
+            _currentRunData.Metadata.Add("Alpha", OrderGenerator.AlphaLinearCoefficient.ToString("N2"));
+            _currentRunData.Metadata.Add("Gamma_Divisor", OrderGenerator.ExponentialDivider.ToString("N2"));
+            _currentRunData.Metadata.Add("Beta_IntraShift", OrderGenerator.BetaIntraShiftCoefficient.ToString("N2"));
+            _currentRunData.Metadata.Add("Sigma_Scaling_Pct", OrderGenerator.GetSigmaScalingFactor().ToString("N2"));
 
             // Economy Manager Static Params
             if (EconomyManager.Instance != null)
@@ -266,10 +266,10 @@ namespace Assets._scripts.OrderAlgorithm
         /// <summary>
         /// Unity Lifecycle Method: Called when the application is quitting or closing.
         /// </summary>
-        public void OnApplicationQuit()
-        {
-            WriteSimulationToFile();
-        }
+        //public void OnApplicationQuit()
+        //{
+        //    WriteSimulationToFile();
+        //}
 
         /// <summary>
         /// Serializes the collected simulation data into a JSON file with Metadata, 

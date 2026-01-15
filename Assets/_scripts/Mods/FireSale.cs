@@ -8,7 +8,7 @@ namespace Assets._scripts.Mods
 
     public class FireSale : Mod
     {
-        public float ingredientOverrideCost = 0.01f;
+        public float foodItemReductionDecimal = 0.90f;
         public override int InitialUses => 1;
         private bool _isClicked = false;
 
@@ -32,8 +32,8 @@ namespace Assets._scripts.Mods
             UsesRemainingTextField.text = $"Uses: ({UsesRemaining}/{InitialUses})";
         }
         public override string ModName => "Fire Sale";
-        public override string description => $"(Single Use) For 1 order, every food item costs ${ingredientOverrideCost}";
-        public override string modUsedMessage => $"Food items cost ${ingredientOverrideCost}!";
+        public override string description => $"(Single Use) For 1 order, the cost of all food item is reduced %{foodItemReductionDecimal*100}";
+        public override string modUsedMessage => $"Food items cost %{foodItemReductionDecimal * 100} less!";
 
         public override void ResetMod()
         {
@@ -43,18 +43,18 @@ namespace Assets._scripts.Mods
 
         public override ModType modType => ModType.Clickable;
 
-        public override float _GetBurgerCostOverride()
+        public override float _GetBurgerCostMultiplier()
         {
-            return _isClicked? ingredientOverrideCost : base._GetBurgerCostOverride(); 
+            return _isClicked? 1-foodItemReductionDecimal : base._GetBurgerCostMultiplier(); 
         }
 
-        public override float _GetFriesCostOverride()
+        public override float _GetFriesCostMultiplier()
         {
-            return _isClicked ? ingredientOverrideCost : base._GetFriesCostOverride();
+            return _isClicked ? 1-foodItemReductionDecimal : base._GetFriesCostMultiplier();
         }
-        public override float _GetSodaCostOverride()
+        public override float _GetSodaCostMultiplier()
         {
-            return _isClicked ? ingredientOverrideCost : base._GetSodaCostOverride();
+            return _isClicked ? 1-foodItemReductionDecimal : base._GetSodaCostMultiplier();
         }     
         public override void ProcessOrder(Order order)
         {

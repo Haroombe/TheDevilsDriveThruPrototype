@@ -1,19 +1,27 @@
 ﻿using UnityEngine;
-
-using System;
+using System.Collections;
 public class ServeButton : Interactable
 {
     private string _name = "Drive Thru Window";
     public override bool canBuy => true;
-
-    public override string InteractableName
-    {
-        get { return _name; }
-    }
+    private bool hasFulfilledOrder = false;
+    [SerializeField] private float cooldownTime = 2f;
+    public override string InteractableName => _name;
     public override void Interact()
     {
-        GameManager.Instance.FulfillOrder();
+        if (hasFulfilledOrder) return;
 
+        if (GameManager.Instance.FulfillOrder())
+        {
+            StartCoroutine(Cooldown());
+        }
+    }
+    // prevent spam bugs
+    private IEnumerator Cooldown()
+    {
+        hasFulfilledOrder = true;
+        yield return new WaitForSeconds(cooldownTime);
+        hasFulfilledOrder = false;
     }
     public override void BulkInteract()
     {

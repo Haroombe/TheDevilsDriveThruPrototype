@@ -70,7 +70,7 @@ public class Order
 
         TotalPayoutNonMod = burgerRevenue + friesRevenue + sodaRevenue;
         TotalPayout = TotalPayoutNonMod * orderPayoutMultiplier;
-        Debug.Log($"Order Payout Calculation: Burgers(${burgerRevenue:F2}) + Fries(${friesRevenue:F2}) + Sodas(${sodaRevenue:F2}) + Bonus(${flatBonus * shiftNum:F2}) = TotalPayout(${TotalPayout:F2})");
+        Debug.Log($"Order Payout Calculation: Burgers(${burgerRevenue:N2}) + Fries(${friesRevenue:N2}) + Sodas(${sodaRevenue:N2}) + Bonus(${flatBonus * shiftNum:N2}) = TotalPayout(${TotalPayout:N2})");
 
         // 2. Calculate Cost
         float burgerCost = EconomyManager.Instance.CurBurgerCost * burgerOrderAmount;

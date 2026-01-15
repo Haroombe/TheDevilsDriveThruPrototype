@@ -8,8 +8,7 @@ namespace Assets._scripts.Mods
     public class HeavenlyHand : Mod
     {
         public override int InitialUses => -10;
-        private bool isSet = false;
-        private float shiftbasedMult = 2f; // Initialize to 0 (or -1, if 0 is a valid multiplier)
+        public float shiftbasedMult = 3f; // Initialize to 0 (or -1, if 0 is a valid multiplier)
 
         // Helper property to determine the multiplier value to display
         public override string ModName => "Heavenly Hand";
@@ -30,11 +29,6 @@ namespace Assets._scripts.Mods
 
         public override void ProcessOrder(Order order)
         {
-            if (!isSet)
-            {
-                shiftbasedMult = 2;
-                isSet = true;
-            }
 
         }
 

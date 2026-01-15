@@ -16,7 +16,10 @@ public class GameManager : MonoBehaviour
     private int gameSeed;
     private bool isFirstRun = true;
     public int runCount = 1;
-    public float largestpayout = 0f;
+    public float largestnetprofit = 0f;
+
+    private bool modshop_ispaused = false;
+    private bool OrderHUDvisible = false;
 
     // --- Constants ---
     private const string POSITIVE_COLOR = "#53C04E"; // Green
@@ -29,7 +32,7 @@ public class GameManager : MonoBehaviour
         string color = amount >= 0 ? POSITIVE_COLOR : NEGATIVE_COLOR;
         float absAmount = Mathf.Abs(amount);
 
-        return $"<color={color}>{sign}${absAmount:F2}</color>";
+        return $"<color={color}>{sign}${absAmount:N2}</color>";
     }
 
     public void SetGameSeed()
@@ -104,6 +107,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI FriesMultText;
     [SerializeField] private TextMeshProUGUI SodaMultText;
 
+    [Header("Quick Order HUD elements")]
+    [SerializeField] public GameObject OrderHUD;
+    [SerializeField] private TextMeshProUGUI HUDOrderTitle;
+    [SerializeField] private TextMeshProUGUI HUDBurgerOrderAmount;
+    [SerializeField] private TextMeshProUGUI HUDFriesOrderAmount;
+    [SerializeField] private TextMeshProUGUI HUDSodaOrderAmount;
+    [SerializeField] private TextMeshProUGUI HUDOrderGrossPayout;
+    [SerializeField] public GameObject EasterEgg;
+
+    private bool Eggvisible = false;
+
 
 
     // --- ITEM RATES UI (3 columns: Cost, Price, Net Profit) ---
@@ -177,6 +191,7 @@ public class GameManager : MonoBehaviour
     }
     public void UpdateSeedNum(int seed)
     {
+        Debug.Log($"Seed set to {seed}");
         if (SeedNumTextField != null)
             SeedNumTextField.text = $"Seed: {seed.ToString()}";
     }
@@ -188,20 +203,34 @@ public class GameManager : MonoBehaviour
     {
         if (BurgerOrderText != null)
             BurgerOrderText.text = $"{order.burgerOrderAmount.ToString()}";
+        if (HUDBurgerOrderAmount != null)
+            HUDBurgerOrderAmount.text = $"{order.burgerOrderAmount.ToString()}";
+
         if (FriesOrderText != null)
             FriesOrderText.text = $"{order.friesOrderAmount.ToString()}";
+        if (HUDFriesOrderAmount != null)
+            HUDFriesOrderAmount.text = $"{order.friesOrderAmount.ToString()}";
+
         if (SodaOrderText != null)
             SodaOrderText.text = $"{order.sodaOrderAmount.ToString()}";
+        if (HUDSodaOrderAmount != null)
+            HUDSodaOrderAmount.text = $"{order.sodaOrderAmount.ToString()}";
 
         if (OrderNumText != null)
             OrderNumText.text = $"Order #{OrderNum.ToString()} Summary";
 
+        if (HUDOrderTitle != null)
+            HUDOrderTitle.text = $"Order #{OrderNum.ToString()}";
+
         // Display Total Payout (Revenue)
         if (OrderPayout != null)
-            OrderPayout.text = $"+ ${order.TotalPayoutNonMod:F2}";
+            OrderPayout.text = $"+ ${order.TotalPayoutNonMod:N2}";
+
+        if (HUDOrderGrossPayout != null)
+            HUDOrderGrossPayout.text = $"+ ${order.TotalPayoutNonMod:N2}";
 
         if (OrderPayoutMultiplier != null && order.orderPayoutMultiplier != 1f)
-        { OrderPayoutMultiplier.text = $"x{order.orderPayoutMultiplier:F2}"; }
+        { OrderPayoutMultiplier.text = $"x{order.orderPayoutMultiplier:N2}"; }
         else
         {
             OrderPayoutMultiplier.text = "";
@@ -210,17 +239,21 @@ public class GameManager : MonoBehaviour
 
         // Display Total Cost (as a negative)
         if (OrderPriceText != null)
-            OrderPriceText.text = $"- ${order.TotalCost:F2}";
+            OrderPriceText.text = $"- ${order.TotalCost:N2}";
 
         // Display Net Profit (Color-coded)
         if (OrderNetRevenueText != null)
             OrderNetRevenueText.text = FormatProfitText(order.NetProfit);
 
         if (OrderBonusText != null)
-            OrderBonusText.text = $"+ ${flatProfitPerOrder*shiftNum:F2}";
-
+            OrderBonusText.text = $"+ ${flatProfitPerOrder*shiftNum:N2}";
+        float profitpershift = flatProfitPerShift * shiftNum;
+        if (flatProfitPerShift != startingflatProfitPerShift)
+        {
+            profitpershift = flatProfitPerShift;
+        }
         if (ShiftBonusText != null)
-            ShiftBonusText.text = $"+ ${flatProfitPerShift*shiftNum:F2}";
+            ShiftBonusText.text = $"+ ${profitpershift:N2}";
     }
 
     // starting values
@@ -275,20 +308,20 @@ public class GameManager : MonoBehaviour
         var eco = EconomyManager.Instance;
 
         // --- BURGER UI ---
-        BurgerCostText.text = $"${eco.CurBurgerCost:F2}";
-        BurgerSellText.text = $"${eco.CurBurgerPrice:F2}"; // Selling Price (Renamed from Profit)
+        BurgerCostText.text = $"${eco.CurBurgerCost:N2}";
+        BurgerSellText.text = $"${eco.CurBurgerPrice:N2}"; // Selling Price (Renamed from Profit)
         float burgerNetProfit = eco.CurBurgerPrice - eco.CurBurgerCost;
         BurgerNetProfitText.text = FormatProfitText(burgerNetProfit);
 
         // --- FRIES UI ---
-        FriesCostText.text = $"${eco.CurFriesCost:F2}";
-        FriesSellText.text = $"${eco.CurFriesPrice:F2}"; // Selling Price
+        FriesCostText.text = $"${eco.CurFriesCost:N2}";
+        FriesSellText.text = $"${eco.CurFriesPrice:N2}"; // Selling Price
         float friesNetProfit = eco.CurFriesPrice - eco.CurFriesCost;
         FriesNetProfitText.text = FormatProfitText(friesNetProfit);
 
         // --- SODA UI ---
-        SodaCostText.text = $"${eco.CurSodaCost:F2}";
-        SodaSellText.text = $"${eco.CurSodaPrice:F2}"; // Selling Price
+        SodaCostText.text = $"${eco.CurSodaCost:N2}";
+        SodaSellText.text = $"${eco.CurSodaPrice:N2}"; // Selling Price
         float sodaNetProfit = eco.CurSodaPrice - eco.CurSodaCost;
         SodaNetProfitText.text = FormatProfitText(sodaNetProfit);
     }
@@ -321,6 +354,8 @@ public class GameManager : MonoBehaviour
         // Ensure OrderManager is set up before the GameLoop starts
         SetGameSeed();
         ModManager.Instance.seed = gameSeed;
+        OrderHUD.SetActive(false);
+        EasterEgg.SetActive(false);
 
 
         OrderManager.Instance.SetSeed(gameSeed);
@@ -346,8 +381,10 @@ public class GameManager : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) && !modshop_ispaused)
         {
+            AudioManager.Instance.PlaySFX("UI", playInstantly: true);
+
             if (GameManager.Instance.IsPaused())
             {
                 GameManager.Instance.ResumeGame();
@@ -358,13 +395,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            ResetGame();
-        }
+
         // ... (other input handling)
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            AudioManager.Instance.PlaySFX("UI", playInstantly: true);
+
             bookUI.ToggleUI();
             if (!isPaused)
             {
@@ -387,6 +423,19 @@ public class GameManager : MonoBehaviour
             }
 
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            AudioManager.Instance.PlaySFX("UI", playInstantly: true);
+
+            ToggleOrderHUD();
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            AudioManager.Instance.PlaySFX("UI", playInstantly: true);
+
+            ToggleEasterEgg();
+        }
+
         //{
         //    SetPanelVisibility(GiveUpPanel, true);
         //}
@@ -420,16 +469,35 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.OrderStart:
-
                 ModManager.Instance.OnOrderStartInitializeActiveMods();
+
+                EconomyManager.Instance.UpdateShiftEconomy(shiftNum);
+
+
                 Debug.Log($"{ModManager.Instance.activeMods.Count} Mods initialized for Order #{OrderNum}");
 
-                if (shiftNum == 2 && OrderNum == 1)
+
+                if (shiftNum == 1 && OrderNum == 3 && runCount == 1)
                 {
-                    FadingMessage.Instance.ShowMessageAfterDelay(5f, "Press 'space' to show active mods", true, .5f, 2f);
+                    AudioManager.Instance.PlaySFX("UI_WARN", minDelay:4.6f, maxDelay:5f);
+
+                    FadingMessage.Instance.ShowMessageAfterDelay(5f, "Press 'Q' to show Order HUD", true, .5f, 3.5f);
                 }
+                if (shiftNum == 2 && OrderNum == 1 && runCount == 1)
+                {
 
 
+                    FadingMessage.Instance.ShowMessageAfterDelay(5f, "Press 'space' to show active mods", true, .5f, 3.5f);
+                    AudioManager.Instance.PlaySFX("UI_WARN", minDelay: 4.6f, maxDelay: 5f);
+
+                }
+                if (shiftNum == 3 && OrderNum == 1 && runCount == 1)
+                {
+                    AudioManager.Instance.PlaySFX("UI_WARN", minDelay: 4.6f, maxDelay: 5f);
+
+
+                    FadingMessage.Instance.ShowMessageAfterDelay(5f, "Mod selection only occurs on Even shifts", true, .5f, 5.5f);
+                }
                 Debug.Log("order number " + OrderNum.ToString() + " start");
                 CustomerManager.Instance.SpawnToMid();
 
@@ -456,7 +524,15 @@ public class GameManager : MonoBehaviour
                     Debug.Log("shift number " + shiftNum.ToString() + " over");
                     shiftNum++;
                     OrderNum = 1;
-                    addAmountF(ref playerMoney, flatProfitPerShift*shiftNum);
+                    if (flatProfitPerShift != startingflatProfitPerShift)
+                    {
+                        addAmountF(ref playerMoney, flatProfitPerShift);
+
+                    } else
+                    {
+                        addAmountF(ref playerMoney, flatProfitPerShift*shiftNum);
+
+                    }
 
                     // --- INTEGRATION: Update Economy for Next Shift ---
                     EconomyManager.Instance.UpdateShiftEconomy(shiftNum);
@@ -481,16 +557,22 @@ public class GameManager : MonoBehaviour
 
                 break;
             case GameState.ShiftOver:
-                ModShopPause();
-                bool modsDisplayed = modShopUI.PlayerModChoiceSelection();
-                // unpause and calling gameloop order start handled on mouse click
-                if (!modsDisplayed)
+                if (shiftNum % 2 == 0) {
+                    ModShopPause();
+                    bool modsDisplayed = modShopUI.PlayerModChoiceSelection();
+                    // unpause and calling gameloop order start handled on mouse click
+                    if (!modsDisplayed)
+                    {
+                        modShopUI.turnOffModCanvas();
+                        ModShopUnPause();
+                        FadingMessage.Instance.ShowMessage("Not enough Mods to display, skipping mod selection...");
+                        GameLoop(GameState.OrderStart);
+                    }
+                } else
                 {
-                    modShopUI.turnOffModCanvas();
-                    ModShopUnPause();
-                    FadingMessage.Instance.ShowMessage("Not enough Mods to display, skipping mod selection...");
                     GameLoop(GameState.OrderStart);
                 }
+
                 break;
 
             case GameState.GameOverRestart:
@@ -528,6 +610,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateUIF(TextMeshProUGUI field, float value, string format)
     {
+        value = Mathf.Round(value * 100f) / 100f;
         field.text = value.ToString(format);
     }
 
@@ -577,7 +660,7 @@ public class GameManager : MonoBehaviour
     }
     public void UpdateAllInventoryUI()
     {
-        UpdateUIF(MoneyAmountText, playerMoney, "F2");
+        UpdateUIF(MoneyAmountText, playerMoney, "N2");
         UpdateUI(SodaAmountText, playerSoda);
         UpdateUI(BurgerAmountText, playerBurgers);
         UpdateUI(FriesAmountText, playerFries);
@@ -612,12 +695,27 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
 
     // --- Public Methods ---
+
+    public void ToggleOrderHUD()
+    {
+        AudioManager.Instance.PlaySFX("UI", playInstantly: true);
+
+        OrderHUDvisible = !OrderHUDvisible;
+        OrderHUD.SetActive(OrderHUDvisible);
+    }
+
+    public void ToggleEasterEgg()
+    {
+        Eggvisible = !Eggvisible;
+        EasterEgg.SetActive(Eggvisible);
+    }
+
     public void ModShopPause()
     {
+        modshop_ispaused = true;
         Cursor.visible = true;
         isPaused = true;
         Time.timeScale = 0f;
-        gameCanvas.enabled = false;
         pauseCanvas.enabled = false;
 
 
@@ -635,6 +733,7 @@ public class GameManager : MonoBehaviour
     }
     public void ModBookUnPause()
     {
+
         Cursor.visible = false;
         isPaused = false;
         Time.timeScale = 1f;
@@ -647,6 +746,8 @@ public class GameManager : MonoBehaviour
 
     public void ModShopUnPause()
     {
+        modshop_ispaused = false;
+
         Cursor.visible = false;
         isPaused = false;
         Time.timeScale = 1f;
@@ -708,51 +809,86 @@ public class GameManager : MonoBehaviour
 
 
     // checks
-    public void FulfillOrder()
+    private static int RequiredBaseAmount(double effectiveAmount, double multiplier)
+    {
+        return (int)Math.Round(
+            effectiveAmount / multiplier,
+            0,
+            MidpointRounding.AwayFromZero
+        );
+    }
+
+    public bool FulfillOrder()
     {
         if (!canFulfillOrder(currentOrder))
         {
             FadingMessage.Instance.ShowMessage("Can't fill order!");
             AudioManager.Instance.PlaySFX("No", playInstantly: true);
-            return;
+            return false;
         }
 
-        // Deduct inventory
         AudioManager.Instance.PlaySFX("Pay", playInstantly: true);
 
-        minusAmount(ref playerBurgers, currentOrder.burgerOrderAmount);
-        minusAmount(ref playerFries, currentOrder.friesOrderAmount);
-        minusAmount(ref playerSoda, currentOrder.sodaOrderAmount);
+        int burgersToSubtract = RequiredBaseAmount(
+            currentOrder.burgerOrderAmount,
+            ModManager.Instance.GetTotalBurgerWeightMultiplier()
+        );
 
-        // Add money (TotalPayout is used)
+        int friesToSubtract = RequiredBaseAmount(
+            currentOrder.friesOrderAmount,
+            ModManager.Instance.GetTotalFriesWeightMultiplier()
+        );
+
+        int sodaToSubtract = RequiredBaseAmount(
+            currentOrder.sodaOrderAmount,
+            ModManager.Instance.GetTotalSodaWeightMultiplier()
+        );
+
+        minusAmount(ref playerBurgers, burgersToSubtract);
+        minusAmount(ref playerFries, friesToSubtract);
+        minusAmount(ref playerSoda, sodaToSubtract);
+
         addAmountF(ref playerMoney, currentOrder.TotalPayout);
-        largestpayout = Mathf.Max(largestpayout, currentOrder.TotalPayout);
+        largestnetprofit = Mathf.Max(largestnetprofit, currentOrder.NetProfit);
 
-        //fulfilled timestamp
         currentOrder.FulfilledTime = elapsedTime;
         currentOrder.CalculateFulfilledTimeString();
 
-        // Add to history
         orderHistory.Add(currentOrder);
-
-        // Update UI
         UpdateAllInventoryUI();
 
         FadingMessage.Instance.ShowMessage($"Order #{OrderNum} filled!", true, .6f, 2f);
 
         CustomerManager.Instance.ServeCustomer();
         GameLoop(GameState.OrderFilled);
+        return true;
     }
+
 
     // current player inventory can fulfill order
     public bool canFulfillOrder(Order curOrder)
     {
-        bool hasEnoughBurgers = playerBurgers * ModManager.Instance.GetTotalBurgerWeightMultiplier() >= curOrder.burgerOrderAmount;
-        bool hasEnoughFries = playerFries * ModManager.Instance.GetTotalFriesWeightMultiplier() >= curOrder.friesOrderAmount;
-        bool hasEnoughSoda = playerSoda * ModManager.Instance.GetTotalSodaWeightMultiplier() >= curOrder.sodaOrderAmount;
+        int requiredBurgers = RequiredBaseAmount(
+            curOrder.burgerOrderAmount,
+            ModManager.Instance.GetTotalBurgerWeightMultiplier()
+        );
 
-        return hasEnoughBurgers && hasEnoughFries && hasEnoughSoda;
+        int requiredFries = RequiredBaseAmount(
+            curOrder.friesOrderAmount,
+            ModManager.Instance.GetTotalFriesWeightMultiplier()
+        );
+
+        int requiredSoda = RequiredBaseAmount(
+            curOrder.sodaOrderAmount,
+            ModManager.Instance.GetTotalSodaWeightMultiplier()
+        );
+
+        return
+            playerBurgers >= requiredBurgers &&
+            playerFries >= requiredFries &&
+            playerSoda >= requiredSoda;
     }
+
 
 
     /// Replaces the current order with a new one based on external factors (Reroll or Modifier).
@@ -795,7 +931,7 @@ public class GameManager : MonoBehaviour
         {
             AudioManager.Instance.PlaySFX("No", playInstantly: true);
 
-            FadingMessage.Instance.ShowMessage($"Need ${totalCost:F2} for {amount} {foodName}(s)!");
+            FadingMessage.Instance.ShowMessage($"Need ${totalCost:N2} for {amount} {foodName}(s)!");
         }
     }
 

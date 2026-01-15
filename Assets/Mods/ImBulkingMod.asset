@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac32ef9959eb7c64ba2f2d4c6863ff9d, type: 3}
   m_Name: ImBulkingMod
   m_EditorClassIdentifier: 
+  bulkDiscountfl: 0.16

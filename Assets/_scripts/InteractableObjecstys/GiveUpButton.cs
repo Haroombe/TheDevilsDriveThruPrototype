@@ -13,6 +13,8 @@ public class GiveUpButton : Interactable
     }
     public override void Interact()
     {// show give up panel
+        AudioManager.Instance.PlaySFX("mod_click", playInstantly: true);
+
         GameManager.Instance.SetPanelVisibility(GameManager.Instance.GiveUpPanel, true);
         GameManager.Instance.SetPanelVisibility(GameManager.Instance.GameOverPanel, false);
 

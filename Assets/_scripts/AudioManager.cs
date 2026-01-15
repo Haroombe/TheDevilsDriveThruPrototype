@@ -6,7 +6,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
 
     [Header("Master / Individual Volumes")]
-    [Range(0f, 1f)][SerializeField] private float masterVolume = 1f;
+    [Range(0f, 2f)][SerializeField] private float masterVolume = 1f;
     [Range(0f, 1f)][SerializeField] private float BgmVolume = 1f;
     [Range(0f, 1f)][SerializeField] private float SfxVolume = 1f;
 

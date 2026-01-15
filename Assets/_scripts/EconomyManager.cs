@@ -32,6 +32,15 @@ public class EconomyManager : MonoBehaviour
     [SerializeField] private float baseBurgerPrice = 5.00f;
     [SerializeField] private float baseFriesPrice = 3.00f;
     [SerializeField] private float baseSodaPrice = 2.00f;
+    
+    [Header("Cost Ratio Variables")]
+    [SerializeField] private float toplevelCostRatio = 150.0f;
+    [SerializeField] private float orderCostRatioPressure = 0.035f;
+
+
+
+
+
 
     // --- Private Fields (The storage locations for 'ref' usage) ---
     private float _curBurgerPrice;
@@ -102,7 +111,7 @@ public class EconomyManager : MonoBehaviour
 
         // Start the game at Shift 1 prices and costs
         UpdateShiftEconomy(1);
-        Debug.Log($"ECONOMY INITIALIZED: Run Multiplier set to {CurrentRunMultiplier:F2}");
+        Debug.Log($"ECONOMY INITIALIZED: Run Multiplier set to {CurrentRunMultiplier:N2}");
     }
 
     // --- Per-Shift Update ---
@@ -131,8 +140,10 @@ public class EconomyManager : MonoBehaviour
         curbaseCostRatio = difficultyCurve.Evaluate(clampedShift);
         effectiveCostRatio = baseCostRatio * CurrentRunMultiplier;
 
+        effectiveCostRatio *= (1 + (GameManager.Instance.getOrderNum() * orderCostRatioPressure));
+
         // Final hard limit on difficulty (preventing unstable costs)
-        effectiveCostRatio = Mathf.Clamp(effectiveCostRatio, 0.05f, 5.0f);
+        effectiveCostRatio = Mathf.Clamp(effectiveCostRatio, 0.05f, toplevelCostRatio);
 
         // --- 1.5 Mods 
         // Price is affected by price multiplier
@@ -188,10 +199,10 @@ public class EconomyManager : MonoBehaviour
         // Log for tuning/debugging
         float marginPct = (1f - effectiveCostRatio) * 100f;
         Debug.Log($"--- SHIFT {shiftNumber} ECONOMY UPDATE ---");
-        Debug.Log($"Price Multiplier: {priceMultiplier:F2} | Cost Ratio: {effectiveCostRatio:F2} | Margin: {marginPct:F1}%");
-        Debug.Log($"Burger Price: ${CurBurgerPrice:F2} | Cost: ${CurBurgerCost:F2}");
-        Debug.Log($"Fries Price: ${CurFriesPrice:F2} | Cost: ${CurFriesCost:F2}");
-        Debug.Log($"Soda Price: ${CurSodaPrice:F2} | Cost: ${CurSodaCost:F2}");
+        Debug.Log($"Price Multiplier: {priceMultiplier:N2} | Cost Ratio: {effectiveCostRatio:N2} | Margin: {marginPct:F1}%");
+        Debug.Log($"Burger Price: ${CurBurgerPrice:N2} | Cost: ${CurBurgerCost:N2}");
+        Debug.Log($"Fries Price: ${CurFriesPrice:N2} | Cost: ${CurFriesCost:N2}");
+        Debug.Log($"Soda Price: ${CurSodaPrice:N2} | Cost: ${CurSodaCost:N2}");
     }
 
     // --- Helper Function ---
