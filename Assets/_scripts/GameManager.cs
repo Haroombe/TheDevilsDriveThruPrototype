@@ -88,6 +88,20 @@ public class GameManager : MonoBehaviour
         GameOverRestart,
     }
 
+    [Header("References")]
+    [SerializeField] private BasicFPCC playerFPCC;
+    [SerializeField] private TextMeshProUGUI sensitivityText;
+
+    [Header("Sensitivity")]
+    [SerializeField] private float lowSensitivity = 0.9f;
+    [SerializeField] private float mediumSensitivity = 1.4f;
+    [SerializeField] private float highSensitivity = 1.9f;
+    private string currentSensitivityLabel = "Medium";
+    private float currentSensitivity = 1.4f;
+
+
+
+
     [Header("UI Elements")]
     [SerializeField] private Canvas gameCanvas;
     [SerializeField] private Canvas pauseCanvas;
@@ -352,6 +366,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // Ensure OrderManager is set up before the GameLoop starts
+        if (playerFPCC == null)
+            playerFPCC = FindFirstObjectByType<BasicFPCC>();
+
+        string savedLabel = PlayerPrefs.GetString("SensitivityLabel", "Medium");
+        ApplySensitivityByLabel(savedLabel);
+
         SetGameSeed();
         ModManager.Instance.seed = gameSeed;
         OrderHUD.SetActive(false);
@@ -363,19 +383,66 @@ public class GameManager : MonoBehaviour
 
         GameLoop(GameState.Initializing);
     }
+    public void SetSensitivityLow()
+    {
+        ApplySensitivityByLabel("Low");
+    }
+
+    public void SetSensitivityMedium()
+    {
+        ApplySensitivityByLabel("Medium");
+    }
+
+    public void SetSensitivityHigh()
+    {
+        ApplySensitivityByLabel("High");
+    }
+
+    private void ApplySensitivityByLabel(string label)
+    {
+        currentSensitivityLabel = label;
+
+        switch (label)
+        {
+            case "Low":
+                currentSensitivity = lowSensitivity;
+                break;
+            case "Medium":
+                currentSensitivity = mediumSensitivity;
+                break;
+            case "High":
+                currentSensitivity = highSensitivity;
+                break;
+            default:
+                currentSensitivity = mediumSensitivity;
+                currentSensitivityLabel = "Medium";
+                break;
+        }
+
+        // Apply to FPCC script
+        playerFPCC.mouseSensitivityX = currentSensitivity;
+        playerFPCC.mouseSensitivityY = currentSensitivity;
+
+        // Update UI text
+        if (sensitivityText != null)
+            sensitivityText.text = "Sensitivity: " + currentSensitivityLabel;
+
+        // Save preference
+        PlayerPrefs.SetString("SensitivityLabel", currentSensitivityLabel);
+    }
 
     private void Update()
-    {
-        HandleInput();
-        elapsedTime += Time.deltaTime;
-        TrueElapsedTime += Time.deltaTime;
-        int currentSecond = (int)elapsedTime;
-        if (currentSecond != lastDisplayedSecond)
         {
+            HandleInput();
+            elapsedTime += Time.deltaTime;
+            TrueElapsedTime += Time.deltaTime;
+            int currentSecond = (int)elapsedTime;
+            if (currentSecond != lastDisplayedSecond)
+            {
+                updateTimerUI();
+                lastDisplayedSecond = currentSecond;
+            }
             updateTimerUI();
-            lastDisplayedSecond = currentSecond;
-        }
-        updateTimerUI();
 
     }
 
